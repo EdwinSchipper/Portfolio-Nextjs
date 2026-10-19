@@ -3,8 +3,7 @@ import Image from "next/image";
 import DOMPurify from "isomorphic-dompurify";
 import {
   GridSectionBlock,
-  GridContentLeft,
-  GridContentRight,
+  GridSectionColumn,
   GridCard as GridCardType,
   TimelineCompany,
   SocialLink,
@@ -357,7 +356,7 @@ export function GridSocials({
 
 export interface GridColumnProps {
   span?: number | string;
-  data?: GridContentLeft | GridContentRight;
+  data?: GridSectionColumn;
   children?: React.ReactNode;
   className?: string;
 }
@@ -371,26 +370,14 @@ export function GridColumn({
   const colClass = colSpans[String(span)] ?? colSpans["6"];
 
   if (data && !children) {
-    const label =
-      (data as GridContentLeft).label_left ||
-      (data as GridContentRight).label_right;
-    const title =
-      (data as GridContentLeft).title_h1 ||
-      (data as GridContentRight).title_h1r;
+    const label = data.label_left || data.label_right;
+    const title = data.title_h1 || data.title_h1r;
     const headingTag = getHeadingTag(data.heading_type, "h2");
-    const text =
-      (data as GridContentLeft).text_left ||
-      (data as GridContentRight).text_right;
-    const extendedText = (data as GridContentRight).text_right_extended;
-    const quote =
-      (data as GridContentLeft).quote_left ||
-      (data as GridContentRight).quote_right;
-    const image =
-      (data as GridContentLeft).image_left ||
-      (data as GridContentRight).image_right;
-    const button =
-      (data as GridContentLeft).button_left ||
-      (data as GridContentRight).button_right;
+    const text = data.text_left || data.text_right;
+    const extendedText = data.text_right_extended;
+    const quote = data.quote_left || data.quote_right;
+    const image = data.image_left || data.image_right;
+    const button = data.button_left || data.button_right;
     const cards = data.cards;
     const resumeTimeline =
       data.resume_timeline ||

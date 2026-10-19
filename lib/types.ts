@@ -93,7 +93,6 @@ export interface SystemFields {
   locale?: string;
   publish_details?: PublishDetails;
   title?: string;
-  seo?: SeoFields;
 }
 
 /**
@@ -286,7 +285,8 @@ export interface NumberedSectionBlock extends BaseSectionBlock {
 // Grid Section Models
 // ============================================================================
 
-export interface GridColumnContent extends BaseEntity {
+/** Nested column group for Grid Section (content_left / content_right) */
+export interface GridSectionColumn extends BaseEntity {
   label_left?: string;
   label_right?: string;
   title_h1?: string;
@@ -305,14 +305,13 @@ export interface GridColumnContent extends BaseEntity {
   resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[] } | any;
   socials?: GridSocials | SocialLink[] | any;
 }
-export type GridContentLeft = GridColumnContent;
-export type GridContentRight = GridColumnContent;
 
+/** Grid Section modular block */
 export interface GridSectionBlock extends BaseSectionBlock {
   left_col_span?: number | string;
   right_col_span?: number | string;
-  content_left?: GridContentLeft;
-  content_right?: GridContentRight;
+  content_left?: GridSectionColumn;
+  content_right?: GridSectionColumn;
 }
 
 // ============================================================================
@@ -384,6 +383,7 @@ export interface Blocks extends SystemFields {
 export interface BasePageEntry extends SystemFields {
   uid: string;
   title: string;
+  seo?: SeoFields;
   blocks?: Blocks[];
   $?: CSLPContainer;
   [key: string]: any;
@@ -409,6 +409,7 @@ export interface TechStackItem {
 export interface PortfolioItem extends SystemFields {
   uid: string;
   title: string;
+  seo?: SeoFields;
   url?: string;
   date?: string;
   company?: string;

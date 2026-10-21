@@ -43,10 +43,10 @@ export default async function DynamicRoute({
   // Await the asynchronous params object (standard Next.js 15+ App Router)
   const { slug } = await params;
 
-  // Reconstruct the URL path matching Contentstack's entry URL field (e.g., "/about" or "/demo-project")
+  // Reconstruct the URL path matching Contentstack's entry URL field (e.g., "/about" or "/portfolio")
   const path = `/${slug.join("/")}`;
 
-  // 1. Check if there is a 'page' entry matching this URL
+  // 1. Query Contentstack for a 'page' entry matching this URL
   const page = await getPage(path);
   if (page) {
     if (isPreview) {
@@ -55,7 +55,7 @@ export default async function DynamicRoute({
     return <Page page={page} />;
   }
 
-  // 2. Check if there is a 'portfolio_item' entry matching this URL
+  // 2. Fallback check for portfolio item (for items not living under /portfolio/[slug])
   const portfolioItem = await getPortfolioItemByUrl(path);
   if (portfolioItem) {
     if (isPreview) {
@@ -64,7 +64,7 @@ export default async function DynamicRoute({
     return <PortfolioDetail item={portfolioItem} />;
   }
 
-  // 3. Return 404 if no matching entry exists in either content type
+  // 3. Return 404 if no matching entry exists
   notFound();
 }
 

@@ -108,16 +108,30 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
 }
 
 /**
- * Resolves metadata dynamically for catch-all route paths (e.g. "/about", "/portfolio/project-1").
+ * Resolves metadata specifically for portfolio detail routes (/portfolio/[slug]).
+ */
+export async function getPortfolioRouteMetadata(slug: string): Promise<Metadata> {
+  const path = `/portfolio/${slug}`;
+  const item = await getPortfolioItemByUrl(path);
+  if (item) {
+    return buildPortfolioMetadata(item);
+  }
+  return {
+    title: "Project niet gevonden",
+  };
+}
+
+/**
+ * Resolves metadata dynamically for catch-all route paths (e.g. "/about", "/portfolio").
  */
 export async function getDynamicRouteMetadata(path: string): Promise<Metadata> {
-  // 1. Check if there is a 'page' entry matching this URL
+  // 1. Check page entry first for standard routes
   const page = await getPage(path);
   if (page) {
     return buildPageMetadata(page);
   }
 
-  // 2. Check if there is a 'portfolio_item' entry matching this URL
+  // 2. Fallback check for portfolio item if accessed via catch-all
   const item = await getPortfolioItemByUrl(path);
   if (item) {
     return buildPortfolioMetadata(item);

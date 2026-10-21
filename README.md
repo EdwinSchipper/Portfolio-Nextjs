@@ -1,5 +1,15 @@
 # Contentstack Kickstart: Next.js
 
+> [!WARNING]
+> ### 🚧 Work In Progress (WIP)
+> Dit project is momenteel **actief in ontwikkeling**. Veel onderdelen bevinden zich in een experimentele en iteratieve fase. Er moeten nog aanzienlijke verfijningen, code-optimalisaties en architectonische opschoningen worden doorgevoerd.
+>
+> **Aandachtspunten & geplande optimalisaties:**
+> - **Component-architectuur:** Opsplitsen van grotere/monolithische sectie-componenten in modulaire, herbruikbare deeltjes (Single Responsibility Principle).
+> - **Data-adapter & Typering:** Centraliseren van Contentstack response-normalisaties om defensieve `(as any)`-fallbacks in UI-componenten te elimineren.
+> - **Styling & Layout:** Verfijnen van Tailwind spacing (`gap-*` vs `space-*`), responsive breakpoints en mobiele uitlijning.
+> - **Semantiek & SEO:** Strikte paginabrede koppenhiërarchie (`h1` per pagina, `h2` per sectie) en toegankelijkheid (a11y).
+
 Contentstack Kickstarts are the minimum amount of code needed to connect to Contentstack.
 This kickstart covers the following items:
 

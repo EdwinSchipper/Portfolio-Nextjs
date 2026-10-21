@@ -1,0 +1,14 @@
+# Edwin Schipper – Digital Design & Development
+
+> Portfolio en case studies van Edwin Schipper, specialist in consistente merktaal, digitaal productontwerp en front-end ontwikkeling.
+
+## Overzicht
+Edwin Schipper is een Senior Digital Designer en Front-end Developer die organisaties helpt met het ontwerpen en bouwen van consistente digitale merkervaringen, intuïtieve gebruikersinterfaces en schaalbare design systems.
+
+## Belangrijke pagina's
+- [Home](https://www.edwinschipper.nl/): Overzicht van diensten, recente projecten, ervaring en expertise.
+- [Over mij](https://www.edwinschipper.nl/over-ons): Achtergrond, werkervaring, opleiding en vaardigheden.
+- [Portfolio](https://www.edwinschipper.nl/portfolio): Overzicht van geselecteerde design- en ontwikkelingsprojecten.
+
+## Uitgelichte Case Studies
+- [Consistente Merktaal & Platform](https://www.edwinschipper.nl/portfolio): Case study over merkontwikkeling, visueel ontwerp en front-end implementatie.

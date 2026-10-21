@@ -169,7 +169,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
   const heroImgAlt =
     item.alt_text ||
     (typeof heroImg === "object" && heroImg?.title) ||
-    `Hero afbeelding voor ${companyOrTitle}`;
+    companyOrTitle;
   const heroImgCslp = getImageCslp(
     heroImg,
     item?.$ && (item.$.portfolioimagedetail || item.$.featured_image)
@@ -336,7 +336,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
       <CaseStudyBanner
         id="portfolio-banner-3"
         url={banner3Url}
-        alt={item.alt_text || (typeof banner3Img === "object" && banner3Img?.title) || `Project visual voor ${companyOrTitle}`}
+        alt={item.alt_text || (typeof banner3Img === "object" && banner3Img?.title) || companyOrTitle}
         cslp={banner3Cslp}
       />
 

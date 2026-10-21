@@ -110,12 +110,13 @@ export default function FeaturedProjectsBlock({
                   >
                     <Link
                       href={postUrl}
+                      aria-label={`Bekijk project: ${projectTitle}`}
                       className="block h-full w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent7-800 dark:focus-visible:ring-accent8-800"
                     >
                       {imageUrl && (
                         <Image
                           src={imageUrl}
-                          alt={post.alt_text || `Case study: ${company}`}
+                          alt={post.alt_text || company}
                           width={730}
                           height={440}
                           quality={90}
@@ -148,7 +149,7 @@ export default function FeaturedProjectsBlock({
 
                       {/* Titel */}
                       <div className="-mt-2">
-                        <h5
+                        <h3
                           className="case-title text-title_5M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
                           {...(post?.$ && (post?.$.project_title || post?.$.title))}
                         >
@@ -158,7 +159,7 @@ export default function FeaturedProjectsBlock({
                           >
                             {projectTitle}
                           </Link>
-                        </h5>
+                        </h3>
                       </div>
 
                       {/* Omschrijving */}

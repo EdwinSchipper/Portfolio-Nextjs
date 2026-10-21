@@ -160,7 +160,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
   const companyOrTitle = item.company || item.title;
 
   // Overview content
-  const overviewText = item.description || item.content;
+  const overviewText = item.content || item.description;
   const overviewCslp = item?.$ && (item.$.description || item.$.content);
 
   // Hero image

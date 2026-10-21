@@ -229,7 +229,7 @@ export function ExperienceTimelineList({
           return (
             <div
               key={company._metadata?.uid || `company-${cIdx}`}
-              className="relative pl-12 md:pl-20 pb-8 last:pb-0"
+              className="relative pl-16 md:pl-20 pb-8 last:pb-0 -ml-4 sm:ml-0 "
             >
               {/* Vertical timeline line connecting nodes down this company */}
               {roles.length > 0 && (
@@ -242,7 +242,7 @@ export function ExperienceTimelineList({
               {/* Company Logo Monogram Box */}
               <div
                 aria-hidden="true"
-                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
+                className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
               >
                 {getInitial(company.company_name)}
               </div>
@@ -282,16 +282,16 @@ export function ExperienceTimelineList({
                       {/* Timeline node circle */}
                       <span
                         aria-hidden="true"
-                        className="absolute -left-6 md:-left-12 top-2.5 w-3.5 h-3.5 rounded-full border-2 border-accent7-900 dark:border-accent8-900 bg-background-100 dark:bg-background-800 -translate-x-1/2 z-10"
+                        className="absolute -left-10 md:-left-12 top-2.5 w-3.5 h-3.5 rounded-full border-2 border-accent7-900 dark:border-accent8-900 bg-background-100 dark:bg-background-800 -translate-x-1/2 z-10"
                       />
 
                       {isCard ? (
                         /* Prominent Primary Role Card */
                         <div className="bg-background-200 dark:bg-background-900 rounded-md border border-border-100 dark:border-border-200 p-6 md:p-8">
-                          <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="flex flex-wrap items-center justify-between gap-5 sm:gap-3">
                             {role.title && (
                               <h5
-                                className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200"
+                                className="order-2 md:order-1 text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200"
                                 {...(role?.$ && role?.$.title)}
                               >
                                 {role.title}
@@ -300,6 +300,7 @@ export function ExperienceTimelineList({
                             {role.badge && (
                               <Label
                                 variant="pill"
+                                className="order-1 md:order-2"
                                 cslp={role?.$ && role?.$.badge}
                               >
                                 {role.badge}
@@ -380,7 +381,7 @@ export function ExperienceTimelineList({
                         >
                           {secRole.title && (
                             <h6
-                              className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200 mb-1"
+                              className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200 mb-1 w-full bg-red-200 relative z-50"
                               {...(secRole?.$ && secRole?.$.title)}
                             >
                               {secRole.title}

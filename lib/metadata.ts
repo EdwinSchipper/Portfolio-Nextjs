@@ -38,6 +38,11 @@ export function buildPortfolioMetadata(item: PortfolioItem): Metadata {
 
   const imageUrl =
     item.seo?.og_image?.url ||
+    (typeof item.case_thumbnail === "object"
+      ? item.case_thumbnail?.url
+      : typeof item.case_thumbnail === "string"
+      ? item.case_thumbnail
+      : undefined) ||
     (typeof item.featured_image === "object" ? item.featured_image?.url : undefined) ||
     (typeof item.portfolioimagedetail === "object"
       ? item.portfolioimagedetail?.url

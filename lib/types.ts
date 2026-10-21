@@ -418,6 +418,7 @@ export interface PortfolioItem extends SystemFields {
   project_tag?: string;
   project_title?: string;
   project_desc?: string;
+  case_thumbnail?: File | string | null;
   portfolioimagedetail?: File | string | null;
   banner_visual_1?: File | string | null;
   banner_visual_2?: File | string | null;

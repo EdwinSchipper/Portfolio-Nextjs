@@ -27,18 +27,24 @@ Hieronder vind je een gestructureerd overzicht van wat er reeds is geïmplemente
 | **DevOps & CI Pipeline** | 🟢 `Done` | Geautomatiseerde continuous integration via GitHub Actions (`ci.yml`) met ESLint, TypeScript type-check en build-validatie met repository secrets. |
 | **Root Opschoning** | 🟢 `Done` | Overbodige Kickstart template-bestanden (`package-lock.json`, Talisman, lege scripts, corporate scans) verwijderd; volledig gemigreerd naar `pnpm`. |
 | **Styling & Responsive Finetuning** | 🟡 `In Progress` | Optimaliseren van Tailwind CSS v4 syntax (`grow`, `aspect-16/10`, `h-*`), mobiele layout-uitlijning en dark-mode kleurenharmonie. |
-| **Data Typering & Normalisatie** | 🟡 `In Progress` | Uitfaseren van defensieve `(as any)` type assertions door Contentstack response-normalisaties centraal te versterken in `lib/types.ts`. |
-| **Next.js Beveiligingsupdate** | 🔴 `To Do` | Upgraden van Next.js `16.4.0` naar de nieuwste gepatchte release (`16.4.3+`). |
+| **Data Typering & Architectuur** | 🟢 `Completed` | Monolithische `lib/types.ts` gemoduleerd naar een domeingestuurde structuur in `lib/types/` (`core`, `blocks`, `pages`, `index`). |
+| **Next.js Beveiligingsupdate** | 🟢 `Completed` | Upgraded van Next.js `16.4.0` naar `16.4.3` met Turbopack en Node 22 LTS ondersteuning. |
 | **SEO, Metadata & A11y** | 🔴 `To Do` | Paginabrede koppenhiërarchie valideren, gestructureerde data (Schema.org JSON-LD) uitbreiden en Lighthouse audits uitvoeren. |
 | **Productie Deployment** | 🔴 `To Do` | Definitieve livegang via Vercel met productie environment variables en custom domain koppeling. |
 
 ---
 
-## 🏛️ Architectuur: De Drie Pijlers
+## 🏛️ Architectuur: Drie Pijlers & Domein Types
 
-De componentenstructuur volgt een heldere en schaalbare scheiding van verantwoordelijkheden:
+De codebase volgt een strikte scheiding van verantwoordelijkheden over presentatie, CMS-modellen en domein-types:
 
 ```text
+lib/types/
+├── core.ts     # Contentstack primitives (PublishDetails, CSLPContainer, File, Link, SeoFields, BaseEntity)
+├── blocks.ts   # Modular blocks & sub-modellen (HeroBlock, ResumeSection, GridSection, CtaBlock, etc.)
+├── pages.ts    # Pagina- & portfolio-modellen (BasePageEntry, Page, Homepage, PortfolioItem, TechStackItem)
+└── index.ts    # Centrale barrel re-export voor backwards-compatible imports (@/lib/types)
+
 components/
 ├── ui/         # Design System primitives & presentational componenten
 │               # (Button, Label, Icon, Breadcrumbs, Header, Footer)
@@ -120,7 +126,7 @@ Het project maakt gebruik van geautomatiseerde kwaliteitscontroles via **GitHub 
 
 Bij elke push en pull request naar `main`, `master` of `development` draait de pipeline automatisch de volgende checks:
 
-1. **Installatie**: `pnpm install --frozen-lockfile` met Node.js 20 caching.
+1. **Installatie**: `pnpm install --frozen-lockfile` met Node.js 22 LTS caching.
 2. **Code Linting**: `pnpm run lint` (ESLint 9).
 3. **Type Safety**: `pnpm run type-check` (TypeScript 5).
 4. **Productie Build**: `pnpm run build` (Next.js 16 compilatie met veilige repository secrets).

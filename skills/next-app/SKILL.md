@@ -15,7 +15,7 @@ description: App Router structure, React components, client vs server, and rende
 ### App Router
 
 - [app/layout.tsx](../../app/layout.tsx) is the root layout; [app/page.tsx](../../app/page.tsx) is the home route.
-- [app/page.tsx](../../app/page.tsx) is an async Server Component when not in preview: it calls `getPage("/")` and passes the result to the default import from `@/components/Page`.
+- [app/page.tsx](../../app/page.tsx) is an async Server Component when not in preview: it calls `getHomePage()` and passes the result to `HomePage` from `@/components/features/pages`.
 
 ### Preview path (client)
 
@@ -33,4 +33,4 @@ description: App Router structure, React components, client vs server, and rende
 
 ### Imports
 
-- Path alias `@/*` maps to the repo root per [tsconfig.json](../../tsconfig.json) (e.g. `@/lib/contentstack`, `@/components/Page`).
+- Path alias `@/*` maps to the repo root per [tsconfig.json](../../tsconfig.json) (e.g. `@/lib/contentstack`, `@/components/ui`, `@/components/blocks`, `@/components/features`).

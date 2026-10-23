@@ -52,8 +52,8 @@ export default function HomePageSkeleton() {
         </div>
 
         {/* Right Column: Hero Visuals Grid */}
-        <div className="col-span-12 sm:col-span-12 lg:col-span-7 xl:col-span-8 md:px-0 lg:px-10 xl:px-20 -mx-5 md:-mx-0 mt-0 lg:self-center xl:self-start w-full">
-          <div className="grid grid-cols-12 grid-rows-[repeat(12,minmax(0,1fr))] gap-2 w-full max-w-lg sm:max-w-none mx-auto relative h-[360px] sm:h-[580px] md:h-[500px] xl:h-[600px]">
+        <div className="col-span-12 sm:col-span-12 lg:col-span-7 xl:col-span-8 md:px-0 lg:px-10 xl:px-20 -mx-5 md:mx-0 mt-0 lg:self-center xl:self-start w-full">
+          <div className="grid grid-cols-12 grid-rows-[repeat(12,minmax(0,1fr))] gap-2 w-full max-w-lg sm:max-w-none mx-auto relative h-90 sm:h-145 md:h-125 xl:h-150">
             {/* Visual 1 (UX) */}
             <div className="col-start-1 col-end-6 row-start-1 row-end-11 rounded-md bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200" />
             {/* Visual 2 (Vormgeving) */}

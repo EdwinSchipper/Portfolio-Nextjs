@@ -100,7 +100,7 @@ export function CardBox({
           {text && (
             <div
               {...(cslp && (cslp.text || cslp.description))}
-              className="service-desc flex flex-col text-mediumM sm:text-small text-content-100 dark:text-content-200 font-content flex-grow text-pretty leading-relaxed"
+              className="service-desc flex flex-col text-mediumM sm:text-small text-content-100 dark:text-content-200 font-content grow text-pretty leading-relaxed"
             >
               <p>{text}</p>
             </div>
@@ -162,7 +162,7 @@ export function CardImageTag({
     >
       {/* Foto met afgeronde hoeken */}
       {image?.url && (
-        <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden mb-4 shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
+        <div className="relative w-full aspect-16/10 rounded-md overflow-hidden mb-4 shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
           <Image
             src={image.url}
             alt={image.title || (typeof tag === "string" ? tag : "Card image")}

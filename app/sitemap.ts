@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPageUrls, getAllPortfolioUrls } from "@/lib/contentstack";
+import { getAllPageUrls, getAllPortfolioUrls } from "@/lib/cms";
 
 /**
  * Next.js Dynamic Sitemap generator

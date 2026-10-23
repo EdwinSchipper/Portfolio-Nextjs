@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { getHomePage, getPage, getPortfolioItemByUrl } from "./contentstack";
-import type { Page, PortfolioItem, Homepage } from "./types";
+import type { Page, PortfolioItem, Homepage } from "../types";
 
-const DEFAULT_TITLE = "Edwin Schipper";
-const DEFAULT_DESCRIPTION = "Portfolio Website van Edwin Schipper";
+export const DEFAULT_TITLE = "Edwin Schipper";
+export const DEFAULT_DESCRIPTION = "Portfolio Website van Edwin Schipper";
 
 /**
  * Builds metadata for a standard CMS page entry.
@@ -82,7 +81,9 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
     !metaTitle &&
     (!homepage?.title || homepage.title.toLowerCase().trim() === "homepage");
 
-  const title = metaTitle || (isGenericTitle ? "Edwin Schipper | Ontwerpbureau Schipper" : homepage?.title || DEFAULT_TITLE);
+  const title =
+    metaTitle ||
+    (isGenericTitle ? "Edwin Schipper | Ontwerpbureau Schipper" : homepage?.title || DEFAULT_TITLE);
 
   const description =
     homepage?.seo?.meta_description ||
@@ -105,47 +106,4 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
       ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
     },
   };
-}
-
-/**
- * Resolves metadata specifically for portfolio detail routes (/portfolio/[slug]).
- */
-export async function getPortfolioRouteMetadata(slug: string): Promise<Metadata> {
-  const path = `/portfolio/${slug}`;
-  const item = await getPortfolioItemByUrl(path);
-  if (item) {
-    return buildPortfolioMetadata(item);
-  }
-  return {
-    title: "Project niet gevonden",
-  };
-}
-
-/**
- * Resolves metadata dynamically for catch-all route paths (e.g. "/about", "/portfolio").
- */
-export async function getDynamicRouteMetadata(path: string): Promise<Metadata> {
-  // 1. Check page entry first for standard routes
-  const page = await getPage(path);
-  if (page) {
-    return buildPageMetadata(page);
-  }
-
-  // 2. Fallback check for portfolio item if accessed via catch-all
-  const item = await getPortfolioItemByUrl(path);
-  if (item) {
-    return buildPortfolioMetadata(item);
-  }
-
-  return {
-    title: "Pagina niet gevonden",
-  };
-}
-
-/**
- * Resolves metadata for the homepage.
- */
-export async function getHomePageMetadata(): Promise<Metadata> {
-  const page = await getHomePage();
-  return buildHomepageMetadata(page);
 }

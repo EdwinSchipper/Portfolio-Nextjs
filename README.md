@@ -39,11 +39,12 @@ Hieronder vind je een gestructureerd overzicht van wat er reeds is geïmplemente
 De codebase volgt een strikte scheiding van verantwoordelijkheden over presentatie, CMS-modellen en domein-types:
 
 ```text
-lib/types/
-├── core.ts     # Contentstack primitives (PublishDetails, CSLPContainer, File, Link, SeoFields, BaseEntity)
-├── blocks.ts   # Modular blocks & sub-modellen (HeroBlock, ResumeSection, GridSection, CtaBlock, etc.)
-├── pages.ts    # Pagina- & portfolio-modellen (BasePageEntry, Page, Homepage, PortfolioItem, TechStackItem)
-└── index.ts    # Centrale barrel re-export voor backwards-compatible imports (@/lib/types)
+lib/
+├── cms/        # Contentstack SDK client, Live Preview & queries (client.ts, queries.ts)
+├── layout/     # Design tokens, grid spans & layout helpers (tokens.ts, helpers.ts)
+├── metadata/   # SEO OpenGraph builders & route resolvers (builders.ts, resolvers.ts)
+├── types/      # Domeinmodellen & CMS-primitives (core.ts, blocks.ts, pages.ts)
+└── index.ts    # Centrale barrel re-export (@/lib)
 
 components/
 ├── ui/         # Design System primitives & presentational componenten

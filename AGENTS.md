@@ -39,7 +39,7 @@ To maintain maximum development velocity and avoid latency:
 
 1. **Direct execution over repetitive research:**
    - On follow-up, iterative, or incremental requests (such as adding a field, tweaking a layout, adjusting typography, or updating spacing), **do not** repeat broad codebase discovery, grep entire directories, or re-read files that are already understood in the conversation context.
-   - Jump directly to the known target files (primarily `lib/types.ts` and the relevant component in `components/blocks/` or `components/ui/`).
+   - Jump directly to the known target files (primarily `lib/types/` and the relevant component in `components/blocks/` or `components/ui/`).
 2. **Stay strictly in scope:**
    - Make precise, surgical modifications using single-pass replacements.
    - Do not touch unrelated components, styles, or configuration.

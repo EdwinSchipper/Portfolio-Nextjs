@@ -24,4 +24,4 @@ description: TypeScript compiler options, ESLint setup, and Contentstack entry t
 
 ### Content models
 
-- Prefer extending [lib/types.ts](../../lib/types.ts) for stack-backed shapes (`Page`, blocks, files, CSLP `$` mappings). When Live Preview needs new editable regions, add the corresponding `$` field shapes on interfaces.
+- Prefer extending [lib/types/](../../lib/types/) for stack-backed shapes (`Page`, blocks, files, CSLP `$` mappings). When Live Preview needs new editable regions, add the corresponding `$` field shapes on interfaces.

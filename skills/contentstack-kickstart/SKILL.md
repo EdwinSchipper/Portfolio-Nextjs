@@ -17,11 +17,11 @@ description: Contentstack Delivery SDK, live preview, getPage, env overrides, an
 - All stack configuration and fetching live in [lib/contentstack.ts](../../lib/contentstack.ts).
 - **`stack`**: created with `contentstack.stack()` from `@contentstack/delivery-sdk`, using API key, delivery token, environment, region, optional custom `host`, and `live_preview` options (preview token, preview host, enable flag).
 - **`initLivePreview()`**: calls `ContentstackLivePreview.init()` from `@contentstack/live-preview-utils` with `ssr: false`, `mode: "builder"`, stack SDK/config, stack details, client URL params, and edit button settings.
-- **`getPage(url)`**: queries the **`page`** content type, filters `url` with `QueryOperation.EQUALS`, and returns the first entry typed as `Page` from [lib/types.ts](../../lib/types.ts). When `isPreview` is true, adds editable tags via `contentstack.Utils.addEditableTags()`.
+- **`getPage(url)`**: queries the **`page`** content type, filters `url` with `QueryOperation.EQUALS`, and returns the first entry typed as `Page` from [lib/types/](../../lib/types/). When `isPreview` is true, adds editable tags via `contentstack.Utils.addEditableTags()`.
 
 ### Preview vs production routing
 
-- [app/page.tsx](../../app/page.tsx): if `isPreview` (`NEXT_PUBLIC_CONTENTSTACK_PREVIEW === "true"`), render the client [components/Preview.tsx](../../components/Preview.tsx) with `path="/"`; otherwise fetch with `getPage("/")` on the server and render [components/Page.tsx](../../components/Page.tsx) (imported as `Page`).
+- [app/page.tsx](../../app/page.tsx): if `isPreview` (`NEXT_PUBLIC_CONTENTSTACK_PREVIEW === "true"`), render the client [components/features/pages/Preview.tsx](../../components/features/pages/Preview.tsx) with `path="/"`; otherwise fetch with `getPage("/")` on the server and render [components/features/pages/HomePage.tsx](../../components/features/pages/HomePage.tsx).
 
 ### Regions and endpoints
 
@@ -37,7 +37,7 @@ description: Contentstack Delivery SDK, live preview, getPage, env overrides, an
 
 ### Types and Live Preview attributes
 
-- Entry and field shapes for CSLP live in [lib/types.ts](../../lib/types.ts); `$` on entries/fields holds `data-cslp` / parent attributes. Keep these aligned with modular blocks and `page` fields expected from the seeded stack.
+- Entry and field shapes for CSLP live in [lib/types/](../../lib/types/); `$` on entries/fields holds `data-cslp` / parent attributes. Keep these aligned with modular blocks and `page` fields expected from the seeded stack.
 
 ### Seed alignment
 

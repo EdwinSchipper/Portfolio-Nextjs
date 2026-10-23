@@ -19,11 +19,11 @@ description: App Router structure, React components, client vs server, and rende
 
 ### Preview path (client)
 
-- [components/Preview.tsx](../../components/Preview.tsx) is a Client Component (`"use client"`). It initializes live preview in `useEffect`, subscribes to `ContentstackLivePreview.onEntryChange`, and refetches via `getPage(path)` when the URL path changes.
+- [components/features/pages/Preview.tsx](../../components/features/pages/Preview.tsx) is a Client Component (`"use client"`). It initializes live preview in `useEffect`, subscribes to `ContentstackLivePreview.onEntryChange`, and refetches via `getPage(path)` when the URL path changes.
 
 ### Page UI component
 
-- [components/Page.tsx](../../components/Page.tsx) default export is imported elsewhere as **`Page`** (`import Page from "@/components/Page"`). The function implementing it is named `ContentDisplay` inside the file; treat the public name as `Page` when wiring props.
+- [components/features/pages/Page.tsx](../../components/features/pages/Page.tsx) default export is imported elsewhere as **`Page`** (`import { Page } from "@/components/features/pages"`). The function implementing it is named `ContentDisplay` inside the file; treat the public name as `Page` when wiring props.
 - It renders title, description, `next/image` for assets, sanitized rich HTML via `isomorphic-dompurify` and `dangerouslySetInnerHTML`, and modular blocks with `VB_EmptyBlockParentClass` for empty Visual Builder state.
 - Spread `page?.$` / block `$` attributes onto DOM nodes so Live Preview can bind fields.
 

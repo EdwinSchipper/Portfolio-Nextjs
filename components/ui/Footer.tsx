@@ -98,7 +98,7 @@ export default function Footer() {
             </div>
 
             {/* Separator */}
-            <div className="w-full h-[1px] bg-border-100 dark:bg-border-200 mb-14 md:mb-20" />
+            <div className="w-full h-px bg-border-100 dark:bg-border-200 mb-14 md:mb-20" />
 
             {/* Navigation Columns */}
             <nav aria-label="Footer navigatie" className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12 max-w-4xl">

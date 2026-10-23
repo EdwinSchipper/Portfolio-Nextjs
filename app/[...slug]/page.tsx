@@ -17,10 +17,8 @@
 import type { Metadata } from "next";
 import { getPage, getPortfolioItemByUrl, isPreview } from "@/lib/contentstack";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
-import Page from "@/components/Page";
-import Preview from "@/components/Preview";
-import PortfolioDetail from "@/components/portfolio/PortfolioDetail";
-import PortfolioPreview from "@/components/portfolio/PortfolioPreview";
+import { Page, Preview } from "@/components/features/pages";
+import { PortfolioDetail, PortfolioPreview } from "@/components/features/portfolio";
 import { notFound } from "next/navigation";
 
 // Ensure subpages always fetch fresh content from Contentstack in production

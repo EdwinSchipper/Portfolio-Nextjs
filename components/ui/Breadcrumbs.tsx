@@ -77,7 +77,7 @@ export default function Breadcrumbs({
 
               {isLast || !item.href ? (
                 <span
-                  className="text-mediumM md:text-medium font-normal text-content-100/80 dark:text-content-200/80 truncate max-w-[200px] select-none"
+                  className="text-mediumM md:text-medium font-normal text-content-100/80 dark:text-content-200/80 truncate max-w-50 select-none"
                   aria-current="page"
                   {...(isLast ? currentTitleAttr : undefined)}
                 >

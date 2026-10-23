@@ -235,7 +235,7 @@ export function ExperienceTimelineList({
               {roles.length > 0 && (
                 <div
                   aria-hidden="true"
-                  className="absolute left-6 md:left-8 top-14 md:top-18 bottom-4 w-[2px] bg-accent7-200 dark:bg-accent8-300 -translate-x-1/2 pointer-events-none"
+                  className="absolute left-6 md:left-8 top-14 md:top-18 bottom-4 w-0.5 bg-accent7-200 dark:bg-accent8-300 -translate-x-1/2 pointer-events-none"
                 />
               )}
 

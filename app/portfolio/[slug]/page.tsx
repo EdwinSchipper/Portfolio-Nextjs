@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPortfolioItemByUrl, isPreview } from "@/lib/contentstack";
+import { getPortfolioItemByUrl, isPreview } from "@/lib/cms";
 import { getPortfolioRouteMetadata } from "@/lib/metadata";
 import {
   PortfolioDetail,

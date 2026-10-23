@@ -14,7 +14,7 @@ description: Contentstack Delivery SDK, live preview, getPage, env overrides, an
 
 ### Entry points
 
-- All stack configuration and fetching live in [lib/contentstack.ts](../../lib/contentstack.ts).
+- All stack configuration and fetching live in [lib/cms/](../../lib/cms/) (`client.ts` for SDK setup, `queries.ts` for data fetching).
 - **`stack`**: created with `contentstack.stack()` from `@contentstack/delivery-sdk`, using API key, delivery token, environment, region, optional custom `host`, and `live_preview` options (preview token, preview host, enable flag).
 - **`initLivePreview()`**: calls `ContentstackLivePreview.init()` from `@contentstack/live-preview-utils` with `ssr: false`, `mode: "builder"`, stack SDK/config, stack details, client URL params, and edit button settings.
 - **`getPage(url)`**: queries the **`page`** content type, filters `url` with `QueryOperation.EQUALS`, and returns the first entry typed as `Page` from [lib/types/](../../lib/types/). When `isPreview` is true, adds editable tags via `contentstack.Utils.addEditableTags()`.

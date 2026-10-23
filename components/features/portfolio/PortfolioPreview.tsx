@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
-import { getPortfolioItemByUrl, initLivePreview } from "@/lib/contentstack";
+import { getPortfolioItemByUrl, initLivePreview } from "@/lib/cms";
 import type { PortfolioItem } from "@/lib/types";
 import PortfolioDetail from "./PortfolioDetail";
 

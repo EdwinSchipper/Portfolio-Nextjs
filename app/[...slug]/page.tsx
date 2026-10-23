@@ -15,7 +15,7 @@
 
 
 import type { Metadata } from "next";
-import { getPage, getPortfolioItemByUrl, isPreview } from "@/lib/contentstack";
+import { getPage, getPortfolioItemByUrl, isPreview } from "@/lib/cms";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
 import { Page, Preview } from "@/components/features/pages";
 import { PortfolioDetail, PortfolioPreview } from "@/components/features/portfolio";

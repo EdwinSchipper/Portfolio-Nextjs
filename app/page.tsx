@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 // Importing function to fetch homepage data and preview mode checker from Contentstack utilities
-import { getHomePage, isPreview } from "@/lib/contentstack";
+import { getHomePage, isPreview } from "@/lib/cms";
 import { getHomePageMetadata } from "@/lib/metadata";
 import {
   HomePage,

@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from "react";
 // Importing Contentstack Live Preview utilities for real-time content updates
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 // Importing functions to fetch page data and initialize live preview
-import { getPage, getHomePage, initLivePreview } from "@/lib/contentstack";
+import { getPage, getHomePage, initLivePreview } from "@/lib/cms";
 // Importing Page and Homepage type definitions
 import type { Page as PageData, Homepage } from "@/lib/types";
 type PageProps = PageData | Homepage;

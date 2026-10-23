@@ -1,154 +1,152 @@
-# Contentstack Kickstart: Next.js
+# Portfolio Edwin Schipper (Next.js & Contentstack)
 
-> [!WARNING]
-> ### 🚧 Work In Progress (WIP)
-> Dit project is momenteel **actief in ontwikkeling**. Veel onderdelen bevinden zich in een experimentele en iteratieve fase. Er moeten nog aanzienlijke verfijningen, code-optimalisaties en architectonische opschoningen worden doorgevoerd.
->
-> **Aandachtspunten & geplande optimalisaties:**
-> - **Component-architectuur:** Opsplitsen van grotere/monolithische sectie-componenten in modulaire, herbruikbare deeltjes (Single Responsibility Principle).
-> - **Data-adapter & Typering:** Centraliseren van Contentstack response-normalisaties om defensieve `(as any)`-fallbacks in UI-componenten te elimineren.
-> - **Styling & Layout:** Verfijnen van Tailwind spacing (`gap-*` vs `space-*`), responsive breakpoints en mobiele uitlijning.
-> - **Semantiek & SEO:** Strikte paginabrede koppenhiërarchie (`h1` per pagina, `h2` per sectie) en toegankelijkheid (a11y).
+> **Status:** 🚧 In ontwikkeling (Work in Progress)
 
-Contentstack Kickstarts are the minimum amount of code needed to connect to Contentstack.
-This kickstart covers the following items:
+De officiële portfolio- en showcase-website van Edwin Schipper ([Ontwerpbureau Schipper](https://www.edwinschipper.nl)), gebouwd met [Next.js 16](https://nextjs.org) (App Router & Turbopack), [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com) en aangedreven door het headless CMS [Contentstack](https://www.contentstack.com).
 
-- SDK initialization
-- Live preview and Visual building setup
+---
 
-More details about this codebase can be found on the [Contentstack docs](https://www.contentstack.com/docs/developers).
+## 📌 Projectoverzicht & Context
 
-[![Join us on Discord](https://img.shields.io/badge/Join%20Our%20Discord-7289da.svg?style=flat&logo=discord&logoColor=%23fff)](https://community.contentstack.com)
+Deze webapplicatie dient als het centrale portfolio en platform voor grafische vormgeving, UX/Webdesign en frontend web development. De content wordt dynamisch beheerd in Contentstack en realtime gesynchroniseerd via Contentstack Live Preview en de Visual Builder.
 
-## How to get started
+De applicatie is gebouwd met een sterke focus op performance, een modulaire driepijler-architectuur en een geautomatiseerde CI/CD-pipeline.
 
-Before you can run this code, you will need a Contentstack "Stack" to connect to.
-Follow the following steps to seed a Stack that this codebase understands.
+---
 
-> If you installed this Kickstart via the Contentstack Markertplace or the new account onboarding, you can skip this step.
+## 🧭 Ontwikkelstatus & Roadmap
 
-### Install the CLI
+Hieronder vind je een gestructureerd overzicht van wat er reeds is geïmplementeerd, wat momenteel onder handen is en wat er op de planning staat:
+
+| Pijler | Status | Omschrijving |
+| :--- | :---: | :--- |
+| **Componenten-Architectuur** | 🟢 `Done` | Strikt opgedeeld in een **Driepijler-architectuur**: `UI` (primitives), `Blocks` (Contentstack Modular Blocks) en `Features` (Pages, Portfolio, Analytics). |
+| **Headless CMS Integratie** | 🟢 `Done` | Contentstack Delivery SDK gekoppeld met dynamische pagina-rendering (`[...slug]`), Visual Builder en Live Preview ondersteuning. |
+| **Next.js & Performance** | 🟢 `Done` | Next.js 16 (Turbopack) geoptimaliseerd met AVIF/WebP beeldconversie, 30 dagen asset-caching en server-side API fetch logging. |
+| **Typografie & Google Fonts** | 🟢 `Done` | `Outfit`, `Newsreader` en `Cascadia Mono` geïntegreerd via `next/font/google` met correcte monospace fallbacks en Tailwind `@theme` variabelen. |
+| **DevOps & CI Pipeline** | 🟢 `Done` | Geautomatiseerde continuous integration via GitHub Actions (`ci.yml`) met ESLint, TypeScript type-check en build-validatie met repository secrets. |
+| **Root Opschoning** | 🟢 `Done` | Overbodige Kickstart template-bestanden (`package-lock.json`, Talisman, lege scripts, corporate scans) verwijderd; volledig gemigreerd naar `pnpm`. |
+| **Styling & Responsive Finetuning** | 🟡 `In Progress` | Optimaliseren van Tailwind CSS v4 syntax (`grow`, `aspect-16/10`, `h-*`), mobiele layout-uitlijning en dark-mode kleurenharmonie. |
+| **Data Typering & Normalisatie** | 🟡 `In Progress` | Uitfaseren van defensieve `(as any)` type assertions door Contentstack response-normalisaties centraal te versterken in `lib/types.ts`. |
+| **Next.js Beveiligingsupdate** | 🔴 `To Do` | Upgraden van Next.js `16.4.0` naar de nieuwste gepatchte release (`16.4.3+`). |
+| **SEO, Metadata & A11y** | 🔴 `To Do` | Paginabrede koppenhiërarchie valideren, gestructureerde data (Schema.org JSON-LD) uitbreiden en Lighthouse audits uitvoeren. |
+| **Productie Deployment** | 🔴 `To Do` | Definitieve livegang via Vercel met productie environment variables en custom domain koppeling. |
+
+---
+
+## 🏛️ Architectuur: De Drie Pijlers
+
+De componentenstructuur volgt een heldere en schaalbare scheiding van verantwoordelijkheden:
+
+```text
+components/
+├── ui/         # Design System primitives & presentational componenten
+│               # (Button, Label, Icon, Breadcrumbs, Header, Footer)
+│               # -> Volledig ontkoppeld van CMS-logica of schema's
+│
+├── blocks/     # Contentstack Modular Blocks & BlockRenderer
+│   ├── BlockRenderer.tsx
+│   ├── items/  # HeroBlock, CtaBlock, ResumeSection, GridSection, CardSection, etc.
+│   └── index.ts
+│               # -> 1-op-1 gekoppeld aan Contentstack Modular Block entries en Visual Builder
+│
+├── features/   # Zelfstandige domeinfunctionaliteiten & pagina-modules
+│   ├── analytics/  # GTM tracking feature (GTMPageTracker)
+│   ├── pages/      # Pagina-level weergaves & preview handlers (HomePage, Page, Preview)
+│   ├── portfolio/  # Portfolio detailweergave, previews, filters en techstack
+│   └── index.ts
+│
+└── index.ts    # Centrale barrel export (ui, blocks, features)
+```
+
+---
+
+## 🚀 Aan de slag (Getting Started)
+
+### Vereisten (Prerequisites)
+
+* **Node.js**: v20+ (aanbevolen: v22 LTS)
+* **Package Manager**: [pnpm](https://pnpm.io/) v10+
+
+### 1. Repository klonen & dependencies installeren
 
 ```bash
-npm install -g @contentstack/cli
+git clone https://github.com/EdwinSchipper/Portfolio-Nextjs.git
+cd Portfolio-Nextjs
+pnpm install
 ```
 
-#### Using the CLI for the first time?
+### 2. Lokale environment variables instellen
 
-It might ask you to set your default region.
-You can get all regions and their codes [here](https://www.contentstack.com/docs/developers/cli/configure-regions-in-the-cli) or run `csdx config:get:region`.
+Maak een lokaal omgevingsbestand aan in de root (`.env.local`):
 
-> Beware, Free Contentstack developer accounts are bound to the EU region. We still use the CDN the API is lightning fast.
-
-Set your region like so:
-
-```bash
-csdx config:set:region EU
-```
-
-### Log in via the CLI
-
-```bash
-csdx auth:login
-```
-
-### Get your organization UID
-
-In your Contentstack Organization dashboard find `Org admin` and copy your Organization ID (Example: `blt481c598b0d8352d9`).
-
-### Create a new stack
-
-Make sure to replace `<YOUR_ORG_ID>` with your actual Organization ID and run the below.
-
-```bash
-csdx cm:stacks:seed --repo "contentstack/kickstart-stack-seed" --org "<YOUR_ORG_ID>" -n "Kickstart Stack"
-```
-
-## Create a new delivery token.
-
-Go to `Settings > Tokens` and create a delivery token. Select the `preview` scope and turn on `Create preview token`
-
-## Fill out your .env file.
-
-Now that you have a delivery token, you can fill out the .env file in your codebase.
-
-> You can find the API key, Delivery Token and Preview Token in Settings > Tokens > Your token.
-
-```
-NEXT_PUBLIC_CONTENTSTACK_API_KEY=<YOUR_API_KEY>
-NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN=<YOUR_DELIVERY_TOKEN>
-NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN=<YOUR_PREVIEW_TOKEN>
-NEXT_PUBLIC_CONTENTSTACK_REGION=EU
+```env
+NEXT_PUBLIC_CONTENTSTACK_API_KEY=jouw_api_key
+NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN=jouw_delivery_token
+NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN=jouw_preview_token
 NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT=preview
+NEXT_PUBLIC_CONTENTSTACK_REGION=EU
 NEXT_PUBLIC_CONTENTSTACK_PREVIEW=true
+NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME=eu-images.contentstack.com
+NEXT_PUBLIC_GTM_ID=GTM-MPHNZZW4
+NEXT_PUBLIC_SITE_URL=https://www.edwinschipper.nl
 ```
 
-## Regions and endpoint configuration
-
-Set `NEXT_PUBLIC_CONTENTSTACK_REGION` to the region your Contentstack account is on. The value is case-insensitive.
-
-| Region | Value |
-|---|---|
-| AWS North America | `NA` or `US` |
-| AWS Europe | `EU` |
-| AWS Australia | `AU` |
-| Azure North America | `AZURE-NA` |
-| Azure Europe | `AZURE-EU` |
-| GCP North America | `GCP-NA` |
-| GCP Europe | `GCP-EU` |
-
-> Not sure which region you're on? Check your Contentstack dashboard URL — `eu-app.contentstack.com` means EU, `app.contentstack.com` means NA. Free developer accounts are on EU.
-
-All API endpoints (content delivery, live preview, Visual Builder) are automatically resolved from your region. You do not need to set them manually.
-
-The following endpoint keys are resolved per region and available if you ever need them directly via `getContentstackEndpoint` from `@contentstack/utils`:
-
-| Key | NA value |
-|---|---|
-| `contentDelivery` | `cdn.contentstack.io` |
-| `preview` | `rest-preview.contentstack.com` |
-| `application` | `app.contentstack.com` |
-| `graphqlDelivery` | `graphql.contentstack.com` |
-| `graphqlPreview` | `graphql-preview.contentstack.com` |
-| `images` | `images.contentstack.io` |
-| `assets` | `assets.contentstack.io` |
-| `contentManagement` | `api.contentstack.io` |
-| `auth` | `auth-api.contentstack.com` |
-
-### Custom or dedicated environments
-
-If your Contentstack account runs on a dedicated or private cloud instance, the standard region-based endpoints may not apply. In that case, override each endpoint individually using these environment variables. **Only set these if instructed by Contentstack support — standard accounts should leave them unset.**
+### 3. Development server starten
 
 ```bash
-NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY=your-custom-cdn.example.com
-NEXT_PUBLIC_CONTENTSTACK_PREVIEW_HOST=your-custom-preview.example.com
-NEXT_PUBLIC_CONTENTSTACK_CONTENT_APPLICATION=your-custom-app.example.com
+pnpm dev
 ```
 
-## Turn on Live Preview
+Open [http://localhost:3000](http://localhost:3000) in je browser.
 
-Go to Settings > Live Preview. Click enable and select the `Preview` environment in the drop down. Hit save.
+---
 
-## Install the dependencies
+## ⚙️ Beschikbare Scripts
 
-```bash
-npm install
-```
+| Commando | Omschrijving |
+| :--- | :--- |
+| `pnpm dev` | Start de Next.js development server met Turbopack hot-reloading |
+| `pnpm build` | Bouwt de geoptimaliseerde productie-bundel en valideert alle routes |
+| `pnpm start` | Start de gebouwde productie-server lokaal |
+| `pnpm run lint` | Controleert de codekwaliteit met ESLint 9 |
+| `pnpm run type-check` | Valideert alle TypeScript types zonder bestanden te emitteren (`tsc --noEmit`) |
 
-### Run your app
+---
 
-```bash
-npm run dev
-```
+## 🔄 DevOps & CI/CD Pipeline
 
-### See your page visually
+Het project maakt gebruik van geautomatiseerde kwaliteitscontroles via **GitHub Actions** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
-### In the browser
+Bij elke push en pull request naar `main`, `master` of `development` draait de pipeline automatisch de volgende checks:
 
-Go to `http://localhost:3000`.
+1. **Installatie**: `pnpm install --frozen-lockfile` met Node.js 20 caching.
+2. **Code Linting**: `pnpm run lint` (ESLint 9).
+3. **Type Safety**: `pnpm run type-check` (TypeScript 5).
+4. **Productie Build**: `pnpm run build` (Next.js 16 compilatie met veilige repository secrets).
 
-#### In the CMS
+### Vereiste GitHub Secrets
+Voor het succesvol draaien van de CI-pipeline zijn de volgende **Repository Secrets** geconfigureerd in GitHub (*Settings ➔ Secrets and variables ➔ Actions*):
+* `NEXT_PUBLIC_CONTENTSTACK_API_KEY`
+* `NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN`
+* `NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN`
 
-Go to Entries and select the only entry in the list.
-In the sidebar, click on the live preview icon.
-Or, see your entry in the visual builder
+---
+
+## 🛠️ Tech Stack
+
+* **Framework:** [Next.js 16](https://nextjs.org) (App Router, Turbopack)
+* **UI Library:** [React 19](https://react.dev)
+* **Headless CMS:** [Contentstack](https://www.contentstack.com) (Delivery SDK v5 & Live Preview Utils)
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com) (`@tailwindcss/postcss`)
+* **Typografie:** [Google Fonts](https://fonts.google.com) (`Outfit`, `Newsreader`, `Cascadia Mono`) via `next/font`
+* **Taal:** [TypeScript 5](https://www.typescriptlang.org) (Strict mode)
+* **DevOps & CI:** [GitHub Actions](https://github.com/features/actions)
+* **Package Manager:** [pnpm v10](https://pnpm.io/)
+* **Analytics:** Google Tag Manager (`@next/third-parties/google`)
+
+---
+
+## 📄 Licentie
+
+Dit project is uitgebracht onder de [MIT Licentie](LICENSE).

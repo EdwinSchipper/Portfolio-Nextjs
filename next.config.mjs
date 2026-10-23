@@ -28,6 +28,9 @@ const nextConfig = {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
+
+  // 4. Externaliseer isomorphic-dompurify / jsdom voor probleemloze SSR compilatie
+  serverExternalPackages: ["isomorphic-dompurify"],
 };
 
 export default nextConfig;

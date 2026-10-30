@@ -7,12 +7,11 @@ const nextConfig = {
     qualities: [75, 90],
     // Configure allowed hostnames for Next.js Image Optimization
     remotePatterns: [
+      { hostname: "images.contentstack.io" },
+      { hostname: "*-images.contentstack.com" },
       ...(process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME
         ? [{ hostname: process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME }]
-        : [
-            { hostname: "images.contentstack.io" },
-            { hostname: "*-images.contentstack.com" },
-          ]),
+        : []),
     ],
   },
 

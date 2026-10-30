@@ -43,6 +43,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="nl-NL" className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable}`} suppressHydrationWarning
     >
+      <head>
+        <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
+      </head>
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body className="bg-background-100 dark:bg-background-800">
         {gtmId && <GTMPageTracker />}

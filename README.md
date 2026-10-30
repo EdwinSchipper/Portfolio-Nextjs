@@ -29,6 +29,9 @@ Hieronder vind je een gestructureerd overzicht van wat er reeds is geïmplemente
 | **Styling & Responsive Finetuning** | 🟡 `In Progress` | Optimaliseren van Tailwind CSS v4 syntax (`grow`, `aspect-16/10`, `h-*`), mobiele layout-uitlijning en dark-mode kleurenharmonie. |
 | **Data Typering & Architectuur** | 🟢 `Completed` | Monolithische `lib/types.ts` gemoduleerd naar een domeingestuurde structuur in `lib/types/` (`core`, `blocks`, `pages`, `index`). |
 | **Next.js Beveiligingsupdate** | 🟢 `Completed` | Upgraded van Next.js `16.4.0` naar `16.4.3` met Turbopack en Node 22 LTS ondersteuning. |
+| **Foutafhandeling & 404** | 🟢 `Completed` | Huisstijl-conforme `app/not-found.tsx` en `app/error.tsx` met error boundaries en herstelacties geïmplementeerd. |
+| **AI Agent Discovery (ARD)** | 🟢 `Completed` | `ai-catalog.json` (ARD-specificatie) en `llms.txt` met open CORS-headers geconfigureerd voor autonome AI-agents. |
+| **Google Analytics & Tag Manager** | 🔴 `To Do` | GTM container (`@next/third-parties/google`) en Google Analytics 4 (GA4) volledig en betrouwbaar inrichten: dataLayer pageview tracking bij client-side navigatie, custom event tracking en consent mode. |
 | **SEO, Metadata & A11y** | 🔴 `To Do` | Paginabrede koppenhiërarchie valideren, gestructureerde data (Schema.org JSON-LD) uitbreiden en Lighthouse audits uitvoeren. |
 | **Productie Deployment** | 🔴 `To Do` | Definitieve livegang via Vercel met productie environment variables en custom domain koppeling. |
 

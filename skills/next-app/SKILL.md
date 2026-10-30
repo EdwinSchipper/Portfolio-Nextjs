@@ -33,4 +33,4 @@ description: App Router structure, React components, client vs server, and rende
 
 ### Imports
 
-- Path alias `@/*` maps to the repo root per [tsconfig.json](../../tsconfig.json) (e.g. `@/lib/contentstack`, `@/components/ui`, `@/components/blocks`, `@/components/features`).
+- Path alias `@/*` maps to the repo root per [tsconfig.json](../../tsconfig.json) (e.g. `@/lib/cms`, `@/components/ui`, `@/components/blocks`, `@/components/features`).

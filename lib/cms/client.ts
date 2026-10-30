@@ -8,7 +8,7 @@ export const apiKey = (process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY || "").trim(
 export const deliveryToken = (process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN || "").trim();
 export const environment = (process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || "").trim();
 export const previewToken = (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN || "").trim();
-export const region = (process.env.NEXT_PUBLIC_CONTENTSTACK_REGION || "NA").trim();
+export const region = (process.env.NEXT_PUBLIC_CONTENTSTACK_REGION || "EU").trim();
 export const endpoints = getContentstackEndpoint(region, "", true) as ContentstackEndpoints;
 
 export const stack = contentstack.stack({

@@ -15,7 +15,7 @@
 | Area | Details |
 | --- | --- |
 | Language | TypeScript 5 (`strict` in [tsconfig.json](tsconfig.json)) |
-| Build | npm, Next.js 16 ([package.json](package.json), [next.config.mjs](next.config.mjs)) |
+| Build | pnpm, Next.js 16 ([package.json](package.json), [next.config.mjs](next.config.mjs)) |
 | Tests | **None in-repo** (no `test` script; no test files). Optional runners only if the team adds them. |
 | Lint / coverage | ESLint 9, flat config ([eslint.config.mjs](eslint.config.mjs)); `eslint-config-next` (core-web-vitals + typescript). No coverage tooling configured. |
 | Other | React 19, Tailwind CSS 4 ([postcss.config.mjs](postcss.config.mjs), [app/globals.css](app/globals.css)); Contentstack Delivery SDK and Live Preview utilities. |
@@ -24,14 +24,15 @@
 
 | Command Type | Command |
 | --- | --- |
-| Install | `npm install` |
-| Build | `npm run build` |
-| Dev | `npm run dev` |
-| Start (production) | `npm run start` |
+| Install | `pnpm install` |
+| Build | `pnpm build` |
+| Dev | `pnpm dev` |
+| Start (production) | `pnpm start` |
 | Test | *(not defined)* |
-| Lint | `npm run lint` |
+| Lint | `pnpm lint` |
+| Type-check | `pnpm type-check` |
 
-**CI:** This repository runs security and policy workflows on pull requests; there is no GitHub Actions job that runs `npm run build` or `npm run lint`. See [.github/workflows/sca-scan.yml](.github/workflows/sca-scan.yml), [.github/workflows/policy-scan.yml](.github/workflows/policy-scan.yml), and [.github/workflows/issues-jira.yml](.github/workflows/issues-jira.yml).
+**CI:** Continuous Integration draait via GitHub Actions ([.github/workflows/ci.yml](.github/workflows/ci.yml)) en valideert automatisch ESLint (`pnpm lint`), TypeScript types (`pnpm type-check`) en Next.js build (`pnpm build`).
 
 ## AI Agent Operational Guidelines (Speed & Scope)
 
@@ -49,6 +50,18 @@ To maintain maximum development velocity and avoid latency:
    - Validate changes quickly with `npm run lint`.
 5. **Concise reporting:**
    - Respond directly and concisely in Dutch with what was changed, avoiding conversational boilerplate or repeating full file summaries.
+
+## Agent Rules & Policies
+
+Strikte regels en kwaliteitsstandaarden voor agents zijn georganiseerd in [`.agents/rules/`](.agents/rules/):
+
+| Regel | Pad | Doel |
+| --- | --- | --- |
+| Change Approval | [`.agents/rules/change-approval.md`](.agents/rules/change-approval.md) | Nooit zelfstandig committen of pushen; altijd expliciete toestemming |
+| Git Commits | [`.agents/rules/git-commits.md`](.agents/rules/git-commits.md) | Conventional Commits standaard met verplichte body bij grotere wijzigingen |
+| Import Integrity | [`.agents/rules/import-integrity.md`](.agents/rules/import-integrity.md) | Opschonen oude paden/barrels na refactor, `tsc --noEmit` & lint |
+| Contentstack Queries | [`.agents/rules/contentstack-queries.md`](.agents/rules/contentstack-queries.md) | Payload-optimalisatie, type-safety, sanitization en Visual Builder integriteit |
+| Official Stack | [`.agents/rules/official-stack-standards.md`](.agents/rules/official-stack-standards.md) | Next.js 16 App Router, React 19, scheiding server/client, Tailwind CSS v4 |
 
 ## Where the documentation lives: skills
 

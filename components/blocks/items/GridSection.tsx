@@ -81,7 +81,7 @@ export function GridCard({
   return (
     <div className={`font-content flex flex-col h-full ${className}`}>
       {cardImage?.url && (
-        <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden border border-border-100 dark:border-border-200 bg-background-200 dark:bg-background-900">
+        <div className="relative w-full aspect-16/10 rounded-md overflow-hidden border border-border-100 dark:border-border-200 bg-background-200 dark:bg-background-900">
           <Image
             src={cardImage.url}
             alt={cardImage.title || cardTag || "Image"}
@@ -206,7 +206,7 @@ export function GridTimeline({
                 {/* Node indicator */}
                 <div
                   aria-hidden="true"
-                  className="absolute -left-1 w-5 h-5 bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-200 rounded-full -translate-x-[6.5px] ring-4 ring-background-100 dark:ring-background-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-accent7-500 dark:group-hover:bg-accent8-500"
+                  className="absolute -left-1 w-5 h-5 bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-200 rounded-full translate-x-[6.5px] ring-4 ring-background-100 dark:ring-background-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-accent7-500 dark:group-hover:bg-accent8-500"
                 />
 
                 <div className="flex flex-col gap-1 lg:gap-0.5">
@@ -420,7 +420,7 @@ export function GridColumn({
           )}
 
           {image?.url && (
-            <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200 mt-14 sm:mt-0">
+            <div className="relative w-full aspect-4/3 rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200 mt-14 sm:mt-0">
               <Image
                 src={image.url}
                 alt={image.title || title || "Image"}

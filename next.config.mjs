@@ -30,6 +30,33 @@ const nextConfig = {
 
   // 4. Externaliseer isomorphic-dompurify / jsdom voor probleemloze SSR compilatie
   serverExternalPackages: ["isomorphic-dompurify"],
+
+  // 5. Open CORS headers voor AI agent discovery (ARD specificatie & llms.txt)
+  async headers() {
+    return [
+      {
+        source: "/ai-catalog.json",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Content-Type", value: "application/json" },
+        ],
+      },
+      {
+        source: "/.well-known/ai-catalog.json",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Content-Type", value: "application/json" },
+        ],
+      },
+      {
+        source: "/llms.txt",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Content-Type", value: "text/plain; charset=utf-8" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

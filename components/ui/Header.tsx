@@ -184,7 +184,7 @@ export default function Header() {
                 </button>
 
                 {isExpertiseOpen && (
-                  <div className="absolute left-1/2 z-10 mt-1 w-56 -translate-x-1/2 rounded-md bg-background-100 dark:bg-background-800 backdrop-blur-xl p-2 shadow-lg outline outline-1 outline-border-100/50 dark:shadow-none dark:-outline-offset-1 dark:outline-border-200/50">
+                  <div className="absolute left-1/2 z-10 mt-1 w-56 -translate-x-1/2 rounded-md bg-background-100 dark:bg-background-800 backdrop-blur-xl p-2 shadow-lg outline outline-border-100/50 dark:shadow-none dark:-outline-offset-1 dark:outline-border-200/50">
                     {expertiseItems.map((item) => (
                       <Link
                         key={item.name}

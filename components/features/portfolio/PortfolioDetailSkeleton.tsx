@@ -13,7 +13,7 @@ export default function PortfolioDetailSkeleton() {
       className="w-full animate-pulse font-content"
     >
       {/* 1. Header with matching brand gradient */}
-      <header className="relative w-full flex flex-col justify-end pt-40 md:pt-40 lg:pt-52 pb-10 md:pb-16 lg:pb-24 overflow-hidden border-b border-border-100/30 dark:border-border-200/5 -mt-[109px] mb-14 lg:mb-20 bg-gradient-to-tl from-accent7-200/30 to-accent7-500/60 dark:from-accent8-100 dark:via-accent8-100 dark:to-accent8-300">
+      <header className="relative w-full flex flex-col justify-end pt-40 md:pt-40 lg:pt-52 pb-10 md:pb-16 lg:pb-24 overflow-hidden border-b border-border-100/30 dark:border-border-200/5 -mt-27.25 mb-14 lg:mb-20 bg-linear-to-tl from-accent7-200/30 to-accent7-500/60 dark:from-accent8-100 dark:via-accent8-100 dark:to-accent8-300">
         <div className="relative z-10 w-full max-w-4xl xl:max-w-6xl px-10 sm:px-14 md:px-20 lg:px-12 mx-auto flex flex-col items-start space-y-4">
           {/* Label placeholder */}
           <div className="h-6 w-24 rounded-full bg-border-100/60 dark:bg-background-900/60" />
@@ -35,7 +35,7 @@ export default function PortfolioDetailSkeleton() {
       <div className="flex lg:items-center justify-center sm:max-w-xl md:max-w-4xl lg:max-w-7xl container lg:w-full px-6 sm:px-0 md:px-14 lg:px-20 xl:px-12 mx-auto mb-14 lg:mb-40">
         <div className="w-full mx-auto flex flex-col md:grid md:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left: Hero Image skeleton */}
-          <div className="w-full rounded-md order-2 md:order-1 md:col-span-6 lg:col-span-7 h-[220px] sm:h-[325px] md:h-[400px] lg:h-[500px] xl:h-[50vh] bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200" />
+          <div className="w-full rounded-md order-2 md:order-1 md:col-span-6 lg:col-span-7 h-55 sm:h-81.25 md:h-100 lg:h-125 xl:h-[50vh] bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200" />
 
           {/* Right: Overview text skeleton */}
           <div className="w-full order-1 md:order-2 md:col-span-6 lg:col-span-5 flex flex-col space-y-5">

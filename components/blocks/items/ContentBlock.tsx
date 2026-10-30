@@ -36,7 +36,7 @@ export default function ContentBlock({
         {/* Media / Image */}
         {data.image?.url && (
           <div className="w-full md:w-1/2">
-            <div className="relative w-full aspect-[4/3] rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
+            <div className="relative w-full aspect-4/3 rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
               <Image
                 src={data.image.url}
                 alt={data.image.title || data.title || "Content image"}

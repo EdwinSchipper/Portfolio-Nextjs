@@ -109,8 +109,8 @@ export default function CtaBlock({
                 alt={imageAlt}
                 width={224}
                 height={224}
+                sizes="(max-width: 640px) 144px, (max-width: 1024px) 192px, 224px"
                 loading="lazy"
-                style={{ height: "auto" }}
                 className={`w-36 sm:w-48 lg:w-56 h-auto transition-transform duration-500 group-hover:scale-105 origin-bottom object-contain ${imageDark?.url ? "block dark:hidden" : "block"
                   }`}
                 {...(imageLight?.$?.url || (meta && (meta.image || meta.image_light)))}
@@ -122,8 +122,8 @@ export default function CtaBlock({
                 alt={imageAlt}
                 width={224}
                 height={224}
+                sizes="(max-width: 640px) 144px, (max-width: 1024px) 192px, 224px"
                 loading="lazy"
-                style={{ height: "auto" }}
                 className={`w-36 sm:w-48 lg:w-56 h-auto transition-transform duration-500 group-hover:scale-105 origin-bottom object-contain ${imageLight?.url ? "hidden dark:block" : "block"
                   }`}
                 {...(imageDark?.$?.url || (meta && (meta.image_dark_mode || meta.image_dark)))}

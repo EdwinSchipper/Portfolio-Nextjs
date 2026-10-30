@@ -56,7 +56,7 @@ export default function ServiceCardBlock({
       {isImageVariant ? (
         <div className="flex flex-col h-full">
           {cardImage?.url && (
-            <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden mb-4 border border-border-100 dark:border-border-200 bg-background-200 dark:bg-background-900">
+            <div className="relative w-full aspect-16/10 rounded-md overflow-hidden mb-4 border border-border-100 dark:border-border-200 bg-background-200 dark:bg-background-900">
               <Image
                 src={cardImage.url}
                 alt={cardImage.title || (typeof cardTitle === "string" ? cardTitle : "Service card image")}

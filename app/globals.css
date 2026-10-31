@@ -217,3 +217,19 @@
   } */
 
 }
+
+
+/* ==========================================================================
+   Viewport & Scrollbar Neutralization for Floating Dialogs & Toasts
+   Neutralizes Headless UI's inline scroll-lock and padding-right compensation
+   purely via declarative CSS without imperative JavaScript DOM hacks.
+   ========================================================================== */
+html {
+  scrollbar-gutter: stable;
+}
+
+html:has(#headlessui-portal-root:not(:empty)),
+body:has(#headlessui-portal-root:not(:empty)) {
+  overflow: auto !important;
+  padding-right: 0px !important;
+}

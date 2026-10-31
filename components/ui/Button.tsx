@@ -27,9 +27,9 @@ const variantStyles: Record<ButtonVariant, string> = {
   primary:
     "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md duration-200 font-content tracking-tight whitespace-nowrap text-mediumM sm:text-small px-5 py-2.5 lg:px-7 lg:py-3 bg-background-900 dark:bg-background-200 text-title-200 dark:text-title-100 dark:hover:brightness-110 border border-border-100 dark:border-border-200 hover:bg-accent7-900 hover:border-accent7-900 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100",
   brand:
-    "bg-[#f05a46] hover:bg-[#d94835] text-white font-semibold rounded-xl shadow-sm transition duration-200",
+    "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md duration-200 font-content tracking-tight whitespace-nowrap text-mediumM sm:text-small px-5 py-2.5 lg:px-7 lg:py-3 bg-accent7-900 dark:bg-accent8-900 text-title-200 dark:text-title-100 dark:hover:brightness-110 border border-border-100 dark:border-border-200 hover:bg-accent7-900 hover:border-accent7-900 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100",
   secondary:
-    "border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 font-semibold rounded-xl shadow-2xs transition duration-200",
+    "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md duration-200 font-content tracking-tight whitespace-nowrap text-mediumM sm:text-small px-5 py-2.5 lg:px-7 lg:py-3 bg-background-200 dark:bg-background-900 text-title-100 dark:text-title-200 dark:hover:brightness-110 border border-border-100 dark:border-border-200 hover:bg-accent7-900 hover:border-accent7-900 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100",
   link:
     "p-0 bg-transparent text-[#f05a46] font-semibold hover:underline shadow-none",
   "link-dark":
@@ -37,9 +37,9 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "px-4 py-2 text-xs",
-  md: "px-6 py-3.5 text-sm",
-  lg: "px-8 py-4 text-base",
+  sm: "px-4 py-2 text-smallM sm:text-small",
+  md: "px-6 py-3.5 text-smallM sm:text-small",
+  lg: "px-8 py-4 text-baseM sm:text-base",
 };
 
 /**

@@ -47,8 +47,15 @@ To maintain maximum development velocity and avoid latency:
 3. **No unrequested browser runs or roundtrip diagnostics:**
    - Do **not** spin up browser subagents or execute HTTP/curl diagnostics unless the user explicitly asks for visual verification or browser testing.
 4. **Validation:**
-   - Validate changes quickly with `npm run lint`.
-5. **Concise reporting:**
+   - Validate changes quickly with `npm run lint` and `npm run type-check`.
+5. **Zero-Deprecation & API Precision:**
+   - Always implement the latest official API syntax for installed library versions (e.g. Headless UI v2 `<Description>`, React 19 hooks, Next.js 16 metadata). Never fall back to deprecated legacy aliases or workarounds.
+6. **Design System & UI Component Integrity:**
+   - Always check and reuse existing UI primitives in `components/ui/` (`Button`, `Toast`, `Label`, etc.).
+   - Never write raw `<button>` HTML elements with ad-hoc classes in features, blocks, or pages. Never pollute UI components with inline styling overrides. Keep UI presentation in `components/ui/` and business logic in `components/features/`.
+7. **Commit Language Consistency:**
+   - All git commit messages (subject and body) must **strictly and consistently be written in Dutch** (e.g. `feat(analytics): voeg cookie consent toe`, `style(ui): harmoniseer knoppen`).
+8. **Concise reporting:**
    - Respond directly and concisely in Dutch with what was changed, avoiding conversational boilerplate or repeating full file summaries.
 
 ## Agent Rules & Policies
@@ -58,10 +65,10 @@ Strikte regels en kwaliteitsstandaarden voor agents zijn georganiseerd in [`.age
 | Regel | Pad | Doel |
 | --- | --- | --- |
 | Change Approval | [`.agents/rules/change-approval.md`](.agents/rules/change-approval.md) | Nooit zelfstandig committen of pushen; altijd expliciete toestemming |
-| Git Commits | [`.agents/rules/git-commits.md`](.agents/rules/git-commits.md) | Conventional Commits standaard met verplichte body bij grotere wijzigingen |
+| Git Commits | [`.agents/rules/git-commits.md`](.agents/rules/git-commits.md) | Conventional Commits standaard met verplichte body bij grotere wijzigingen; **voertaal ALTIJD Nederlands** |
 | Import Integrity | [`.agents/rules/import-integrity.md`](.agents/rules/import-integrity.md) | Opschonen oude paden/barrels na refactor, `tsc --noEmit` & lint |
 | Contentstack Queries | [`.agents/rules/contentstack-queries.md`](.agents/rules/contentstack-queries.md) | Payload-optimalisatie, type-safety, sanitization en Visual Builder integriteit |
-| Official Stack | [`.agents/rules/official-stack-standards.md`](.agents/rules/official-stack-standards.md) | Next.js 16 App Router, React 19, scheiding server/client, Tailwind CSS v4 |
+| Official Stack | [`.agents/rules/official-stack-standards.md`](.agents/rules/official-stack-standards.md) | Next.js 16 App Router, React 19, Headless UI v2, Zero-Deprecation, UI-integriteit & layout geometrie |
 
 ## Where the documentation lives: skills
 

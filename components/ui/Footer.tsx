@@ -151,6 +151,7 @@ export default function Footer() {
                     {link.label}
                   </Link>
                 ))}
+
                 <span className="text-balance">
                   Ontworpen in{" "}
                   <a

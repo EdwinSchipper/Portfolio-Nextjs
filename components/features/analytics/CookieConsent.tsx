@@ -133,7 +133,7 @@ export function CookieConsent() {
         // Do not silently accept or decline on accidental outside click
       }}
       title="Cookies & Privacy"
-      description="We gebruiken cookies puur om de frictie uit onze gebruikerservaring te halen en performance te meten. Geen overbodige ruis."
+      description="We gebruiken cookies puur om de frictie uit onze gebruikerservaring te halen en performance te meten."
     >
       <div className="grid grid-cols-2 gap-3 mt-1">
         <Button

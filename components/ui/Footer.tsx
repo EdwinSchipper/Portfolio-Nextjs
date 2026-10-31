@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Button, Label } from "@/components/ui";
 import ColorModeSelector from "./ColorModeSelector";
-import { CookieSettingsButton } from "@/components/features/analytics";
 
 export interface FooterLink {
   label: string;
@@ -152,7 +151,7 @@ export default function Footer() {
                     {link.label}
                   </Link>
                 ))}
-                <CookieSettingsButton />
+
                 <span className="text-balance">
                   Ontworpen in{" "}
                   <a

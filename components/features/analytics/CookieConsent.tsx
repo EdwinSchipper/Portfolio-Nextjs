@@ -51,22 +51,6 @@ export function CookieConsent() {
     return () => window.removeEventListener('open_cookie_preferences', handleReopen);
   }, []);
 
-  useEffect(() => {
-    if (isOpen) {
-      // Allow background page scrolling while the toast notification is displayed in the corner
-      const releaseScrollLock = () => {
-        if (typeof document !== 'undefined') {
-          document.documentElement.style.overflow = '';
-          document.body.style.overflow = '';
-        }
-      };
-
-      releaseScrollLock();
-      const frame = requestAnimationFrame(releaseScrollLock);
-      return () => cancelAnimationFrame(frame);
-    }
-  }, [isOpen]);
-
   const acceptCookies = () => {
     try {
       localStorage.setItem('cookie_consent', 'accepted');

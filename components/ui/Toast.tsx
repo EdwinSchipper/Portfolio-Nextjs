@@ -15,6 +15,7 @@ export interface ToastProps {
 /**
  * Universal Toast / Notification component using @headlessui/react Dialog.
  * Provides accessible popup notifications and consent toasts with brand styling.
+ * Viewport scrolling and scrollbar padding are handled declaratively via CSS in globals.css.
  */
 export default function Toast({
   open,

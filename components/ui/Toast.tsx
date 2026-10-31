@@ -18,7 +18,7 @@ export interface ToastProps {
  */
 export default function Toast({
   open,
-  onClose = () => {},
+  onClose = () => { },
   title,
   description,
   children,
@@ -51,4 +51,3 @@ export default function Toast({
     </Dialog>
   );
 }
-

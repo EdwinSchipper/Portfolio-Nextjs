@@ -5,7 +5,7 @@ import { Toast, Button } from '@/components/ui';
 import { sendGTMEvent } from '@next/third-parties/google';
 
 const subscribe = (callback: () => void) => {
-  if (typeof window === 'undefined') return () => {};
+  if (typeof window === 'undefined') return () => { };
   window.addEventListener('storage', callback);
   return () => window.removeEventListener('storage', callback);
 };

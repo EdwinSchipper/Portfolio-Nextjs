@@ -63,6 +63,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+              window.gtag = gtag;
 
               var savedConsent = null;
               try {

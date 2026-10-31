@@ -12,14 +12,26 @@ export function buildPageMetadata(page: Page): Metadata {
   const description =
     page.seo?.meta_description || page.description || DEFAULT_DESCRIPTION;
   const ogImageUrl = page.seo?.og_image?.url;
+  const canonicalPath = page.url ? (page.url.startsWith("/") ? page.url : `/${page.url}`) : undefined;
 
   return {
     title,
     description,
+    ...(canonicalPath ? { alternates: { canonical: canonicalPath } } : {}),
     openGraph: {
       title,
       description,
+      ...(canonicalPath ? { url: canonicalPath } : {}),
+      siteName: "Edwin Schipper",
+      locale: "nl_NL",
+      type: "website",
       ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
     },
   };
 }
@@ -54,13 +66,26 @@ export function buildPortfolioMetadata(item: PortfolioItem): Metadata {
       ? item.banner_visual_1
       : undefined);
 
+  const canonicalPath = item.url ? (item.url.startsWith("/") ? item.url : `/${item.url}`) : undefined;
+
   return {
     title,
     description,
+    ...(canonicalPath ? { alternates: { canonical: canonicalPath } } : {}),
     openGraph: {
       title,
       description,
+      ...(canonicalPath ? { url: canonicalPath } : {}),
+      siteName: "Edwin Schipper",
+      locale: "nl_NL",
+      type: "article",
       ...(imageUrl ? { images: [{ url: imageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(imageUrl ? { images: [imageUrl] } : {}),
     },
   };
 }
@@ -100,10 +125,23 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
       absolute: title,
     },
     description,
+    alternates: {
+      canonical: "/",
+    },
     openGraph: {
       title,
       description,
+      url: "/",
+      siteName: "Edwin Schipper",
+      locale: "nl_NL",
+      type: "website",
       ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
     },
   };
 }

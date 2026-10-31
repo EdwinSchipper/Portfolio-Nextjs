@@ -206,7 +206,7 @@ export function GridTimeline({
                 {/* Node indicator */}
                 <div
                   aria-hidden="true"
-                  className="absolute -left-1 w-5 h-5 bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-200 rounded-full translate-x-[6.5px] ring-4 ring-background-100 dark:ring-background-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-accent7-500 dark:group-hover:bg-accent8-500"
+                  className="absolute -left-[11px] top-0 w-5 h-5 bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-200 rounded-full ring-4 ring-background-100 dark:ring-background-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-accent7-500 dark:group-hover:bg-accent8-500"
                 />
 
                 <div className="flex flex-col gap-1 lg:gap-0.5">

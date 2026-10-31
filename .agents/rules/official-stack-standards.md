@@ -21,3 +21,12 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 ## 4. UI & Styling
 - Gebruik uitsluitend **Tailwind CSS v4** classes en officiële `@heroicons/react` iconen.
 
+## 5. Zero-Deprecation & Actuele Library API Standaarden
+- **Geen Deprecated Aliassen**: Pas altijd uitsluitend de actuele API-syntaxis toe van geïnstalleerde packages (zoals `@headlessui/react` v2, Next.js 16, React 19).
+- **Headless UI v2**: Gebruik actuele componenten zoals `<Description>` (en nooit de verouderde `<DialogDescription>`), Tailwind `data-closed` modifier classes en ingebouwde `transition` props.
+- **Strict Lint & Type Deprecations**: TypeScript-deprecations (`@deprecated` / `ts(6385)`) en linter warnings moeten direct bij de eerste implementatieslag opgelost zijn en mogen nooit als 'acceptabel' worden beschouwd.
+
+## 6. Wiskundige Geometrie & CSS Layout Verificatie
+- **Geen Arbitraire Magic Numbers**: Gebruik nooit willekeurige 'gok'-classes zoals `translate-x-[6.5px]` zonder wiskundige verificatie van parent container borders, paddings en box-sizing.
+- **Absolute Positioning & Timeline Nodes**: Berekeningen voor absolute elementen (zoals timeline indicators op borderlijnen) moeten altijd wiskundig sluitend zijn ten opzichte van de parent geometry (bijv. `-left-[11px]` voor een 20px indicator op een 2px borderlijn: hart op `x = -1px`).
+

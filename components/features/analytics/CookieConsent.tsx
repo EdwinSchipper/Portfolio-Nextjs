@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useSyncExternalStore } from 'react';
 import { Toast, Button } from '@/components/ui';
 import { sendGTMEvent } from '@next/third-parties/google';
+import { buildPageViewPayload } from './analytics-utils';
 
 const subscribe = (callback: () => void) => {
   if (typeof window === 'undefined') return () => { };
@@ -58,13 +59,18 @@ export function CookieConsent() {
       console.warn('Could not save cookie consent:', e);
     }
 
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-      (window as any).gtag('consent', 'update', {
+    if (typeof window !== 'undefined') {
+      const gtag = (window as any).gtag || function (...args: any[]) {
+        ((window as any).dataLayer = (window as any).dataLayer || []).push(args);
+      };
+      gtag('consent', 'update', {
         analytics_storage: 'granted',
       });
     }
 
     const currentPath = typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '';
+    const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '';
+    const currentSearch = typeof window !== 'undefined' && window.location.search ? window.location.search.replace(/^\?/, '') : undefined;
     const currentTitle = typeof document !== 'undefined' ? document.title : '';
 
     sendGTMEvent({
@@ -74,11 +80,7 @@ export function CookieConsent() {
       page_title: currentTitle,
     });
 
-    sendGTMEvent({
-      event: 'page_view',
-      page_path: currentPath,
-      page_title: currentTitle,
-    });
+    sendGTMEvent(buildPageViewPayload(currentPathname, currentSearch));
 
     setIsManuallyOpened(false);
     setHasDismissed(true);
@@ -91,8 +93,11 @@ export function CookieConsent() {
       console.warn('Could not save cookie consent:', e);
     }
 
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-      (window as any).gtag('consent', 'update', {
+    if (typeof window !== 'undefined') {
+      const gtag = (window as any).gtag || function (...args: any[]) {
+        ((window as any).dataLayer = (window as any).dataLayer || []).push(args);
+      };
+      gtag('consent', 'update', {
         analytics_storage: 'denied',
         ad_storage: 'denied',
         ad_user_data: 'denied',

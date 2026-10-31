@@ -30,3 +30,10 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 - **Geen Arbitraire Magic Numbers**: Gebruik nooit willekeurige 'gok'-classes zoals `translate-x-[6.5px]` zonder wiskundige verificatie van parent container borders, paddings en box-sizing.
 - **Absolute Positioning & Timeline Nodes**: Berekeningen voor absolute elementen (zoals timeline indicators op borderlijnen) moeten altijd wiskundig sluitend zijn ten opzichte van de parent geometry (bijv. `-left-[11px]` voor een 20px indicator op een 2px borderlijn: hart op `x = -1px`).
 
+## 7. Design System & UI Component Integriteit (`components/ui/`)
+- **Hergebruik van UI Primitives**: Gebruik voor interactieve elementen en feedback altijd de officiële componenten uit `components/ui/` (`Button`, `Toast`, `Label`, etc.).
+- **Verbod op Raw `<button>` Elements**: Schrijf nooit losse `<button>` HTML-tags met ad-hoc Tailwind styling in features, blokken of pagina's. Gebruik altijd `<Button>` met de juiste variant (`primary`, `brand`, `secondary`, `link`, `link-dark`).
+- **Geen Ad-Hoc Styling-Overrides op UI Componenten**: Vervuil UI-componenten niet met inline styling-overrides via `className` (zoals handmatige `opacity`, `dark:bg-*` of `dark:text-*` hacks). Laat de centrale UI-component zijn eigen styling bepalen.
+- **Strikte Scheiding van UI en Feature Logica**:
+  - `components/ui/`: Bevat pure, herbruikbare presentatie-componenten (zoals `Toast.tsx`, `Button.tsx`).
+  - `components/features/`: Bevat uitsluitend business/applicatielogica (zoals `CookieConsent.tsx`), die de UI opbouwt door het componeren van `components/ui/` componenten zonder daarin eigen card/button styling opnieuw uit te vinden.

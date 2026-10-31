@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
+import { Button } from '@/components/ui';
 
 /**
  * Client button allowing users to re-open the Cookie Consent banner
  * at any time to update their preferences (GDPR compliance requirement).
+ * Uses the official UI Button component with variant="link-dark".
  */
 export function CookieSettingsButton({ className = '' }: { className?: string }) {
   const handleClick = () => {
@@ -14,13 +16,13 @@ export function CookieSettingsButton({ className = '' }: { className?: string })
   };
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="link-dark"
+      size="sm"
       onClick={handleClick}
-      className={`font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline cursor-pointer ${className}`}
+      className={`font-semibold hover:underline ${className}`}
     >
       Cookie-instellingen
-    </button>
+    </Button>
   );
 }
-

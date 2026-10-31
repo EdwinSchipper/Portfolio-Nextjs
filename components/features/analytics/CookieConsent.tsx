@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useSyncExternalStore } from 'react';
-import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react';
-import Button from '@/components/ui/Button';
+import { Toast, Button } from '@/components/ui';
 import { sendGTMEvent } from '@next/third-parties/google';
 
 const subscribe = (callback: () => void) => {
@@ -25,16 +24,9 @@ const getServerConsent = (): string | null => {
 };
 
 /**
- * Accessible Cookie Consent Toast component using @headlessui/react Dialog.
- *
- * Provides users with explicit choice:
- * - "Accepteren" (primary button): activates Google Consent Mode v2 analytics_storage.
- * - "Weigeren" (secondary button): keeps tracking denied and dismisses banner.
- *
- * Adheres to GDPR & ePrivacy requirements:
- * - Requires explicit user action (clicking outside does not silently decline or accept).
- * - Can be re-opened at any time via the 'open_cookie_preferences' window event.
- * - Synchronizes with Google Consent Mode v2 and Google Tag Manager dataLayer.
+ * Cookie Consent Manager.
+ * Handles state, Consent Mode v2 updates, and GTM event firing.
+ * Renders via universal UI components: <Toast> and <Button>.
  */
 export function CookieConsent() {
   const [hasDismissed, setHasDismissed] = useState(false);
@@ -134,53 +126,31 @@ export function CookieConsent() {
   };
 
   return (
-    <Dialog
+    <Toast
       open={isOpen}
       onClose={() => {
         // Explicit decision required via primary or secondary button:
         // Do not silently accept or decline on accidental outside click
       }}
-      className="relative z-[9999]"
+      title="Cookies & Privacy"
+      description="We gebruiken cookies puur om de frictie uit onze gebruikerservaring te halen en performance te meten. Geen overbodige ruis."
     >
-      <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[9999] max-w-[340px] w-[calc(100%-2rem)] pointer-events-auto">
-        <DialogPanel
-          transition
-          className="p-6 bg-background-200/90 dark:bg-background-900/90 backdrop-blur-xl border border-white/10 dark:border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.3)] rounded-2xl flex flex-col gap-4 transform transition-all duration-500 ease-out data-closed:opacity-0 data-closed:translate-y-4 data-closed:scale-95"
+      <div className="grid grid-cols-2 gap-3 mt-1">
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={acceptCookies}
         >
-          <div>
-            <DialogTitle
-              as="h3"
-              className="text-title-100 dark:text-title-200 text-title_6 font-semibold mb-2"
-            >
-              Cookies &amp; Privacy
-            </DialogTitle>
-            <Description
-              as="p"
-              className="text-content-100 dark:text-content-200 text-sm leading-relaxed"
-            >
-              We gebruiken cookies puur om de frictie uit onze gebruikerservaring te halen en performance te meten. Geen overbodige ruis.
-            </Description>
-          </div>
-          <div className="flex gap-3 mt-1">
-            <Button
-              variant="primary"
-              size="sm"
-              className="flex-1 justify-center"
-              onClick={acceptCookies}
-            >
-              Accepteren
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="flex-1 justify-center opacity-70 hover:opacity-100 dark:bg-background-800 dark:text-title-200 dark:border-white/10"
-              onClick={declineCookies}
-            >
-              Weigeren
-            </Button>
-          </div>
-        </DialogPanel>
+          Accepteren
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={declineCookies}
+        >
+          Weigeren
+        </Button>
       </div>
-    </Dialog>
+    </Toast>
   );
 }

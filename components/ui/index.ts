@@ -1,6 +1,9 @@
 export { default as Button } from "./Button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./Button";
 
+export { default as Toast } from "./Toast";
+export type { ToastProps } from "./Toast";
+
 export { default as Label } from "./Label";
 export type { LabelProps, LabelVariant } from "./Label";
 

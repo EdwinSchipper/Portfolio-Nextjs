@@ -2,32 +2,47 @@
 
 import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { sendGTMEvent } from '@next/third-parties/google';
-import { buildPageViewPayload } from './analytics-utils';
+import { GoogleTagManager, sendGTMEvent } from '@next/third-parties/google';
+import { env } from '@/lib/env';
+import { buildPageViewPayload, getConsentDefaultScript } from './analytics-utils';
 
 function PageTrackerContent() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const urlSearchParams = useSearchParams();
 
   useEffect(() => {
     if (!pathname) return;
 
-    // Korte timeout (100ms) garandeert dat Next.js de <title> in de <head>
-    // heeft bijgewerkt na client-side navigatie voordat het event wordt verzonden
-    const timer = setTimeout(() => {
-      sendGTMEvent(buildPageViewPayload(pathname, searchParams?.toString()));
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [pathname, searchParams]);
+    sendGTMEvent(buildPageViewPayload(pathname, urlSearchParams?.toString()));
+  }, [pathname, urlSearchParams]);
 
   return null;
 }
 
+/**
+ * Zelfvoorzienend Analytics & GTM feature-component.
+ * Initialiseert synchroon Google Consent Mode v2, laadt de GTM container
+ * via @next/third-parties/google en verrijkt page_view events bij navigatie.
+ */
 export function GTMPageTracker() {
+  const { gtmId } = env;
+
   return (
-    <Suspense fallback={null}>
-      <PageTrackerContent />
-    </Suspense>
+    <>
+      <script
+        id="google-consent-mode"
+        dangerouslySetInnerHTML={{
+          __html: getConsentDefaultScript(),
+        }}
+      />
+      {gtmId && (
+        <>
+          <GoogleTagManager gtmId={gtmId} />
+          <Suspense fallback={null}>
+            <PageTrackerContent />
+          </Suspense>
+        </>
+      )}
+    </>
   );
 }

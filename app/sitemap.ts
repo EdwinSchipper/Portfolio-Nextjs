@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllPageUrls, getAllPortfolioUrls } from "@/lib/cms";
+import { env } from "@/lib/env";
 
 /**
  * Next.js Dynamic Sitemap generator
@@ -7,8 +8,7 @@ import { getAllPageUrls, getAllPortfolioUrls } from "@/lib/cms";
  * generating a fresh /sitemap.xml for Google and other search engines.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.edwinschipper.nl";
+  const baseUrl = env.siteUrl;
 
   const entries: MetadataRoute.Sitemap = [
     {
@@ -19,7 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // 1. Fetch all CMS pages from Contentstack
   const pages = await getAllPageUrls();
   pages.forEach((page) => {
     if (page.url && page.url !== "/") {
@@ -33,7 +32,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   });
 
-  // 2. Fetch all portfolio projects from Contentstack
   const portfolioItems = await getAllPortfolioUrls();
   portfolioItems.forEach((item) => {
     if (item.url) {

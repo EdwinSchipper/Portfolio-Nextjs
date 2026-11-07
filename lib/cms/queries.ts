@@ -1,14 +1,14 @@
 import { cache } from "react";
 import contentstack, { QueryOperation } from "@contentstack/delivery-sdk";
 import type { Page, Homepage, PortfolioItem } from "../types";
-import { stack, isPreview, apiKey, deliveryToken, environment } from "./client";
+import { stack, isPreview, isConfigured, apiKey, deliveryToken, environment } from "./client";
 
 /**
  * Fetches the singleton homepage entry and resolves referenced modular blocks.
  * Memoized with React cache() to prevent duplicate requests when used in generateMetadata and page.
  */
 export const getHomePage = cache(async function getHomePage(): Promise<Homepage | undefined> {
-  if (!apiKey || !deliveryToken || !environment) {
+  if (!isConfigured) {
     console.error("[Contentstack] Missing required environment variables on server:", {
       apiKey: Boolean(apiKey),
       deliveryToken: Boolean(deliveryToken),
@@ -42,7 +42,7 @@ export const getHomePage = cache(async function getHomePage(): Promise<Homepage 
  * Memoized with React cache() to prevent duplicate requests when used in generateMetadata and page.
  */
 export const getPage = cache(async function getPage(url: string): Promise<Page | undefined> {
-  if (!apiKey || !deliveryToken || !environment) {
+  if (!isConfigured) {
     console.error("[Contentstack] Missing required environment variables on server for getPage");
     return undefined;
   }
@@ -76,7 +76,7 @@ export const getPage = cache(async function getPage(url: string): Promise<Page |
 export const getPortfolioItemByUrl = cache(async function getPortfolioItemByUrl(
   url: string
 ): Promise<PortfolioItem | undefined> {
-  if (!apiKey || !deliveryToken || !environment) {
+  if (!isConfigured) {
     console.error("[Contentstack] Missing required environment variables on server for getPortfolioItemByUrl");
     return undefined;
   }
@@ -121,7 +121,7 @@ export async function getPortfolioItems({
   skip = 0,
   category,
 }: GetPortfolioItemsOptions = {}): Promise<GetPortfolioItemsResult> {
-  if (!apiKey || !deliveryToken || !environment) {
+  if (!isConfigured) {
     console.error("[Contentstack] Missing required environment variables on server for getPortfolioItems");
     return { items: [], total: 0 };
   }
@@ -161,12 +161,16 @@ export async function getPortfolioItems({
  * Fetches lightweight URL and timestamp list of all pages for sitemap generation.
  */
 export async function getAllPageUrls(): Promise<{ url: string; updatedAt?: string }[]> {
-  if (!apiKey || !deliveryToken || !environment) {
+  if (!isConfigured) {
     return [];
   }
 
   try {
-    const result = await stack.contentType("page").entry().find<Page>();
+    const result = await stack
+      .contentType("page")
+      .entry()
+      .only(["url", "updated_at"])
+      .find<Page>();
     return (result.entries || []).map((entry) => ({
       url: entry.url || "",
       updatedAt: entry.updated_at,
@@ -181,12 +185,16 @@ export async function getAllPageUrls(): Promise<{ url: string; updatedAt?: strin
  * Fetches lightweight URL and timestamp list of all portfolio items for sitemap generation.
  */
 export async function getAllPortfolioUrls(): Promise<{ url: string; updatedAt?: string }[]> {
-  if (!apiKey || !deliveryToken || !environment) {
+  if (!isConfigured) {
     return [];
   }
 
   try {
-    const result = await stack.contentType("portfolio_item").entry().find<PortfolioItem>();
+    const result = await stack
+      .contentType("portfolio_item")
+      .entry()
+      .only(["url", "updated_at"])
+      .find<PortfolioItem>();
     return (result.entries || []).map((entry) => ({
       url: entry.url || "",
       updatedAt: entry.updated_at,

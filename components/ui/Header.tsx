@@ -29,10 +29,6 @@ export const mainNavItems: NavItem[] = [
   { name: "Portfolio", href: "/portfolio" },
 ];
 
-// Backwards-compatible aliases
-export const company = expertiseItems;
-export const menuItems = mainNavItems;
-
 const baseNavClass =
   "flex items-center justify-center px-4 h-11 lg:h-10 rounded-md border border-transparent transition-all duration-300 text-smallM lg:text-medium font-medium hover:bg-accent7-400/20 dark:hover:bg-accent7-400/5 hover:text-title-100 dark:hover:text-title-200";
 

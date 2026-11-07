@@ -41,7 +41,13 @@ next-env.d.ts
 
 # Tree maker
 tree-maker
+
+# ai & agent rules
 .claude
 .cursor
 .claude/
 .cursor/
+.agents/
+AGENTS.md
+CLAUDE.md
+skills/

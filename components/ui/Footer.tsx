@@ -55,11 +55,6 @@ export const footerSections: FooterSection[] = [
   },
 ];
 
-// Backwards-compatible exports
-export const expertiseLinks = footerSections[0].links;
-export const pageLinks = footerSections[1].links;
-export const contactLinks = footerSections[2].links;
-
 const legalLinks: FooterLink[] = [
   { label: "Privacy", href: "/privacy" },
   { label: "Algemene Voorwaarden", href: "/algemene-voorwaarden" },

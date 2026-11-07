@@ -166,7 +166,11 @@ export async function getAllPageUrls(): Promise<{ url: string; updatedAt?: strin
   }
 
   try {
-    const result = await stack.contentType("page").entry().find<Page>();
+    const result = await stack
+      .contentType("page")
+      .entry()
+      .only(["url", "updated_at"])
+      .find<Page>();
     return (result.entries || []).map((entry) => ({
       url: entry.url || "",
       updatedAt: entry.updated_at,
@@ -186,7 +190,11 @@ export async function getAllPortfolioUrls(): Promise<{ url: string; updatedAt?: 
   }
 
   try {
-    const result = await stack.contentType("portfolio_item").entry().find<PortfolioItem>();
+    const result = await stack
+      .contentType("portfolio_item")
+      .entry()
+      .only(["url", "updated_at"])
+      .find<PortfolioItem>();
     return (result.entries || []).map((entry) => ({
       url: entry.url || "",
       updatedAt: entry.updated_at,

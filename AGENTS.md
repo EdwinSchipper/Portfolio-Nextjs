@@ -205,6 +205,7 @@ Strikte regels en kwaliteitsstandaarden voor agents zijn georganiseerd in [`.age
 | Import Integrity | [`.agents/rules/import-integrity.md`](.agents/rules/import-integrity.md) | Opschonen oude paden/barrels na refactor, `tsc --noEmit` & lint |
 | Contentstack Queries | [`.agents/rules/contentstack-queries.md`](.agents/rules/contentstack-queries.md) | Payload-optimalisatie, type-safety, sanitization en Visual Builder integriteit |
 | Official Stack | [`.agents/rules/official-stack-standards.md`](.agents/rules/official-stack-standards.md) | Next.js 16 App Router, React 19, Headless UI v2, Zero-Deprecation, UI-integriteit & layout geometrie |
+| Analytics & Tracking | [`.agents/rules/analytics-standards.md`](.agents/rules/analytics-standards.md) | Google Consent Mode v2, GTM (@next/third-parties), GA4 event verrijking, timing & privacy |
 | Quality Gate | [`.agents/rules/quality-gate.md`](.agents/rules/quality-gate.md) | Zero-Comment, Zero-Console, linter en pre-flight productievalidatie |
 
 ### Gespecialiseerde Subagents ([`.agents/agents/`](.agents/agents/))
@@ -212,6 +213,7 @@ Strikte regels en kwaliteitsstandaarden voor agents zijn georganiseerd in [`.age
 | Subagent | Pad | Specialisme |
 | --- | --- | --- |
 | Contentstack Architect | [`.agents/agents/contentstack-architect/agent.md`](.agents/agents/contentstack-architect/agent.md) | Contentstack Delivery SDK, Visual Builder & Live Preview (`$`), Rich Text sanitization, content models |
+| Analytics & GTM Architect | [`.agents/agents/analytics-architect/agent.md`](.agents/agents/analytics-architect/agent.md) | Google Tag Manager, GA4, Consent Mode v2, @next/third-parties, privacy compliance, timing en dataLayer verrijking |
 
 ---
 

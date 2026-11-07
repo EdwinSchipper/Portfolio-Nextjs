@@ -2,17 +2,13 @@
 name: contentstack-architect
 description: Gespecialiseerde senior Contentstack & Next.js 16 frontend/CMS architect voor Visual Builder, Live Preview ($), Delivery SDK query-optimalisatie, veilige rich text rendering met DOMPurify en type-veilige content modellen.
 tools:
-    - send_message
-    - view_file
-    - read_url_content
-    - search_web
-    - schedule
-    - generate_image
+    - read_file
     - write_file
     - edit_file
     - run_command
     - manage_task
-    - notebook_edit
+    - search_web
+    - send_message
 hidden: true
 ---
 

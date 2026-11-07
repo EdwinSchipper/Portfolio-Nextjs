@@ -3,10 +3,10 @@
 import React, { useState, useEffect, useSyncExternalStore } from 'react';
 import { Toast, Button } from '@/components/ui';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { buildPageViewPayload } from './analytics-utils';
+import { buildPageViewPayload, updateGoogleConsent } from './analytics-utils';
 
 const subscribe = (callback: () => void) => {
-  if (typeof window === 'undefined') return () => { };
+  if (typeof window === 'undefined') return () => {};
   window.addEventListener('storage', callback);
   return () => window.removeEventListener('storage', callback);
 };
@@ -20,14 +20,13 @@ const getClientConsent = (): string | null => {
 };
 
 const getServerConsent = (): string | null => {
-  // During SSR, return a sentinel to prevent hydration mismatches
   return 'ssr_init';
 };
 
 /**
  * Cookie Consent Manager.
- * Handles state, Consent Mode v2 updates, and GTM event firing.
- * Renders via universal UI components: <Toast> and <Button>.
+ * Beheert de toestemmingsstatus, Google Consent Mode v2 updates en GTM events
+ * via de universele UI primitives <Toast> en <Button>.
  */
 export function CookieConsent() {
   const [hasDismissed, setHasDismissed] = useState(false);
@@ -39,8 +38,9 @@ export function CookieConsent() {
     getServerConsent
   );
 
-  // The toast is open on client mount when no consent is stored, or when re-opened by user
-  const isOpen = isManuallyOpened || (!hasDismissed && consentStatus !== 'ssr_init' && consentStatus === null);
+  const isOpen =
+    isManuallyOpened ||
+    (!hasDismissed && consentStatus !== 'ssr_init' && consentStatus === null);
 
   useEffect(() => {
     const handleReopen = () => {
@@ -55,22 +55,24 @@ export function CookieConsent() {
   const acceptCookies = () => {
     try {
       localStorage.setItem('cookie_consent', 'accepted');
-    } catch (e) {
-      console.warn('Could not save cookie consent:', e);
+    } catch (error) {
+      console.warn('Could not save cookie consent:', error);
     }
 
-    if (typeof window !== 'undefined') {
-      const gtag = (window as any).gtag || function (...args: any[]) {
-        ((window as any).dataLayer = (window as any).dataLayer || []).push(args);
-      };
-      gtag('consent', 'update', {
-        analytics_storage: 'granted',
-      });
-    }
+    updateGoogleConsent({
+      analytics_storage: 'granted',
+    });
 
-    const currentPath = typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '';
-    const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '';
-    const currentSearch = typeof window !== 'undefined' && window.location.search ? window.location.search.replace(/^\?/, '') : undefined;
+    const currentPath =
+      typeof window !== 'undefined'
+        ? `${window.location.pathname}${window.location.search}`
+        : '';
+    const currentPathname =
+      typeof window !== 'undefined' ? window.location.pathname : '';
+    const currentSearch =
+      typeof window !== 'undefined' && window.location.search
+        ? window.location.search.replace(/^\?/, '')
+        : undefined;
     const currentTitle = typeof document !== 'undefined' ? document.title : '';
 
     sendGTMEvent({
@@ -89,21 +91,16 @@ export function CookieConsent() {
   const declineCookies = () => {
     try {
       localStorage.setItem('cookie_consent', 'declined');
-    } catch (e) {
-      console.warn('Could not save cookie consent:', e);
+    } catch (error) {
+      console.warn('Could not save cookie consent:', error);
     }
 
-    if (typeof window !== 'undefined') {
-      const gtag = (window as any).gtag || function (...args: any[]) {
-        ((window as any).dataLayer = (window as any).dataLayer || []).push(args);
-      };
-      gtag('consent', 'update', {
-        analytics_storage: 'denied',
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-      });
-    }
+    updateGoogleConsent({
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
 
     sendGTMEvent({
       event: 'cookie_consent_update',
@@ -117,26 +114,15 @@ export function CookieConsent() {
   return (
     <Toast
       open={isOpen}
-      onClose={() => {
-        // Explicit decision required via primary or secondary button:
-        // Do not silently accept or decline on accidental outside click
-      }}
+      onClose={() => {}}
       title="Cookies & Privacy"
       description="We gebruiken cookies puur om de website soepel te laten werken en het gebruiksgemak te verbeteren."
     >
       <div className="grid grid-cols-2 gap-3 mt-1">
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={acceptCookies}
-        >
+        <Button variant="primary" size="sm" onClick={acceptCookies}>
           Accepteren
         </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={declineCookies}
-        >
+        <Button variant="secondary" size="sm" onClick={declineCookies}>
           Weigeren
         </Button>
       </div>

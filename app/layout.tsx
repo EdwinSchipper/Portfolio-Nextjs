@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Outfit, Newsreader, Cascadia_Mono } from "next/font/google";
 import "./globals.css";
 import { Header, Footer } from "@/components/ui";
-import { GoogleTagManager } from "@next/third-parties/google";
 import { GTMPageTracker, CookieConsent } from "@/components/features/analytics";
 
 const outfit = Outfit({
@@ -38,6 +37,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    other: [
+      {
+        rel: "ai-catalog",
+        url: "/.well-known/ai-catalog.json",
+      },
+    ],
+  },
   openGraph: {
     siteName: "Edwin Schipper",
     locale: "nl_NL",
@@ -49,53 +56,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
-
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="nl-NL" className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable}`} suppressHydrationWarning
+    <html
+      lang="nl-NL"
+      className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable}`}
+      suppressHydrationWarning
     >
-      <head>
-        <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
-        <script
-          id="google-consent-mode"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              window.gtag = gtag;
-
-              var savedConsent = null;
-              try {
-                savedConsent = localStorage.getItem('cookie_consent');
-              } catch (e) {}
-
-              if (savedConsent === 'accepted') {
-                gtag('consent', 'default', {
-                  'analytics_storage': 'granted',
-                  'ad_storage': 'denied',
-                  'ad_user_data': 'denied',
-                  'ad_personalization': 'denied',
-                  'wait_for_update': 500
-                });
-              } else {
-                gtag('consent', 'default', {
-                  'analytics_storage': 'denied',
-                  'ad_storage': 'denied',
-                  'ad_user_data': 'denied',
-                  'ad_personalization': 'denied',
-                  'wait_for_update': 500
-                });
-              }
-            `,
-          }}
-        />
-        {gtmId && <GoogleTagManager gtmId={gtmId} />}
-      </head>
       <body className="bg-background-100 dark:bg-background-800">
-        {gtmId && <GTMPageTracker />}
+        <GTMPageTracker />
         <Header />
-        <main className="">{children}</main>
+        <main>{children}</main>
         <Footer />
         <CookieConsent />
       </body>

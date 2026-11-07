@@ -23,7 +23,7 @@ export default function BlockRenderer({
   if (!blockType) return null;
 
   const Component = BLOCK_COMPONENTS[blockType];
-  const blockData = (block as any)[blockType];
+  const blockData = block[blockType as keyof Blocks];
 
   return (
     <Component

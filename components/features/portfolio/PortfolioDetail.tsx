@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
-import { PortfolioItem, File } from "@/lib/types";
+import { PortfolioItem, File, CSLPAttribute } from "@/lib/types";
 import { Breadcrumbs, Label, Icon } from "@/components/ui";
 import PortfolioTechStack from "./PortfolioTechStack";
 
@@ -24,8 +24,8 @@ function getImageUrl(img?: File | string | null): string | null {
  */
 function getImageCslp(
   img?: File | string | null,
-  fallbackCslp?: Record<string, any>
-): Record<string, any> | undefined {
+  fallbackCslp?: CSLPAttribute
+): CSLPAttribute | undefined {
   if (fallbackCslp) return fallbackCslp;
   if (typeof img === "object" && img?.$) {
     return img.$.url || img.$;
@@ -118,7 +118,7 @@ function CaseStudyBanner({
   id: string;
   url?: string | null;
   alt?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }) {
   if (!url) return null;
 
@@ -136,7 +136,7 @@ function CaseStudyBanner({
             loading="lazy"
             sizes="(max-width: 1280px) 100vw, 1280px"
             className="object-cover"
-            {...(cslp as any)}
+            {...cslp}
           />
         </div>
       </div>
@@ -251,7 +251,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 60vw"
                 className="object-cover"
-                {...(heroImgCslp as any)}
+                {...heroImgCslp}
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-background-900/5 via-background-900/10 dark:from-background-900/5 dark:via-background-900/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

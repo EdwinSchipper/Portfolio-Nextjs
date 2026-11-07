@@ -27,9 +27,9 @@ export default function FeaturedProjectsBlock({
   if (!data) return null;
 
   const projects = data.projects || [];
-  const sectionTitle = data.section_title || (data as any).title;
-  const label = data.label || (data as any).label_projects;
-  const sectionIntro = data.section_intro || (data as any).intro;
+  const sectionTitle = data.section_title || data.title;
+  const label = data.label || data.label_projects;
+  const sectionIntro = data.section_intro || data.intro;
 
   const hasHeader = Boolean(label || sectionTitle || sectionIntro);
 
@@ -44,9 +44,9 @@ export default function FeaturedProjectsBlock({
           title={sectionTitle}
           intro={sectionIntro}
           cslp={data?.$}
-          cslpLabel={data?.$ && (data.$.label || (data.$ as any).label_projects)}
-          cslpTitle={data?.$ && (data.$.section_title || (data.$ as any).title)}
-          cslpIntro={data?.$ && (data.$.section_intro || (data.$ as any).intro)}
+          cslpLabel={data?.$ && (data.$.label || data.$.label_projects)}
+          cslpTitle={data?.$ && (data.$.section_title || data.$.title)}
+          cslpIntro={data?.$ && (data.$.section_intro || data.$.intro)}
         />
       )}
 
@@ -60,7 +60,7 @@ export default function FeaturedProjectsBlock({
         <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl gap-14 sm:gap-20 flex flex-col relative z-10">
           {projects.length > 0 ? (
             projects.map((post, index) => {
-              const postUrl = post.url || `/portfolio/${post.uid || (post as any).id || index}`;
+              const postUrl = post.url || `/portfolio/${post.uid || post.id || index}`;
               const thumbnailCandidate =
                 post.case_thumbnail ||
                 post.featured_image ||

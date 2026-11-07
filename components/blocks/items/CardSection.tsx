@@ -10,7 +10,7 @@ export interface CardBoxProps {
   title?: React.ReactNode;
   tag?: React.ReactNode;
   text?: React.ReactNode;
-  button?: { href: string; title?: string };
+  button?: { href?: string; title?: string; url?: string; text?: string };
   children?: React.ReactNode;
   className?: string;
   cslp?: Record<string, any>;
@@ -26,11 +26,12 @@ export function CardBox({
   className = "",
   cslp,
 }: CardBoxProps) {
+  const href = button?.href || button?.url;
   const isExternal =
-    typeof button?.href === "string" &&
-    (button.href.startsWith("http://") ||
-      button.href.startsWith("https://") ||
-      button.href.startsWith("//"));
+    typeof href === "string" &&
+    (href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("/" + "/"));
 
   // Support tags passed as string with "/" separators (e.g. "Componenten / Vue.js / Nuxt")
   const rawTag = tag;
@@ -106,16 +107,16 @@ export function CardBox({
             </div>
           )}
 
-          {button?.href && (
+          {href && (
             <div className="pt-2 mt-auto">
               <Link
-                href={button.href}
+                href={href}
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noopener noreferrer" : undefined}
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-title-100 dark:text-title-200 hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors cursor-pointer"
                 {...(cslp && cslp.button)}
               >
-                <span>{button.title || "Lees meer"}</span>
+                <span>{button?.title || button?.text || "Lees meer"}</span>
                 <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
                   →
                 </span>
@@ -134,7 +135,7 @@ export interface CardImageTagProps {
   image?: { url: string; title?: string; $?: any };
   tag?: React.ReactNode;
   text?: React.ReactNode;
-  button?: { href: string; title?: string };
+  button?: { href?: string; title?: string; url?: string; text?: string };
   children?: React.ReactNode;
   className?: string;
   cslp?: Record<string, any>;
@@ -149,11 +150,12 @@ export function CardImageTag({
   className = "",
   cslp,
 }: CardImageTagProps) {
+  const href = button?.href || button?.url;
   const isExternal =
-    typeof button?.href === "string" &&
-    (button.href.startsWith("http://") ||
-      button.href.startsWith("https://") ||
-      button.href.startsWith("//"));
+    typeof href === "string" &&
+    (href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("/" + "/"));
 
   return (
     <div
@@ -194,16 +196,16 @@ export function CardImageTag({
       )}
 
       {/* Link */}
-      {button?.href && (
+      {href && (
         <div className="pt-3 mt-auto">
           <Link
-            href={button.href}
+            href={href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-accent7-900 dark:text-accent8-900 hover:underline transition-colors cursor-pointer"
             {...(cslp && cslp.button)}
           >
-            <span>{button.title || "Lees meer"}</span>
+            <span>{button?.title || button?.text || "Lees meer"}</span>
             <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
               →
             </span>

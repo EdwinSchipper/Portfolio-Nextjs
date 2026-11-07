@@ -162,8 +162,8 @@ export function GridTimeline({
   // Support both multiple group array and single group wrapper { companies: [...] }
   const companies: TimelineCompany[] = Array.isArray(timeline)
     ? timeline
-    : Array.isArray((timeline as any).companies)
-      ? (timeline as any).companies
+    : Array.isArray(timeline.companies)
+      ? timeline.companies
       : [];
 
   if (companies.length === 0) return null;
@@ -182,7 +182,7 @@ export function GridTimeline({
           const rawWebsite = company.website;
           const websiteUrl =
             typeof rawWebsite === "object" && rawWebsite !== null
-              ? (rawWebsite as any).href || (rawWebsite as any).url
+              ? rawWebsite.href || rawWebsite.url
               : rawWebsite;
 
           const companyName = company.company || company.company_name;
@@ -280,13 +280,13 @@ export function GridSocials({
   // Handle both a wrapper object { label, links/items } and a direct array of links
   const rawLinks = Array.isArray(socials)
     ? socials
-    : Array.isArray((socials as any).links)
-      ? (socials as any).links
-      : Array.isArray((socials as any).items)
-        ? (socials as any).items
+    : Array.isArray(socials.links)
+      ? socials.links
+      : Array.isArray(socials.items)
+        ? socials.items
         : [];
 
-  const label = !Array.isArray(socials) ? (socials as any).label : undefined;
+  const label = !Array.isArray(socials) ? socials.label : undefined;
 
   if (rawLinks.length === 0) return null;
 
@@ -297,7 +297,7 @@ export function GridSocials({
     >
       {label && (
         <span
-          {...((socials as any).$ && (socials as any).$.label)}
+          {...(!Array.isArray(socials) && socials.$ && socials.$.label)}
           className="text-mediumM sm:text-small font-medium text-content-100/80 dark:text-content-200/80 shrink-0"
         >
           {label}
@@ -309,7 +309,7 @@ export function GridSocials({
           const rawLink = item.link;
           const href =
             typeof rawLink === "object" && rawLink !== null
-              ? (rawLink as any).href || (rawLink as any).url
+              ? rawLink.href || rawLink.url
               : rawLink;
 
           if (!href) return null;
@@ -326,7 +326,7 @@ export function GridSocials({
                   ? "link"
                   : rawIcon;
 
-          const title = item.title || (item as any).label;
+          const title = item.title || item.label;
           const isExternal =
             typeof href === "string" &&
             (href.startsWith("http://") || href.startsWith("https://"));
@@ -381,12 +381,12 @@ export function GridColumn({
     const cards = data.cards;
     const resumeTimeline =
       data.resume_timeline ||
-      (data as any).timeline ||
-      (data as any).career_timeline;
+      data.timeline ||
+      data.career_timeline;
     const socials =
-      (data as any).socials ||
-      (data as any).social_links ||
-      (data as any).connect;
+      data.socials ||
+      data.social_links ||
+      data.connect;
     const cslp = data.$;
 
     return (

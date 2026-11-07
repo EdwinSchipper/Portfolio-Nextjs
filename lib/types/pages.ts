@@ -33,6 +33,7 @@ export interface TechStackItem {
 
 export interface PortfolioItem extends SystemFields {
   uid: string;
+  id?: string | number;
   title: string;
   seo?: SeoFields;
   url?: string;

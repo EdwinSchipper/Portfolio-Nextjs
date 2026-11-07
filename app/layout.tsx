@@ -3,6 +3,7 @@ import { Outfit, Newsreader, Cascadia_Mono } from "next/font/google";
 import "./globals.css";
 import { Header, Footer } from "@/components/ui";
 import { GTMPageTracker, CookieConsent } from "@/components/features/analytics";
+import { env } from "@/lib/env";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -26,9 +27,7 @@ const cascadiaMono = Cascadia_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.edwinschipper.nl"
-  ),
+  metadataBase: new URL(env.siteUrl),
   title: {
     default: "Edwin Schipper",
     template: "%s | Edwin Schipper",

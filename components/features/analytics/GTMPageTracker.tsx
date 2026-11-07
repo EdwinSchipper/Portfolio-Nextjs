@@ -3,6 +3,7 @@
 import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { GoogleTagManager, sendGTMEvent } from '@next/third-parties/google';
+import { env } from '@/lib/env';
 import { buildPageViewPayload, getConsentDefaultScript } from './analytics-utils';
 
 function PageTrackerContent() {
@@ -24,7 +25,7 @@ function PageTrackerContent() {
  * via @next/third-parties/google en verrijkt page_view events bij navigatie.
  */
 export function GTMPageTracker() {
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const { gtmId } = env;
 
   return (
     <>

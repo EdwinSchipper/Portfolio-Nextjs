@@ -9,6 +9,7 @@ export interface ExperienceRole extends BaseEntity {
   title?: string;
   period?: string;
   role_type?: "core" | "secondary" | string;
+  roleType?: string;
   badge?: string;
   description?: string;
 }
@@ -20,6 +21,7 @@ export interface ExperienceCompany extends BaseEntity {
   company_period?: string;
   website?: string | Link;
   roles?: ExperienceRole[];
+  Roles?: ExperienceRole[];
 }
 export type TimelineCompany = ExperienceCompany;
 
@@ -53,27 +55,42 @@ export interface CertificationItem extends BaseEntity {
 
 export interface ResumeSectionBlock extends BaseSectionBlock {
   left_col_span?: number | string;
+  left_col?: number | string;
+  leftCol?: number | string;
   right_col_span?: number | string;
+  right_col?: number | string;
+  rightCol?: number | string;
   timeline_position?: "right" | "left" | "full" | "Right" | "Left" | "Full" | "rechts" | "links" | string;
   timeline_placement?: string;
   section_title_main?: string;
   description?: string;
   text?: string;
+  intro?: string;
+  section_label?: string;
   button?: Link;
   button_cta?: Link;
   companies?: ExperienceCompany[];
+  Companies?: ExperienceCompany[];
   stack_label?: string;
   stackLabel?: string;
+  Stack_label?: string;
   stack_title?: string;
   stackTitle?: string;
+  Stack_title?: string;
   stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
   Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
   education_label?: string;
+  Education_label?: string;
   education_title?: string;
+  Education_title?: string;
   certifications_label?: string;
+  Certifications_label?: string;
   certifications_title?: string;
+  Certifications_title?: string;
   certifications?: CertificationItem[];
+  Certifications?: CertificationItem[];
   education?: CertificationItem[];
+  Education?: CertificationItem[];
 }
 
 // ============================================================================
@@ -101,6 +118,7 @@ export interface CtaBlock extends BaseEntity {
   button_cta?: Link;
   button_to?: string;
   button_text?: string;
+  to?: string;
 }
 
 export interface ServiceCardBlock extends BaseEntity {
@@ -114,6 +132,9 @@ export interface ServiceCardBlock extends BaseEntity {
 
 export interface FeaturedProjectsBlock extends BaseSectionBlock {
   label_projects?: string;
+  label?: string;
+  title?: string;
+  intro?: string;
   projects?: PortfolioItem[];
 }
 
@@ -141,6 +162,7 @@ export interface SocialLink extends BaseEntity {
   icon?: string;
   link?: string | Link;
   title?: string;
+  label?: string;
 }
 
 export interface GridSocials extends BaseEntity {
@@ -183,8 +205,12 @@ export interface GridSectionColumn extends BaseEntity {
   button_left?: Link;
   button_right?: Link;
   cards?: GridCard[];
-  resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[] } | any;
-  socials?: GridSocials | SocialLink[] | any;
+  resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: any };
+  timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: any };
+  career_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: any };
+  socials?: GridSocials | SocialLink[];
+  social_links?: GridSocials | SocialLink[];
+  connect?: GridSocials | SocialLink[];
 }
 
 /** Grid Section modular block */

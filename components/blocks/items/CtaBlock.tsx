@@ -27,7 +27,7 @@ export default function CtaBlock({
   const description = data.description || data.text_cta || data.text;
   const isHtml = typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
 
-  const buttonHref = data.button_cta?.href || data.button_to || (data as any).to;
+  const buttonHref = data.button_cta?.href || data.button_to || data.to;
   const buttonText = data.button_cta?.title || data.button_text || "Bekijk CV";
 
   const imageLight = data.image || data.image_light;

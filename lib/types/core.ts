@@ -24,8 +24,10 @@ export type CSLPContainer<T = Record<string, any>> = {
 } & Record<string, CSLPFieldMapping | any>;
 
 export interface Link {
-  title: string;
-  href: string;
+  title?: string;
+  href?: string;
+  url?: string;
+  text?: string;
 }
 
 export interface Taxonomy {

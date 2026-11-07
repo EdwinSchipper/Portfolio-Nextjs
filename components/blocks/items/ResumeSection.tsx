@@ -203,17 +203,17 @@ export function ExperienceTimelineList({
       {/* Companies Timeline */}
       <div className="space-y-12 font-content">
         {companies.map((company, cIdx) => {
-          const rawRoles = company.roles || (company as any).Roles;
+          const rawRoles = company.roles || company.Roles;
           const roles: ExperienceRole[] = Array.isArray(rawRoles)
             ? rawRoles
             : rawRoles
               ? [rawRoles]
               : [];
           const coreRoles = roles.filter(
-            (r) => (r.role_type || (r as any).roleType || "").toLowerCase() !== "secondary"
+            (r) => (r.role_type || r.roleType || "").toLowerCase() !== "secondary"
           );
           const secondaryRoles = roles.filter(
-            (r) => (r.role_type || (r as any).roleType || "").toLowerCase() === "secondary"
+            (r) => (r.role_type || r.roleType || "").toLowerCase() === "secondary"
           );
 
           // If all roles happen to be secondary, fall back gracefully
@@ -563,14 +563,14 @@ export default function ResumeSection({
   const isTimelineLeft = rawPosition === "left" || rawPosition === "links";
 
   const rawCompanies =
-    sectionData?.companies || (sectionData as any)?.Companies;
+    sectionData?.companies || sectionData?.Companies;
   const companies: ExperienceCompany[] = Array.isArray(rawCompanies)
     ? rawCompanies
     : rawCompanies
       ? [rawCompanies]
       : [];
 
-  const rawStack = sectionData?.stack || (sectionData as any)?.Stack;
+  const rawStack = sectionData?.stack || sectionData?.Stack;
   const tags = extractStackTags(rawStack);
   const hasStack = tags.length > 0;
 
@@ -579,8 +579,8 @@ export default function ResumeSection({
       ? rawStack?.stack_label || rawStack?.Stack_label || rawStack?.stackLabel || rawStack?.label
       : undefined) ||
     sectionData?.stack_label ||
-    (sectionData as any)?.Stack_label ||
-    (sectionData as any)?.stackLabel;
+    sectionData?.Stack_label ||
+    sectionData?.stackLabel;
 
   const stackLabelCslp =
     (typeof rawStack === "object" &&
@@ -594,8 +594,8 @@ export default function ResumeSection({
       ? rawStack?.stack_title || rawStack?.Stack_title || rawStack?.stackTitle || rawStack?.title
       : undefined) ||
     sectionData?.stack_title ||
-    (sectionData as any)?.Stack_title ||
-    (sectionData as any)?.stackTitle;
+    sectionData?.Stack_title ||
+    sectionData?.stackTitle;
 
   const stackTitleCslp =
     (typeof rawStack === "object" &&
@@ -609,8 +609,8 @@ export default function ResumeSection({
   const description =
     sectionData?.description || sectionData?.text || sectionData?.intro;
   const button = sectionData?.button || sectionData?.button_cta;
-  const buttonHref = button?.href || (button as any)?.url;
-  const buttonTitle = button?.title || (button as any)?.text;
+  const buttonHref = button?.href || button?.url;
+  const buttonTitle = button?.title || button?.text;
 
   const timelineSubtitle = sectionData?.section_title;
   const meta = sectionData?.$;
@@ -618,9 +618,9 @@ export default function ResumeSection({
   // Certifications & Education Data
   const rawCertifications =
     sectionData?.certifications ||
-    (sectionData as any)?.Certifications ||
+    sectionData?.Certifications ||
     sectionData?.education ||
-    (sectionData as any)?.Education;
+    sectionData?.Education;
 
   const certifications: CertificationItem[] = Array.isArray(rawCertifications)
     ? rawCertifications
@@ -632,16 +632,16 @@ export default function ResumeSection({
 
   const educationLabel =
     sectionData?.education_label ||
-    (sectionData as any)?.Education_label ||
+    sectionData?.Education_label ||
     sectionData?.certifications_label ||
-    (sectionData as any)?.Certifications_label ||
+    sectionData?.Certifications_label ||
     "02 — Opleiding";
 
   const educationTitle =
     sectionData?.education_title ||
-    (sectionData as any)?.Education_title ||
+    sectionData?.Education_title ||
     sectionData?.certifications_title ||
-    (sectionData as any)?.Certifications_title ||
+    sectionData?.Certifications_title ||
     "Opleiding & Certificeringen";
 
   const hasIntroContent = Boolean(
@@ -764,13 +764,13 @@ export default function ResumeSection({
   const rawLeftCol =
     leftColSpan ||
     sectionData?.left_col_span ||
-    (sectionData as any)?.left_col ||
-    (sectionData as any)?.leftCol;
+    sectionData?.left_col ||
+    sectionData?.leftCol;
   const rawRightCol =
     rightColSpan ||
     sectionData?.right_col_span ||
-    (sectionData as any)?.right_col ||
-    (sectionData as any)?.rightCol;
+    sectionData?.right_col ||
+    sectionData?.rightCol;
 
   const defaultLeft = isTimelineLeft ? "8" : "4";
   const defaultRight = isTimelineLeft ? "4" : "8";

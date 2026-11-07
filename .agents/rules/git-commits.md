@@ -1,39 +1,37 @@
-# Git Commit Message Standaarden (Nederlands)
+# Git Commit Message Guidelines (Nederlands)
 
-Bij het aanmaken of voorstellen van git commits geldt als **harde regel** dat de voertaal van alle commit messages **ALTIJD het Nederlands** is.
+Commit messages moeten te allen tijde haarscherp, specifiek en informatief zijn. Generieke of vage omschrijvingen zijn niet toegestaan.
+Als **harde regel** geldt dat de voertaal van alle commit messages (onderwerp en body) **ALTIJD het Nederlands** is.
 
 ### 1. Formaat
 ```text
-<type>(<scope>): <omschrijving van de wijziging in gebiedende wijs in het Nederlands>
+<type>(<specifieke-scope>): <gebiedende wijs omschrijving van de kernwijziging in het Nederlands>
 
-[Optionele body bij grotere of context-intensieve wijzigingen]
+[Verplichte body bij wijzigingen met meer dan 1 bestand of bij logica-aanpassingen]
 - Waarom: <concrete aanleiding, bug of doel>
 - Wat: <specifieke functies, interfaces, componenten of bestanden die zijn gewijzigd>
-- Impact: <technische of visuele consequentie, bijv. type-safety, preview binding, rendering>
+- Impact: <technische of visuele consequentie, bijv. type-safety, Live Preview binding, layout geometrie>
 ```
 
-### 2. Voertaal & Stijl
-- **Taal**: Uitsluitend **Nederlands** voor zowel de onderwerpregel als de body. (Geen Engels).
-- **Gebiedende wijs**: Gebruik werkwoorden in de stam/gebiedende wijs (bijv. "voeg toe", "repareer", "harmoniseer", "splits af", niet "toegevoegd" of "toegevoegde").
-- **Kleine letters**: De omschrijving na de dubbelepunt begint met een kleine letter (tenzij het een eigennaam betreft).
+### 2. Typen & Specifieke Scopes
+- `feat`: Nieuwe functionaliteit of route (bijv. `(portfolio-detail)`, `(cookie-consent)`, `(hero-banner)`)
+- `fix`: Bugfix of runtime/styling correctie (bijv. `(timeline-node)`, `(preview-binding)`, `(scrollbar-padding)`)
+- `refactor`: Structuur- of architectuurwijziging zonder feature-wijziging (bijv. `(analytics-utils)`, `(ui-primitives)`)
+- `style`: Visuele afwerking of CSS conform design system (bijv. `(button-variants)`, `(dark-mode)`)
+- `docs`: Documentatie of agent instructies (bijv. `(agents-md)`, `(quality-gate)`)
+- `chore`: Tooling, configs, dependencies (bijv. `(next-config)`, `(eslint)`, `(deps)`)
 
-### 3. Commit Types & Nederlandse Voorbeelden
-- `feat`: Een nieuwe feature, route of functionaliteit
-  - *Voorbeeld:* `feat(analytics): voeg headlessui cookie consent toast en consent mode v2 toe`
-- `fix`: Een bugfix of correctie van een runtime/styling fout
-  - *Voorbeeld:* `fix(timeline): centreer bolletjes exact op de verticale rasterlijn`
-- `style`: Visuele styling, CSS-tweaks of formattering zonder logische impact
-  - *Voorbeeld:* `style(ui): harmoniseer brand en secondary knopvarianten`
-- `refactor`: Herstructurering van code zonder nieuwe features of bugfixes
-  - *Voorbeeld:* `refactor(ui): splits toast component af naar centrale ui bibliotheek`
-- `chore`: Tooling, dependencies, configuratie of onderhoud
-  - *Voorbeeld:* `chore(deps): update headlessui package naar actuele versie`
-- `docs`: Documentatie, agent-regels of richtlijnen
-  - *Voorbeeld:* `docs(agents): leg nederlandse commit-standaard vast in regels`
-- `test`: Toevoegen of aanpassen van tests
+### 3. Strikte Kwaliteitseisen
+1. **Geen vage omschrijvingen**: Gebruik nooit generieke termen zoals "update code", "fix bug", "changes", "tweaks" of "refactor components".
+2. **Specifieke Scopes**: Gebruik de meest nauwe scope (`(portfolio-detail)` i.p.v. `(app)` of `(components)`).
+3. **Benoem het 'Wat' én het 'Waarom'**: Een commit message moet over 6 maanden nog exact duidelijk maken welke ontwerpkeuze is gemaakt.
+4. **Voertaal ALTIJD Nederlands**: Zowel de onderwerpregel als de body zijn 100% in het Nederlands geschreven.
 
-### 4. Structuur bij Grote Wijzigingen (Body)
-Bij wijzigingen over meerdere bestanden is een beknopte body in het Nederlands verplicht met:
-- `- Waarom:`
-- `- Wat:`
-- `- Impact:`
+### 4. Voorbeelden (Goed vs. Fout)
+| Fout (te generiek / Engels) ❌ | Goed (specifiek, contextrijk & Nederlands) ✅ |
+| :--- | :--- |
+| `feat(detail): add page` | `feat(portfolio-detail): voeg dynamische /portfolio/[slug] pagina met Live Preview toe` |
+| `fix(ui): fix button` | `fix(cookie-consent): harmoniseer knoppen via Button UI primitive en verwijder inline overrides` |
+| `refactor(components): reorder folders` | `refactor(analytics): centraliseer page_view payload logica in analytics-utils helper` |
+| `style(timeline): update position` | `style(timeline): centreer bolletje exact op de rasterlijn via wiskundige -left-[11px] offset` |
+| `chore: update dependencies` | `chore(deps): upgrade @headlessui/react naar v2.2.10 en migreer Description alias` |

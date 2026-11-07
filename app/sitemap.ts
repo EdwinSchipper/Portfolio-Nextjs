@@ -19,7 +19,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const pages = await getAllPageUrls();
+  const [pages, portfolioItems] = await Promise.all([
+    getAllPageUrls(),
+    getAllPortfolioUrls(),
+  ]);
+
   pages.forEach((page) => {
     if (page.url && page.url !== "/") {
       const cleanPath = page.url.startsWith("/") ? page.url : `/${page.url}`;
@@ -32,7 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   });
 
-  const portfolioItems = await getAllPortfolioUrls();
   portfolioItems.forEach((item) => {
     if (item.url) {
       const cleanPath = item.url.startsWith("/") ? item.url : `/${item.url}`;

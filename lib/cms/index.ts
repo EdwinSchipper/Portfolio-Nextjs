@@ -19,12 +19,6 @@ export {
   getHomePage,
   getPage,
   getPortfolioItemByUrl,
-  getPortfolioItems,
   getAllPageUrls,
   getAllPortfolioUrls,
-} from "./queries";
-
-export type {
-  GetPortfolioItemsOptions,
-  GetPortfolioItemsResult,
 } from "./queries";

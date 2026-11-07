@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-// Importing function to fetch homepage data and preview mode checker from Contentstack utilities
 import { getHomePage, isPreview } from "@/lib/cms";
 import { getHomePageMetadata } from "@/lib/metadata";
 import {
@@ -9,7 +8,6 @@ import {
   HomePageSkeleton,
 } from "@/components/features/pages";
 
-// Ensure the page always fetches fresh content from Contentstack on production requests
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -22,8 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
 async function HomeContent() {
   const page = await getHomePage();
 
-  // In preview mode, hand the entry to the client component so it can keep
-  // syncing with the Visual Builder via the live-preview listener.
   if (isPreview) {
     return <Preview path="/" initialPage={page} isHome />;
   }
@@ -31,8 +27,6 @@ async function HomeContent() {
   return <HomePage page={page} />;
 }
 
-// Home page component - serves as the main entry point for the application
-// Renders the outer shell immediately and streams HomeContent within Suspense
 export default function Home() {
   return (
     <Suspense fallback={<HomePageSkeleton />}>

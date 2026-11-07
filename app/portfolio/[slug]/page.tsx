@@ -9,7 +9,6 @@ import {
   PortfolioDetailSkeleton,
 } from "@/components/features/portfolio";
 
-// Ensure portfolio detail page always fetches fresh content from Contentstack in production
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({

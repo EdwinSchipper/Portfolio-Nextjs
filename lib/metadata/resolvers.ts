@@ -21,19 +21,12 @@ export async function getPortfolioRouteMetadata(slug: string): Promise<Metadata>
 }
 
 /**
- * Resolves metadata dynamically for catch-all route paths (e.g. "/about", "/portfolio").
+ * Resolves metadata dynamically for catch-all route paths (e.g. "/over-ons", "/portfolio").
  */
 export async function getDynamicRouteMetadata(path: string): Promise<Metadata> {
-  // 1. Check page entry first for standard routes
   const page = await getPage(path);
   if (page) {
     return buildPageMetadata(page);
-  }
-
-  // 2. Fallback check for portfolio item if accessed via catch-all
-  const item = await getPortfolioItemByUrl(path);
-  if (item) {
-    return buildPortfolioMetadata(item);
   }
 
   return {

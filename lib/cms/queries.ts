@@ -102,61 +102,6 @@ export const getPortfolioItemByUrl = cache(async function getPortfolioItemByUrl(
   }
 });
 
-export interface GetPortfolioItemsOptions {
-  limit?: number;
-  skip?: number;
-  category?: string;
-}
-
-export interface GetPortfolioItemsResult {
-  items: PortfolioItem[];
-  total: number;
-}
-
-/**
- * Fetches multiple portfolio item entries with optional pagination and category filtering.
- */
-export async function getPortfolioItems({
-  limit = 9,
-  skip = 0,
-  category,
-}: GetPortfolioItemsOptions = {}): Promise<GetPortfolioItemsResult> {
-  if (!isConfigured) {
-    console.error("[Contentstack] Missing required environment variables on server for getPortfolioItems");
-    return { items: [], total: 0 };
-  }
-
-  try {
-    let query = stack
-      .contentType("portfolio_item")
-      .entry()
-      .query()
-      .limit(limit)
-      .skip(skip)
-      .includeCount();
-
-    if (category && category !== "Alles") {
-      query = query.where("category", QueryOperation.EQUALS, category);
-    }
-
-    const result = await query.find<PortfolioItem>();
-
-    if (isPreview && result.entries) {
-      result.entries.forEach((entry) => {
-        contentstack.Utils.addEditableTags(entry, "portfolio_item", true);
-      });
-    }
-
-    return {
-      items: result.entries || [],
-      total: result.count || 0,
-    };
-  } catch (error) {
-    console.error("[Contentstack] Failed to fetch portfolio items list:", error);
-    return { items: [], total: 0 };
-  }
-}
-
 /**
  * Fetches lightweight URL and timestamp list of all pages for sitemap generation.
  */

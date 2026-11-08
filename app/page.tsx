@@ -8,7 +8,7 @@ import {
   HomePageSkeleton,
 } from "@/components/features/pages";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return getHomePageMetadata();

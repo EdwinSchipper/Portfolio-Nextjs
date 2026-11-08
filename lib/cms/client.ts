@@ -28,11 +28,19 @@ export const stack = contentstack.stack({
   },
 });
 
+let isLivePreviewInitialized = false;
+
 /**
- * Initializes Contentstack Live Preview / Visual Builder listeners.
+ * Initializes Contentstack Live Preview / Visual Builder listeners once per browser session.
  * Configured for client-side mode with visual builder endpoints.
  */
 export function initLivePreview(): void {
+  if (isLivePreviewInitialized || typeof window === "undefined") {
+    return;
+  }
+
+  isLivePreviewInitialized = true;
+
   ContentstackLivePreview.init({
     ssr: false,
     enable: isPreview,

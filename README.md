@@ -1,84 +1,93 @@
-# Portfolio Edwin Schipper (Next.js & Contentstack)
+# Portfolio Edwin Schipper (Next.js 16 & Contentstack)
 
-> **Status:** 🚧 In ontwikkeling (Work in Progress)
+> **Status:** 🚧 In ontwikkeling (Pre-Launch Optimalisatie)
+>
+> **Huidige focus:**
+> - 🎨 **UI/UX & Responsive Finetuning:** Verfijnen van mobiele en desktop layouts, typografische schalen en dark-mode kleurenharmonie over alle modulaire Contentstack-blokken.
+> - 🔍 **SEO, Structured Data & Lighthouse:** Uitbreiden van Schema.org JSON-LD en het borgen van maximale Core Web Vitals scores richting productie-livegang.
 
-De officiële portfolio- en showcase-website van Edwin Schipper ([Ontwerpbureau Schipper](https://www.edwinschipper.nl)), gebouwd met [Next.js 16](https://nextjs.org) (App Router & Turbopack), [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com) en aangedreven door het headless CMS [Contentstack](https://www.contentstack.com).
-
----
-
-## 📌 Projectoverzicht & Context
-
-Deze webapplicatie dient als het centrale portfolio en platform voor grafische vormgeving, UX/Webdesign en frontend web development. De content wordt dynamisch beheerd in Contentstack en realtime gesynchroniseerd via Contentstack Live Preview en de Visual Builder.
-
-De applicatie is gebouwd met een sterke focus op performance, een modulaire driepijler-architectuur en een geautomatiseerde CI/CD-pipeline.
+De officiële portfolio- en showcase-website van Edwin Schipper ([Ontwerpbureau Schipper](https://www.edwinschipper.nl)), gebouwd met [Next.js 16](https://nextjs.org) (App Router & Turbopack), [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), [Headless UI v2](https://headlessui.com) en aangedreven door het headless CMS [Contentstack](https://www.contentstack.com).
 
 ---
 
-## 🧭 Ontwikkelstatus & Roadmap
+## 📌 Projectoverzicht & Doelstelling
 
-Hieronder vind je een gestructureerd overzicht van wat er reeds is geïmplementeerd, wat momenteel onder handen is en wat er op de planning staat:
+Deze webapplicatie vormt het centrale portfolio- en case-studyplatform voor grafische vormgeving, UX/Webdesign en frontend web development. Alle pagina's, modulaire secties en portfolio-cases worden beheerd in Contentstack en realtime gekoppeld aan de Next.js frontend via de Contentstack Delivery SDK v5, Live Preview v4 en de Visual Builder.
 
-| Pijler | Status | Omschrijving |
+De applicatie is ontworpen volgens strikte architectuurprincipes:
+- **Slanke Presentatie-Shells (`app/`)**: Layouts en route-bestanden bevatten geen inline CMS-queries of prop-drilling.
+- **HTTP Chunked Streaming (`<Suspense>`)**: Elke route streamt asynchrone serverdata achter een op maat gemaakt, CLS-vrij skeleton-component.
+- **Zero-Waterfall Data Fetching**: Request deduplicatie via `React.cache()` tussen metadata- en pagina-rendering en parallelle queries via `Promise.all`.
+- **100% Type-Safety & Veiligheid**: Geen `as any` casts, centrale environment-validatie in `lib/env.ts` en verplichte HTML-sanitization via `isomorphic-dompurify`.
+
+---
+
+## 🗺️ Ontwikkelstatus & Roadmap
+
+Hieronder staat het actuele overzicht van afgeronde mijlpalen (`Done`), lopende verfijningen (`In Progress`) en geplande stappen richting livegang (`To Do`):
+
+| Onderdeel | Status | Omschrijving |
 | :--- | :---: | :--- |
-| **Componenten-Architectuur** | 🟢 `Done` | Strikt opgedeeld in een **Driepijler-architectuur**: `UI` (primitives), `Blocks` (Contentstack Modular Blocks) en `Features` (Pages, Portfolio, Analytics). |
-| **Headless CMS Integratie** | 🟢 `Done` | Contentstack Delivery SDK gekoppeld met dynamische pagina-rendering (`[...slug]`), Visual Builder en Live Preview ondersteuning. |
-| **Next.js & Performance** | 🟢 `Done` | Next.js 16 (Turbopack) geoptimaliseerd met AVIF/WebP beeldconversie, 30 dagen asset-caching en server-side API fetch logging. |
-| **Typografie & Google Fonts** | 🟢 `Done` | `Outfit`, `Newsreader` en `Cascadia Mono` geïntegreerd via `next/font/google` met correcte monospace fallbacks en Tailwind `@theme` variabelen. |
-| **DevOps & CI Pipeline** | 🟢 `Done` | Geautomatiseerde continuous integration via GitHub Actions (`ci.yml`) met ESLint, TypeScript type-check en build-validatie met repository secrets. |
-| **Root Opschoning** | 🟢 `Done` | Overbodige Kickstart template-bestanden (`package-lock.json`, Talisman, lege scripts, corporate scans) verwijderd; volledig gemigreerd naar `pnpm`. |
-| **Styling & Responsive Finetuning** | 🟡 `In Progress` | Optimaliseren van Tailwind CSS v4 syntax (`grow`, `aspect-16/10`, `h-*`), mobiele layout-uitlijning en dark-mode kleurenharmonie. |
-| **Data Typering & Architectuur** | 🟢 `Completed` | Monolithische `lib/types.ts` gemoduleerd naar een domeingestuurde structuur in `lib/types/` (`core`, `blocks`, `pages`, `index`). |
-| **Next.js Beveiligingsupdate** | 🟢 `Completed` | Upgraded van Next.js `16.4.0` naar `16.4.3` met Turbopack en Node 22 LTS ondersteuning. |
-| **Foutafhandeling & 404** | 🟢 `Completed` | Huisstijl-conforme `app/not-found.tsx` en `app/error.tsx` met error boundaries en herstelacties geïmplementeerd. |
-| **AI Agent Discovery (ARD)** | 🟢 `Completed` | `ai-catalog.json` (ARD-specificatie) en `llms.txt` met open CORS-headers geconfigureerd voor autonome AI-agents. |
-| **Google Analytics & Tag Manager** | 🔴 `To Do` | GTM container (`@next/third-parties/google`) en Google Analytics 4 (GA4) volledig en betrouwbaar inrichten: dataLayer pageview tracking bij client-side navigatie, custom event tracking en consent mode. |
-| **SEO, Metadata & A11y** | 🔴 `To Do` | Paginabrede koppenhiërarchie valideren, gestructureerde data (Schema.org JSON-LD) uitbreiden en Lighthouse audits uitvoeren. |
-| **Productie Deployment** | 🔴 `To Do` | Definitieve livegang via Vercel met productie environment variables en custom domain koppeling. |
+| **Driepijler Component-Architectuur** | ✅ `Done` | Strikte scheiding tussen `ui/` (Design System primitives), `blocks/` (Contentstack Modular Blocks) en `features/` (`analytics`, `pages`, `portfolio`) met expliciete barrel-exports. |
+| **Headless CMS & Visual Builder** | ✅ `Done` | Contentstack Delivery SDK v5 gekoppeld met Live Preview v4 (`$`), `VB_EmptyBlockParentClass` en `skipInitialRender` voor real-time editing zonder dubbele client-fetches. |
+| **RSC Streaming & Waterfall Preventie** | ✅ `Done` | Symmetrische route-shells (`/`, `/[...slug]`, `/portfolio/[slug]`) met `<Suspense>` streaming, CLS-vrije skeletons (`HomePageSkeleton`, `PageSkeleton`, `PortfolioDetailSkeleton`), `React.cache()` deduplicatie en `Promise.all` sitemap-queries. |
+| **Centrale Environment (`lib/env.ts`)** | ✅ `Done` | Type-veilige single source of truth (`env` & `getSiteUrl()`) voor alle Contentstack-, GTM- en site-URL variabelen; `0` losse `process.env` aanroepen buiten `lib/env.ts`. |
+| **Strikte TypeScript Type-Safety** | ✅ `Done` | Domein-gedreven interfaces in `lib/types/` (`core`, `blocks`, `pages`) met **0 `as any` casts** in de gehele codebase en 100% `DOMPurify` Rich Text sanitization. |
+| **Analytics & Google Consent Mode v2** | ✅ `Done` | AVG/GDPR-conforme cookiebanner (`CookieConsent` op Headless UI v2), synchrone Consent Mode v2 initialisatie en verrijkte GTM `page_view` events (`page_type`, `theme_mode`, `content_language`). |
+| **Design System, Fonts & Dark Mode** | ✅ `Done` | Tailwind CSS v4 `@theme` design tokens, `Outfit`, `Newsreader` & `Cascadia Mono` via `next/font/google`, en SSR-veilige `ColorModeSelector` via `useSyncExternalStore`. |
+| **Foutafhandeling & AI Discovery (ARD)** | ✅ `Done` | Huisstijl-conforme `app/not-found.tsx` & `app/error.tsx` boundaries, dynamische `sitemap.xml` / `robots.txt`, plus `ai-catalog.json` en `llms.txt` met open CORS-headers. |
+| **DevOps & CI/CD Pipeline** | ✅ `Done` | GitHub Actions workflow (`ci.yml`) op Node 22 LTS & `pnpm` met geautomatiseerde ESLint 9, `tsc --noEmit` en Next.js 16 productiebuild-validatie. |
+| **UI/UX & Responsive Finetuning** | 🔄 `In Progress` | Verfijnen van Tailwind CSS v4 spacing, mobiele layout-uitlijning, typografische schalen en dark-mode contrasten over alle modulaire blokken. |
+| **Code Hygiene & JSDoc Standaardisatie** | 🔄 `In Progress` | Opschonen van resterende legacy inline-comments in oudere `components/blocks/items/` en `components/ui/` bestanden conform de Zero-Comment standaard. |
+| **SEO, Structured Data & Lighthouse** | 📋 `To Do` | Uitbreiden van Schema.org JSON-LD (naast `BreadcrumbList` ook `Person` / `CreativeWork`), valideren van koppenhiërarchie en 95–100 Lighthouse scores borgen. |
+| **Productie Deployment & Domein** | 📋 `To Do` | Definitieve livegang op Vercel met productie environment variables, Contentstack webhook-koppeling en domein-cutover naar `edwinschipper.nl`. |
 
 ---
 
-## 🏛️ Architectuur: Drie Pijlers & Domein Types
+## 🏛️ Architectuur & Mappenstructuur
 
-De codebase volgt een strikte scheiding van verantwoordelijkheden over presentatie, CMS-modellen en domein-types:
+De codebase volgt een strikte scheiding tussen route-shells, domein-features, CMS-blokken, UI-primitives en server-bibliotheken:
 
 ```text
+app/
+├── layout.tsx              # Pure root presentatie-shell (Fonts, GTMPageTracker, Header, Footer, CookieConsent)
+├── page.tsx                # Homepage route-shell (<Suspense fallback={<HomePageSkeleton />}>)
+├── [...slug]/page.tsx      # Dynamische CMS subpagina route-shell (<Suspense fallback={<PageSkeleton />}>)
+├── portfolio/[slug]/       # Portfolio case-study detail route-shell (<Suspense fallback={<PortfolioDetailSkeleton />}>)
+├── sitemap.ts              # Parallelle (Promise.all) XML-sitemap generator met .only() velden-optimalisatie
+└── robots.ts               # Dynamische robots.txt configuratie gekoppeld aan env.siteUrl
+
 lib/
-├── cms/        # Contentstack SDK client, Live Preview & queries (client.ts, queries.ts)
-├── layout/     # Design tokens, grid spans & layout helpers (tokens.ts, helpers.ts)
-├── metadata/   # SEO OpenGraph builders & route resolvers (builders.ts, resolvers.ts)
-├── types/      # Domeinmodellen & CMS-primitives (core.ts, blocks.ts, pages.ts)
-└── index.ts    # Centrale barrel re-export (@/lib)
+├── env.ts                  # Centrale, strikt getypeerde environment configuratie (env & getSiteUrl)
+├── cms/                    # Contentstack SDK v5 client, Live Preview v4 init & React.cache() queries
+├── layout/                 # Design tokens, grid-spans & semantische heading helpers
+├── metadata/               # SEO OpenGraph builders & route-specifieke metadata resolvers
+├── types/                  # Domeinmodellen & CMS-interfaces (core.ts, blocks.ts, pages.ts)
+└── index.ts                # Centrale barrel export (@/lib)
 
 components/
-├── ui/         # Design System primitives & presentational componenten
-│               # (Button, Label, Icon, Breadcrumbs, Header, Footer)
-│               # -> Volledig ontkoppeld van CMS-logica of schema's
-│
-├── blocks/     # Contentstack Modular Blocks & BlockRenderer
+├── ui/                     # Design System primitives & globale navigatie
+│                           # (Button, Label, Icon, Breadcrumbs, ColorModeSelector, Toast, Header, Footer)
+├── blocks/                 # Contentstack Modular Blocks & automatische BlockRenderer registry
 │   ├── BlockRenderer.tsx
-│   ├── items/  # HeroBlock, CtaBlock, ResumeSection, GridSection, CardSection, etc.
+│   ├── items/              # HeroBlock, CtaBlock, ResumeSection, GridSection, CardSection,
+│   │                       # FeaturedProjectsBlock, ExperienceTimelineBlock, NumberedSection,
+│   │                       # ServiceCardBlock, ContentBlock
 │   └── index.ts
-│               # -> 1-op-1 gekoppeld aan Contentstack Modular Block entries en Visual Builder
-│
-├── features/   # Zelfstandige domeinfunctionaliteiten & pagina-modules
-│   ├── analytics/  # GTM tracking feature (GTMPageTracker)
-│   ├── pages/      # Pagina-level weergaves & preview handlers (HomePage, Page, Preview)
-│   ├── portfolio/  # Portfolio detailweergave, previews, filters en techstack
-│   └── index.ts
-│
-└── index.ts    # Centrale barrel export (ui, blocks, features)
+├── features/               # Zelfvoorzienende domeinmodules
+│   ├── analytics/          # Google Consent Mode v2 & GTM (GTMPageTracker, CookieConsent, CookieSettingsButton)
+│   ├── pages/              # Pagina-containers, Live Preview wrapper & skeletons (HomePage, Page, Preview)
+│   └── portfolio/          # Case-study detailweergave, techstack & skeletons (PortfolioDetail, PortfolioPreview)
+└── index.ts                # Centrale barrel export (@/components)
 ```
 
 ---
 
-## 🚀 Aan de slag (Getting Started)
+## 🚀 Aan de Slag (Getting Started)
 
-### Vereisten (Prerequisites)
+### 1. Vereisten & Installatie
 
-* **Node.js**: v20+ (aanbevolen: v22 LTS)
-* **Package Manager**: [pnpm](https://pnpm.io/) v10+
-
-### 1. Repository klonen & dependencies installeren
+Zorg dat **Node.js v20+** (aanbevolen: **v22 LTS**) en **[pnpm](https://pnpm.io/) v10+** zijn geïnstalleerd:
 
 ```bash
 git clone https://github.com/EdwinSchipper/Portfolio-Nextjs.git
@@ -86,23 +95,27 @@ cd Portfolio-Nextjs
 pnpm install
 ```
 
-### 2. Lokale environment variables instellen
+### 2. Omgevingsvariabelen (`.env.local`)
 
-Maak een lokaal omgevingsbestand aan in de root (`.env.local`):
+Kopieer het meegeleverde voorbeeldbestand [`.env.example`](.env.example) naar `.env.local` en vul de waarden in:
 
-```env
-NEXT_PUBLIC_CONTENTSTACK_API_KEY=jouw_api_key
-NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN=jouw_delivery_token
-NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN=jouw_preview_token
-NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT=preview
-NEXT_PUBLIC_CONTENTSTACK_REGION=EU
-NEXT_PUBLIC_CONTENTSTACK_PREVIEW=true
-NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME=eu-images.contentstack.com
-NEXT_PUBLIC_GTM_ID=GTM-MPHNZZW4
-NEXT_PUBLIC_SITE_URL=https://www.edwinschipper.nl
+```bash
+cp .env.example .env.local
 ```
 
-### 3. Development server starten
+| Variabele | Scope | Verplicht | Toelichting |
+| :--- | :---: | :---: | :--- |
+| `NEXT_PUBLIC_CONTENTSTACK_API_KEY` | Client & Server | Ja | Unieke identifier van de Contentstack Stack. |
+| `NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN` | Client & Server | Ja | Read-only Delivery Token voor gepubliceerde content. |
+| `NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN` | Client & Server | Nee | Preview Token voor Contentstack Live Preview & Visual Builder. |
+| `NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT` | Client & Server | Ja | Doelomgeving in Contentstack (bijv. `production` of `preview`). |
+| `NEXT_PUBLIC_CONTENTSTACK_REGION` | Client & Server | Nee | Datacenter-regio (`EU`, `NA` of `AZURE_NA`; standaard `EU`). |
+| `NEXT_PUBLIC_CONTENTSTACK_PREVIEW` | Client & Server | Nee | Schakelt Live Preview / Visual Builder in (`true` of `false`). |
+| `NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME` | Build / Next.js | Nee | Extra toegestane CDN-hostname voor `next/image` optimalisatie. |
+| `NEXT_PUBLIC_SITE_URL` | Client & Server | Nee | Canonieke basis-URL; valt automatisch terug op Vercel-URL of `https://www.edwinschipper.nl`. |
+| `NEXT_PUBLIC_GTM_ID` | Client & Server | Nee | Google Tag Manager Container ID (bijv. `GTM-XXXXXXX`). |
+
+### 3. Development Server Starten
 
 ```bash
 pnpm dev
@@ -116,44 +129,35 @@ Open [http://localhost:3000](http://localhost:3000) in je browser.
 
 | Commando | Omschrijving |
 | :--- | :--- |
-| `pnpm dev` | Start de Next.js development server met Turbopack hot-reloading |
-| `pnpm build` | Bouwt de geoptimaliseerde productie-bundel en valideert alle routes |
-| `pnpm start` | Start de gebouwde productie-server lokaal |
-| `pnpm run lint` | Controleert de codekwaliteit met ESLint 9 |
-| `pnpm run type-check` | Valideert alle TypeScript types zonder bestanden te emitteren (`tsc --noEmit`) |
+| `pnpm dev` | Start de lokale Next.js 16 development server met Turbopack |
+| `pnpm build` | Compileert de geoptimaliseerde productiebuild en valideert alle routes |
+| `pnpm start` | Start de gecompileerde productie-server lokaal |
+| `pnpm lint` | Controleert de codekwaliteit en import-integriteit met ESLint 9 |
+| `pnpm type-check` | Valideert alle TypeScript-types strikt zonder bestanden te emitteren (`tsc --noEmit`) |
 
 ---
 
-## 🔄 DevOps & CI/CD Pipeline
+## 🔄 DevOps, CI/CD & Quality Gate
 
-Het project maakt gebruik van geautomatiseerde kwaliteitscontroles via **GitHub Actions** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+Elke push en Pull Request naar `main`, `master` of `development` wordt automatisch gevalideerd via **GitHub Actions** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)):
 
-Bij elke push en pull request naar `main`, `master` of `development` draait de pipeline automatisch de volgende checks:
-
-1. **Installatie**: `pnpm install --frozen-lockfile` met Node.js 22 LTS caching.
-2. **Code Linting**: `pnpm run lint` (ESLint 9).
-3. **Type Safety**: `pnpm run type-check` (TypeScript 5).
-4. **Productie Build**: `pnpm run build` (Next.js 16 compilatie met veilige repository secrets).
-
-### Vereiste GitHub Secrets
-Voor het succesvol draaien van de CI-pipeline zijn de volgende **Repository Secrets** geconfigureerd in GitHub (*Settings ➔ Secrets and variables ➔ Actions*):
-* `NEXT_PUBLIC_CONTENTSTACK_API_KEY`
-* `NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN`
-* `NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN`
+1. **Dependency Integriteit**: `pnpm install --frozen-lockfile` op Node.js 22 LTS.
+2. **Code Linting**: `pnpm run lint` (ESLint 9 flat config, `0` warnings toegestaan).
+3. **Strikte Type-Safety**: `pnpm run type-check` (`tsc --noEmit`, `0` errors en `0` `as any` casts).
+4. **Productie Build**: `pnpm run build` (Next.js 16 Turbopack compilatie met geconfigureerde repository secrets).
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Framework:** [Next.js 16](https://nextjs.org) (App Router, Turbopack)
-* **UI Library:** [React 19](https://react.dev)
-* **Headless CMS:** [Contentstack](https://www.contentstack.com) (Delivery SDK v5 & Live Preview Utils)
-* **Styling:** [Tailwind CSS v4](https://tailwindcss.com) (`@tailwindcss/postcss`)
-* **Typografie:** [Google Fonts](https://fonts.google.com) (`Outfit`, `Newsreader`, `Cascadia Mono`) via `next/font`
-* **Taal:** [TypeScript 5](https://www.typescriptlang.org) (Strict mode)
-* **DevOps & CI:** [GitHub Actions](https://github.com/features/actions)
-* **Package Manager:** [pnpm v10](https://pnpm.io/)
-* **Analytics:** Google Tag Manager (`@next/third-parties/google`)
+| Categorie | Technologie |
+| :--- | :--- |
+| **Framework & Runtime** | [Next.js 16.4](https://nextjs.org) (App Router, Turbopack, RSC Streaming), [React 19.3](https://react.dev), [TypeScript 5](https://www.typescriptlang.org) (`strict`) |
+| **Styling & UI Primitives** | [Tailwind CSS v4](https://tailwindcss.com) (`@tailwindcss/postcss`), [Headless UI v2](https://headlessui.com), [Heroicons v2](https://heroicons.com) |
+| **Typografie** | [Google Fonts](https://fonts.google.com) (`Outfit`, `Newsreader`, `Cascadia Mono`) via `next/font/google` |
+| **Headless CMS & Security** | [Contentstack Delivery SDK v5](https://www.contentstack.com), Live Preview Utils v4, `isomorphic-dompurify` |
+| **Analytics & Privacy** | Google Tag Manager (`@next/third-parties/google`), Google Consent Mode v2 |
+| **Tooling & CI/CD** | [pnpm v10](https://pnpm.io/), ESLint 9, GitHub Actions, Vercel |
 
 ---
 

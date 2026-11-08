@@ -1,7 +1,11 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPortfolioItemByUrl, isPreview } from "@/lib/cms";
+import {
+  getPortfolioItemByUrl,
+  getPortfolioRouteStaticParams,
+  isPreview,
+} from "@/lib/cms";
 import { getPortfolioRouteMetadata } from "@/lib/metadata";
 import {
   PortfolioDetail,
@@ -9,7 +13,11 @@ import {
   PortfolioDetailSkeleton,
 } from "@/components/features/portfolio";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return getPortfolioRouteStaticParams();
+}
 
 export async function generateMetadata({
   params,

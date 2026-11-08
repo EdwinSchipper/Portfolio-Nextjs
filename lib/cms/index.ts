@@ -21,4 +21,8 @@ export {
   getPortfolioItemByUrl,
   getAllPageUrls,
   getAllPortfolioUrls,
+  getDynamicRouteStaticParams,
+  getPortfolioRouteStaticParams,
 } from "./queries";
+
+export type { EntryUrlRecord } from "./queries";

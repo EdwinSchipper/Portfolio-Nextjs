@@ -1,6 +1,25 @@
 import type { MetadataRoute } from "next";
-import { getAllPageUrls, getAllPortfolioUrls } from "@/lib/cms";
+import { getAllPageUrls, getAllPortfolioUrls, type EntryUrlRecord } from "@/lib/cms";
 import { env } from "@/lib/env";
+
+function toSitemapEntries(
+  records: EntryUrlRecord[],
+  baseUrl: string,
+  priority: number
+): MetadataRoute.Sitemap {
+  return records.flatMap(({ url, updatedAt }) =>
+    url && url !== "/"
+      ? [
+          {
+            url: `${baseUrl}${url.startsWith("/") ? url : `/${url}`}`,
+            lastModified: updatedAt ? new Date(updatedAt) : new Date(),
+            changeFrequency: "monthly" as const,
+            priority,
+          },
+        ]
+      : []
+  );
+}
 
 /**
  * Next.js Dynamic Sitemap generator
@@ -10,43 +29,19 @@ import { env } from "@/lib/env";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = env.siteUrl;
 
-  const entries: MetadataRoute.Sitemap = [
+  const [pages, portfolioItems] = await Promise.all([
+    getAllPageUrls(),
+    getAllPortfolioUrls(),
+  ]);
+
+  return [
     {
       url: `${baseUrl}/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
     },
+    ...toSitemapEntries(pages, baseUrl, 0.8),
+    ...toSitemapEntries(portfolioItems, baseUrl, 0.7),
   ];
-
-  const [pages, portfolioItems] = await Promise.all([
-    getAllPageUrls(),
-    getAllPortfolioUrls(),
-  ]);
-
-  pages.forEach((page) => {
-    if (page.url && page.url !== "/") {
-      const cleanPath = page.url.startsWith("/") ? page.url : `/${page.url}`;
-      entries.push({
-        url: `${baseUrl}${cleanPath}`,
-        lastModified: page.updatedAt ? new Date(page.updatedAt) : new Date(),
-        changeFrequency: "monthly",
-        priority: 0.8,
-      });
-    }
-  });
-
-  portfolioItems.forEach((item) => {
-    if (item.url) {
-      const cleanPath = item.url.startsWith("/") ? item.url : `/${item.url}`;
-      entries.push({
-        url: `${baseUrl}${cleanPath}`,
-        lastModified: item.updatedAt ? new Date(item.updatedAt) : new Date(),
-        changeFrequency: "monthly",
-        priority: 0.7,
-      });
-    }
-  });
-
-  return entries;
 }

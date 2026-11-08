@@ -1,11 +1,15 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPage, isPreview } from "@/lib/cms";
+import { getDynamicRouteStaticParams, getPage, isPreview } from "@/lib/cms";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
 import { Page, PageSkeleton, Preview } from "@/components/features/pages";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
+export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
+  return getDynamicRouteStaticParams();
+}
 
 export async function generateMetadata({
   params,

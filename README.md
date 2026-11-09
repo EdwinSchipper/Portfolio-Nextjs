@@ -51,9 +51,9 @@ De codebase volgt een strikte scheiding tussen route-shells, domein-features, CM
 ```text
 app/
 ├── layout.tsx              # Pure root presentatie-shell (Fonts, GTMPageTracker, Header, Footer, CookieConsent)
-├── page.tsx                # Homepage route-shell (<Suspense fallback={<HomePageSkeleton />}>)
-├── [...slug]/page.tsx      # Dynamische CMS subpagina route-shell (<Suspense fallback={<PageSkeleton />}>)
-├── portfolio/[slug]/       # Portfolio case-study detail route-shell (<Suspense fallback={<PortfolioDetailSkeleton />}>)
+├── (home)/                 # Homepage route-group (page.tsx & loading.tsx met HomePageSkeleton)
+├── [...slug]/              # Dynamische CMS subpagina's (page.tsx & loading.tsx met PageSkeleton)
+├── portfolio/[slug]/       # Portfolio case-study detail (page.tsx & loading.tsx met PortfolioDetailSkeleton)
 ├── sitemap.ts              # Parallelle (Promise.all) XML-sitemap generator met .only() velden-optimalisatie
 └── robots.ts               # Dynamische robots.txt configuratie gekoppeld aan env.siteUrl
 

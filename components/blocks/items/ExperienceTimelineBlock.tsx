@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ExperienceTimelineBlock as ExperienceTimelineBlockType,
+  ResumeSectionBlock,
   CSLPAttribute,
 } from "@/lib/types";
 import ResumeSection from "./ResumeSection";
@@ -20,15 +21,13 @@ export default function ExperienceTimelineBlock({
   previewAttr,
   className = "",
 }: ExperienceTimelineBlockProps) {
-  // Gracefully support both direct properties and nested modular block instances
-  const timelineData: ExperienceTimelineBlockType =
+  const nestedTimeline = data.experience_timeline;
+  const timelineData: ResumeSectionBlock =
     data.companies || data.section_title
       ? data
-      : Array.isArray(data.experience_timeline)
-      ? data.experience_timeline[0]?.experience_timeline ||
-        data.experience_timeline[0] ||
-        data
-      : data.experience_timeline || data;
+      : Array.isArray(nestedTimeline)
+        ? { companies: nestedTimeline, $: data.$ }
+        : nestedTimeline || data;
 
   return (
     <ResumeSection

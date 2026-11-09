@@ -28,13 +28,13 @@ export type IconVariant = "outline" | "solid" | "mini" | "micro";
 export type IconSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "custom";
 
 export const iconSizeStyles: Record<IconSize, string> = {
-  xs: "w-3.5 h-3.5",   // 14px - breadcrumbs, micro badges, pills
-  sm: "w-4 h-4",       // 16px - compact buttons, meta tags
-  md: "w-5 h-5",       // 20px - standard buttons, navigation
-  lg: "w-6 h-6",       // 24px - standard 24px heroicons, card headers
-  xl: "w-8 h-8",       // 32px - feature highlights
-  "2xl": "w-10 h-10",  // 40px - hero sections, service badges
-  custom: "",          // purely controlled by className
+  xs: "w-3.5 h-3.5",
+  sm: "w-4 h-4",
+  md: "w-5 h-5",
+  lg: "w-6 h-6",
+  xl: "w-8 h-8",
+  "2xl": "w-10 h-10",
+  custom: "",
 };
 
 export type IconComponent = React.ComponentType<
@@ -69,7 +69,7 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, "ref"> {
   /**
    * Contentstack Live Preview and Visual Builder attributes (`data-cslp`).
    */
-  cslp?: CSLPAttribute | Record<string, any>;
+  cslp?: CSLPAttribute;
   /**
    * Accessible text. If provided, sets `role="img"` and `aria-label`.
    * If omitted, the icon is marked `aria-hidden="true"` as decorative.
@@ -85,7 +85,10 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, "ref"> {
 /**
  * Map of icon libraries indexed by variant.
  */
-const variantIconLibraries: Record<IconVariant, Record<string, any>> = {
+const variantIconLibraries: Record<
+  IconVariant,
+  Record<string, IconComponent | undefined>
+> = {
   outline: OutlineIcons,
   solid: SolidIcons,
   mini: MiniIcons,
@@ -102,12 +105,10 @@ export function normalizeIconName(name: string): string {
   const trimmed = name.trim();
   if (!trimmed) return "";
 
-  // Strip trailing "-icon", "_icon", or "Icon"
   const clean = trimmed
     .replace(/[-_]icon$/i, "")
     .replace(/Icon$/, "");
 
-  // Convert kebab-case, snake_case, or spaced words to PascalCase
   const pascal = clean
     .split(/[-_\s]+/)
     .filter(Boolean)
@@ -130,18 +131,15 @@ export function resolveIconComponent(
 
   const library = variantIconLibraries[variant] || OutlineIcons;
 
-  // 1. Exact match (e.g. "ArrowRightIcon")
   if (library[name]) {
-    return library[name];
+    return library[name] ?? null;
   }
 
-  // 2. Normalized PascalCase match (e.g. "arrow-right" -> "ArrowRightIcon")
   const normalized = normalizeIconName(name);
   if (library[normalized]) {
-    return library[normalized];
+    return library[normalized] ?? null;
   }
 
-  // 3. Fallback to outline library if not found in requested variant
   if (variant !== "outline" && OutlineIcons[normalized as keyof typeof OutlineIcons]) {
     return OutlineIcons[normalized as keyof typeof OutlineIcons];
   }
@@ -184,7 +182,6 @@ export default function Icon({
   const sizeClass = iconSizeStyles[size] || "";
   const combinedClassName = `shrink-0 inline-block ${sizeClass} ${className}`.trim();
 
-  // Accessibility: decorative by default unless a label/title is explicitly provided
   const accessibilityProps = label
     ? {
         role: "img",

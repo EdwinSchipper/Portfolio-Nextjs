@@ -1,4 +1,5 @@
 import React from "react";
+import type { CSLPAttribute } from "@/lib/types";
 
 export type LabelVariant = "brand" | "numbered" | "pill" | "muted";
 
@@ -6,7 +7,7 @@ export interface LabelProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
   variant?: LabelVariant;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
   as?: "span" | "div" | "p";
 }
 
@@ -52,7 +53,6 @@ export default function Label({
 }: LabelProps) {
   if (!children) return null;
 
-  // Auto-detect numbered pattern when children is a string
   const isString = typeof children === "string";
   const hasNumberedPattern = isString && /^(\d+)\s*[-—]\s*(.+)$/.test(children);
 

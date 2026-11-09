@@ -68,7 +68,6 @@ export default function Footer() {
       <div className="md:px-20 lg:px-12 pb-0 lg:pb-12">
         <div className="bg-background-200 dark:bg-background-900 md:rounded-md border border-border-100/50 dark:border-border-200/50 py-14 md:py-20 px-10 md:px-20 lg:px-12">
           <div className="max-w-7xl mx-auto">
-            {/* CTA Header Row */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between pb-14 md:pb-20">
               <div>
                 <Label variant="brand">Laten we kennismaken</Label>
@@ -92,10 +91,8 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Separator */}
             <div className="w-full h-px bg-border-100 dark:bg-border-200 mb-14 md:mb-20" />
 
-            {/* Navigation Columns */}
             <nav aria-label="Footer navigatie" className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12 max-w-4xl">
               {footerSections.map((section) => (
                 <div key={section.title}>
@@ -133,7 +130,6 @@ export default function Footer() {
               ))}
             </nav>
 
-            {/* Bottom Bar */}
             <div className="border-t border-border-100 dark:border-border-200 pt-6 lg:pt-10 flex flex-col lg:flex-row items-start lg:items-center justify-start gap-3 lg:gap-6 mt-14 md:mt-20 text-noteM md:text-note text-content-100/70 dark:text-content-200/50 font-normal">
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                 <span>© {currentYear} Edwin Schipper</span>

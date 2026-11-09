@@ -101,7 +101,6 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
     homepage?.meta_title ||
     homepage?.seo_title;
 
-  // If the Contentstack title is just "homepage" or "Homepage", provide a rich fallback
   const isGenericTitle =
     !metaTitle &&
     (!homepage?.title || homepage.title.toLowerCase().trim() === "homepage");

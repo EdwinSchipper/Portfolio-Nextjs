@@ -1,10 +1,10 @@
-import { Blocks } from "@/lib/types";
+import { Blocks, CSLPContainer } from "@/lib/types";
 import { BLOCK_COMPONENTS } from "./items";
 
 interface BlockRendererProps {
   block: Blocks;
   index: number;
-  pagePreviewAttr?: Record<string, any>;
+  pagePreviewAttr?: CSLPContainer;
 }
 
 /**
@@ -18,7 +18,6 @@ export default function BlockRenderer({
 }: BlockRendererProps) {
   const blockPreviewAttr = pagePreviewAttr?.[`blocks__${index}`];
 
-  // Zoek het type van het blok op in de registry
   const blockType = Object.keys(block).find((key) => BLOCK_COMPONENTS[key]);
   if (!blockType) return null;
 
@@ -27,7 +26,7 @@ export default function BlockRenderer({
 
   return (
     <Component
-      data={blockData}
+      data={blockData as never}
       previewAttr={blockPreviewAttr}
     />
   );

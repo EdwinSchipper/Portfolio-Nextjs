@@ -7,7 +7,7 @@ const eslintConfig = [
   ...typescript,
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-explicit-any": "error",
     },
   },
 ];

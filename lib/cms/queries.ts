@@ -69,18 +69,6 @@ async function withServerCache<T>(
 }
 
 /**
- * Rethrows Contentstack failures on the server so Next.js ISR keeps serving the last
- * successfully generated page instead of caching an empty page or a 404. In the browser
- * (Live Preview) the fallback value is returned so the editor UI stays responsive.
- */
-function rethrowOnServer<T>(error: unknown, browserFallback: T): T {
-  if (typeof window === "undefined") {
-    throw error;
-  }
-  return browserFallback;
-}
-
-/**
  * Shared generic entry fetcher that consolidates configuration checks, server caching,
  * optional reference inclusion, URL filtering, and Live Preview editable tags.
  */
@@ -117,7 +105,7 @@ async function fetchSingleEntry<T extends { uid: string }>(
         `[Contentstack] Failed to fetch "${contentType}"${url ? ` for url "${url}"` : ""}:`,
         error
       );
-      return rethrowOnServer(error, undefined);
+      return undefined;
     }
   });
 }
@@ -146,7 +134,7 @@ async function fetchEntryUrls(
       }));
     } catch (error) {
       console.error(`[Contentstack] Failed to fetch URLs for "${contentType}":`, error);
-      return rethrowOnServer(error, []);
+      return [];
     }
   });
 }

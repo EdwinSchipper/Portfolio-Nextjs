@@ -11,5 +11,6 @@ export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as Header } from "./Header";
 export { default as Footer } from "./Footer";
 export { default as ColorModeSelector } from "./ColorModeSelector";
+export { default as NavigationProgress } from "./NavigationProgress";
 export { default as Icon } from "./Icon";
 export type { IconProps, IconName, IconVariant, IconSize, KnownHeroIconName } from "./Icon";

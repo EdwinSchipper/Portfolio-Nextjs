@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDynamicRouteStaticParams, getPage, isPreview } from "@/lib/cms";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
-import { Page, Preview } from "@/components/features/pages";
+import { Page, PageSkeleton, Preview } from "@/components/features/pages";
 
 export const revalidate = 60;
 
@@ -22,6 +23,15 @@ export async function generateMetadata({ params }: DynamicRouteProps): Promise<M
 export default async function DynamicRoute({ params }: DynamicRouteProps) {
   const { slug } = await params;
   const path = `/${slug.join("/")}`;
+
+  return (
+    <Suspense key={path} fallback={<PageSkeleton />}>
+      <DynamicRouteContent path={path} />
+    </Suspense>
+  );
+}
+
+async function DynamicRouteContent({ path }: { path: string }) {
   const page = await getPage(path);
 
   if (!page) {

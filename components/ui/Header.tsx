@@ -87,7 +87,6 @@ export default function Header() {
   const [isExpertiseOpen, setIsExpertiseOpen] = useState(false);
   const expertiseRef = useRef<HTMLLIElement>(null);
 
-  // Close menus on route change without triggering effect cascades
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
@@ -95,7 +94,6 @@ export default function Header() {
     setIsExpertiseOpen(false);
   }
 
-  // Close dropdown on outside click or ESC key
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -121,7 +119,6 @@ export default function Header() {
     };
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -138,12 +135,10 @@ export default function Header() {
           className="mx-auto flex max-w-7xl items-center justify-between md:py-8 md:px-8 p-6 md:p-0"
           aria-label="Global"
         >
-          {/* Logo */}
           <div className="flex lg:flex-1">
             <HeaderLogo priority />
           </div>
 
-          {/* Mobile Right Controls */}
           <div className="flex lg:hidden gap-3 lg:gap-1.5 items-center">
             <ColorModeSelector />
 
@@ -157,10 +152,8 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Desktop Nav Items */}
           <div className="hidden lg:flex lg:gap-x-12 font-content">
             <ul className="flex items-center gap-x-2 lg:gap-x-0.5">
-              {/* Expertise Popover */}
               <li className="relative" ref={expertiseRef}>
                 <button
                   type="button"
@@ -198,7 +191,6 @@ export default function Header() {
                 )}
               </li>
 
-              {/* Main Menu Links */}
               {mainNavItems.map((item) => {
                 const isActive = pathname.startsWith(item.href);
                 return (
@@ -216,7 +208,6 @@ export default function Header() {
             </ul>
           </div>
 
-          {/* Desktop Right Side */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-2.5 items-center">
             <ColorModeSelector />
             <div className="h-11 w-0.5 bg-border-100 dark:bg-border-200/60 mx-2.5" />
@@ -227,20 +218,16 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Mobile Slide-Over Menu (Bottom Sheet) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-background-900/40 dark:bg-background-200/20 backdrop-blur-sm transition-opacity"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Slideover panel */}
           <div className="relative z-10 w-full max-h-[95vh] focus:outline-none p-3 mt-auto">
             <div className="bg-background-200 dark:bg-background-900 rounded-2xl overflow-y-auto ring-1 ring-border-100/50 dark:ring-border-200/50 p-6 flex flex-col gap-6 shadow-2xl">
-              {/* Header inside slideover */}
               <div className="flex items-center justify-between pb-4 border-b border-border-100 dark:border-border-200">
                 <HeaderLogo onClick={() => setIsOpen(false)} />
                 <button
@@ -253,7 +240,6 @@ export default function Header() {
                 </button>
               </div>
 
-              {/* Navigation Links inside slideover */}
               <div className="flex flex-col gap-5 font-content">
                 <div>
                   <span className="block text-accent7-900 dark:text-accent8-900 text-xs font-semibold uppercase tracking-wider mb-2">
@@ -289,7 +275,6 @@ export default function Header() {
                   ))}
                 </div>
 
-                {/* Contact CTA */}
                 <div className="pt-4 border-t border-border-100 dark:border-border-200 flex flex-col gap-3">
                   <Button
                     href="/contact"

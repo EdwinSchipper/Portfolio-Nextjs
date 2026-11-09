@@ -9,6 +9,7 @@ import {
   SocialLink,
   GridSocials as GridSocialsType,
   CSLPAttribute,
+  CSLPContainer,
 } from "@/lib/types";
 import { Button, Label, Icon } from "@/components/ui";
 import { getContainerClass, getColorModeClass, colSpans, getHeadingTag } from "@/lib/layout";
@@ -17,7 +18,7 @@ export interface GridQuoteProps {
   quote?: string;
   children?: React.ReactNode;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }
 
 export function GridQuote({
@@ -54,13 +55,13 @@ export function GridQuote({
 
 export interface GridCardProps {
   card?: GridCardType;
-  image?: { url?: string; title?: string; $?: any };
+  image?: { url?: string; title?: string; $?: CSLPContainer };
   tag?: string;
   title?: string;
   text?: string;
   description?: string;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPContainer;
 }
 
 export function GridCard({
@@ -120,7 +121,7 @@ export interface GridCardsProps {
   cards?: GridCardType[];
   children?: React.ReactNode;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }
 
 export function GridCards({
@@ -149,7 +150,7 @@ export function GridCards({
 export interface GridTimelineProps {
   timeline?: TimelineCompany[] | { companies?: TimelineCompany[] } | null;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }
 
 export function GridTimeline({
@@ -159,7 +160,6 @@ export function GridTimeline({
 }: GridTimelineProps) {
   if (!timeline) return null;
 
-  // Support both multiple group array and single group wrapper { companies: [...] }
   const companies: TimelineCompany[] = Array.isArray(timeline)
     ? timeline
     : Array.isArray(timeline.companies)
@@ -203,7 +203,6 @@ export function GridTimeline({
                 className="pl-8 lg:pl-10 relative last:pb-0 group calender-company-row transition-all duration-300"
                 {...(company.$ && (company.$.company || company.$.company_name))}
               >
-                {/* Node indicator */}
                 <div
                   aria-hidden="true"
                   className="absolute -left-[11px] top-0 w-5 h-5 bg-accent7-900 dark:bg-accent8-900 border-4 border-accent7-200 dark:border-accent8-200 rounded-full ring-4 ring-background-100 dark:ring-background-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-accent7-500 dark:group-hover:bg-accent8-500"
@@ -267,7 +266,7 @@ export function GridTimeline({
 export interface GridSocialsProps {
   socials?: GridSocialsType | SocialLink[] | null;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }
 
 export function GridSocials({
@@ -277,7 +276,6 @@ export function GridSocials({
 }: GridSocialsProps) {
   if (!socials) return null;
 
-  // Handle both a wrapper object { label, links/items } and a direct array of links
   const rawLinks = Array.isArray(socials)
     ? socials
     : Array.isArray(socials.links)
@@ -315,7 +313,6 @@ export function GridSocials({
           if (!href) return null;
 
           const rawIcon = item.icon || "link";
-          // Normalize common icon aliases
           const lower = String(rawIcon).toLowerCase().trim();
           const iconName =
             lower === "email" || lower === "mail"

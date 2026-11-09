@@ -19,9 +19,9 @@ export type CSLPFieldMapping = CSLPAttribute;
  * Universal container for Contentstack Live Preview ($) mappings.
  * Allows type-safe access to any field mapping without repetitive manual declarations.
  */
-export type CSLPContainer<T = Record<string, any>> = {
+export type CSLPContainer<T = Record<string, unknown>> = {
   [K in keyof T]?: CSLPFieldMapping;
-} & Record<string, CSLPFieldMapping | any>;
+} & Record<string, CSLPFieldMapping | undefined>;
 
 export interface Link {
   title?: string;
@@ -48,7 +48,7 @@ export interface File {
   tags?: string[];
   filename?: string;
   url: string;
-  ACL?: any[] | object;
+  ACL?: unknown[] | Record<string, unknown>;
   is_dir?: boolean;
   parent_uid?: string;
   _version?: number;
@@ -78,7 +78,7 @@ export interface SystemFields {
   updated_by?: string;
   _content_type_uid?: string;
   tags?: string[];
-  ACL?: any[];
+  ACL?: unknown[];
   _version?: number;
   _in_progress?: boolean;
   locale?: string;
@@ -93,7 +93,6 @@ export interface BaseEntity {
   _version?: number;
   _metadata?: { uid: string };
   $?: CSLPContainer;
-  [key: string]: any;
 }
 
 /**

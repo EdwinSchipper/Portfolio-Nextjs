@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui";
+import type { CSLPAttribute } from "@/lib/types";
 
 export interface BreadcrumbItem {
   label: string;
@@ -10,7 +11,7 @@ export interface BreadcrumbItem {
 interface BreadcrumbsProps {
   items?: BreadcrumbItem[];
   currentTitle?: string;
-  currentTitleAttr?: Record<string, any>;
+  currentTitleAttr?: CSLPAttribute;
   className?: string;
 }
 
@@ -24,7 +25,6 @@ export default function Breadcrumbs({
   currentTitleAttr,
   className = "",
 }: BreadcrumbsProps) {
-  // Construct list of breadcrumb items
   const breadcrumbItems: BreadcrumbItem[] =
     items && items.length > 0
       ? items
@@ -33,12 +33,10 @@ export default function Breadcrumbs({
         ...(currentTitle ? [{ label: currentTitle, active: true }] : []),
       ];
 
-  // Don't render if there's only Home or empty
   if (breadcrumbItems.length <= 1) {
     return null;
   }
 
-  // Schema.org BreadcrumbList for rich Google Search results
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -55,7 +53,6 @@ export default function Breadcrumbs({
       aria-label="Kruimelpad"
       className={`breadcrumbs font-content pb-14 md:pb-20 lg:pb-20 w-full flex justify-start px-10 sm:px-14 md:px-20 lg:px-12 ${className}`}
     >
-      {/* SEO structured microdata */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

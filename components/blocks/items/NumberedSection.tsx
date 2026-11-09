@@ -6,7 +6,7 @@ import { getContainerClass, getColorModeClass } from "@/lib/layout";
 export interface NumberBadgeProps {
   number: number | string;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }
 
 /**
@@ -62,7 +62,6 @@ export default function NumberedSection({
   const colorModeKey = colorMode || data?.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
 
-  // Auto-wiring when Contentstack CMS data is provided
   if (data && !children) {
     const rawLabel = data?.label || data?.section_label || data?.label_numbered;
     const sectionTitle = data?.section_title || data?.title;
@@ -77,7 +76,6 @@ export default function NumberedSection({
         className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
       >
         <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
-          {/* Section Header */}
           {hasHeader && (
             <div className="flex flex-col mb-12 lg:mb-20">
               {rawLabel && (
@@ -115,7 +113,6 @@ export default function NumberedSection({
             </div>
           )}
 
-          {/* Numbered Items Grid */}
           {items.length > 0 && (
             <div
               className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-5 md:gap-y-10 md:gap-x-10 font-content items-start"
@@ -174,7 +171,6 @@ export default function NumberedSection({
     );
   }
 
-  // Compound / custom children fallback
   return (
     <section
       {...previewAttr}

@@ -6,13 +6,10 @@ import {
   ExperienceRole,
   CertificationItem,
   CSLPAttribute,
+  CSLPContainer,
 } from "@/lib/types";
 import { Label, Button } from "@/components/ui";
 import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
-
-// ============================================================================
-// CONSTANTS & UTILITIES
-// ============================================================================
 
 /**
  * Returns the first letter of a company name to render as an avatar monogram.
@@ -26,11 +23,11 @@ function getInitial(name?: string): string {
  * Robust extractor for tech stack tags from Contentstack payloads.
  * Handles nested objects, repeatable tags, and ignores label/title keys.
  */
-export function extractStackTags(stackData: any): string[] {
+export function extractStackTags(stackData: unknown): string[] {
   if (!stackData) return [];
   const results: string[] = [];
 
-  const addTag = (val: any) => {
+  const addTag = (val: unknown) => {
     if (val === null || val === undefined) return;
     if (typeof val === "string") {
       const trimmed = val.trim();
@@ -38,7 +35,9 @@ export function extractStackTags(stackData: any): string[] {
     } else if (Array.isArray(val)) {
       val.forEach(addTag);
     } else if (typeof val === "object") {
-      const tagVal = val.tag ?? val.Tag ?? val.name ?? val.value ?? val.title;
+      const record = val as Record<string, unknown>;
+      const tagVal =
+        record.tag ?? record.Tag ?? record.name ?? record.value ?? record.title;
       if (tagVal !== undefined) {
         addTag(tagVal);
       }
@@ -48,17 +47,18 @@ export function extractStackTags(stackData: any): string[] {
   if (Array.isArray(stackData)) {
     stackData.forEach(addTag);
   } else if (typeof stackData === "object") {
+    const record = stackData as Record<string, unknown>;
     const rawTags =
-      stackData.tag ??
-      stackData.Tag ??
-      stackData.tags ??
-      stackData.Tags ??
-      stackData.items;
+      record.tag ??
+      record.Tag ??
+      record.tags ??
+      record.Tags ??
+      record.items;
 
     if (rawTags !== undefined) {
       addTag(rawTags);
     } else {
-      Object.entries(stackData).forEach(([key, val]) => {
+      Object.entries(record).forEach(([key, val]) => {
         const lowerKey = key.toLowerCase();
         if (
           !lowerKey.includes("label") &&
@@ -77,10 +77,6 @@ export function extractStackTags(stackData: any): string[] {
   return results;
 }
 
-// ============================================================================
-// PROPS INTERFACES
-// ============================================================================
-
 export interface ResumeSectionProps {
   data?: ResumeSectionBlock;
   previewAttr?: CSLPAttribute;
@@ -97,15 +93,11 @@ export interface ResumeStackBlockProps {
   tags?: string[];
   label?: string;
   title?: string;
-  labelCslp?: Record<string, any>;
-  titleCslp?: Record<string, any>;
-  meta?: Record<string, any>;
+  labelCslp?: CSLPAttribute;
+  titleCslp?: CSLPAttribute;
+  meta?: CSLPContainer;
   className?: string;
 }
-
-// ============================================================================
-// SUB-COMPONENTS
-// ============================================================================
 
 /**
  * Renders individual pill badge tags with Cascadia Mono styling and micro-interactions.
@@ -116,7 +108,7 @@ export function ResumeStackTags({
   className = "",
 }: {
   tags: string[];
-  meta?: Record<string, any>;
+  meta?: CSLPContainer;
   className?: string;
 }) {
   if (!tags || tags.length === 0) return null;
@@ -184,11 +176,10 @@ export function ExperienceTimelineList({
 }: {
   companies: ExperienceCompany[];
   sectionTitle?: string;
-  meta?: Record<string, any>;
+  meta?: CSLPContainer;
 }) {
   return (
     <div className="w-full">
-      {/* Optional Subtitle for the Timeline itself */}
       {sectionTitle && (
         <div className="mb-10">
           <h3
@@ -200,7 +191,6 @@ export function ExperienceTimelineList({
         </div>
       )}
 
-      {/* Companies Timeline */}
       <div className="space-y-12 font-content">
         {companies.map((company, cIdx) => {
           const rawRoles = company.roles || company.Roles;
@@ -216,7 +206,6 @@ export function ExperienceTimelineList({
             (r) => (r.role_type || r.roleType || "").toLowerCase() === "secondary"
           );
 
-          // If all roles happen to be secondary, fall back gracefully
           const displayCoreRoles =
             coreRoles.length > 0
               ? coreRoles
@@ -231,7 +220,6 @@ export function ExperienceTimelineList({
               key={company._metadata?.uid || `company-${cIdx}`}
               className="relative pl-16 md:pl-20 pb-8 last:pb-0 -ml-4 sm:ml-0 "
             >
-              {/* Vertical timeline line connecting nodes down this company */}
               {roles.length > 0 && (
                 <div
                   aria-hidden="true"
@@ -239,7 +227,6 @@ export function ExperienceTimelineList({
                 />
               )}
 
-              {/* Company Logo Monogram Box */}
               <div
                 aria-hidden="true"
                 className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200 flex items-center justify-center font-playfull font-black text-2xl md:text-3xl text-title-100 dark:text-title-200 select-none z-10"
@@ -247,7 +234,6 @@ export function ExperienceTimelineList({
                 {getInitial(company.company_name)}
               </div>
 
-              {/* Company Header */}
               <div className="mb-6 pt-1 md:pt-2">
                 {company.company_name && (
                   <h4
@@ -267,9 +253,7 @@ export function ExperienceTimelineList({
                 )}
               </div>
 
-              {/* Roles Content */}
               <div className="space-y-14">
-                {/* Core / Primary Roles */}
                 {displayCoreRoles.map((role, rIdx) => {
                   const hasSecondary = displaySecondaryRoles.length > 0;
                   const isCard = Boolean(role.badge) || hasSecondary;
@@ -279,14 +263,12 @@ export function ExperienceTimelineList({
                       key={role._metadata?.uid || `core-role-${rIdx}`}
                       className="relative"
                     >
-                      {/* Timeline node circle */}
                       <span
                         aria-hidden="true"
                         className="absolute -left-10 md:-left-12 top-2.5 w-3.5 h-3.5 rounded-full border-2 border-accent7-900 dark:border-accent8-900 bg-background-100 dark:bg-background-800 -translate-x-1/2 z-10"
                       />
 
                       {isCard ? (
-                        /* Prominent Primary Role Card */
                         <div className="bg-background-200 dark:bg-background-900 rounded-md border border-border-100 dark:border-border-200 p-6 md:p-8">
                           <div className="flex flex-wrap items-center justify-between gap-5 sm:gap-3">
                             {role.title && (
@@ -327,7 +309,6 @@ export function ExperienceTimelineList({
                           )}
                         </div>
                       ) : (
-                        /* Minimalist Single Role (e.g. Freelance style) */
                         <div className="max-w-3xl flex flex-col spa1ce-y-2">
                           {role.title && (
                             <h5
@@ -359,10 +340,8 @@ export function ExperienceTimelineList({
                   );
                 })}
 
-                {/* Secondary Roles / Aanvullende Disciplines */}
                 {displaySecondaryRoles.length > 0 && (
                   <div className="relative pt-4">
-                    {/* Timeline node for the secondary disciplines section */}
                     <span
                       aria-hidden="true"
                       className="absolute -left-6 md:-left-12 top-6 w-3.5 h-3.5 rounded-full border-2 border-accent7-900 dark:border-accent8-900 bg-background-100 dark:bg-background-800 -translate-x-1/2 z-10"
@@ -372,7 +351,6 @@ export function ExperienceTimelineList({
                       Aanvullende Disciplines
                     </h5>
 
-                    {/* Responsive Grid for Secondary Roles */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                       {displaySecondaryRoles.map((secRole, sIdx) => (
                         <div
@@ -423,7 +401,7 @@ export interface ResumeCertificationsProps {
   label?: string;
   title?: string;
   certifications?: CertificationItem[];
-  meta?: Record<string, any>;
+  meta?: CSLPContainer;
   className?: string;
 }
 
@@ -441,7 +419,6 @@ export function ResumeCertifications({
 
   return (
     <div className={`flex flex-col font-content ${className}`}>
-      {/* Header */}
       <div className="flex flex-col mb-7 md:mb-12">
         {label && (
           <div>
@@ -465,7 +442,6 @@ export function ResumeCertifications({
         )}
       </div>
 
-      {/* Certifications List */}
       <div className="mb-32 md:mb-24">
         <div className="flex flex-col w-full">
           {certifications.map((cert, idx) => {
@@ -510,10 +486,6 @@ export function ResumeCertifications({
   );
 }
 
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
-
 /**
  * ResumeSection: 2-column modular grid section pairing an intro sidebar with an interactive timeline or stack tags.
  * Supports flexible timeline placement ("right", "left", or "full"), container widths, color modes, and sticky scrolling.
@@ -529,22 +501,21 @@ export default function ResumeSection({
   className = "",
   children,
 }: ResumeSectionProps) {
-  // Normalize nested block data
-  const sectionData: ResumeSectionBlock = (data?.resume_section ||
-    data?.Resume_Section ||
-    data?.ResumeSection ||
-    data?.grid_section_resume ||
-    data?.experience_timeline ||
-    data) as ResumeSectionBlock;
+  const rawRecord = data as Record<string, unknown> | undefined;
+  const sectionData: ResumeSectionBlock | undefined =
+    (rawRecord?.resume_section as ResumeSectionBlock | undefined) ||
+    (rawRecord?.Resume_Section as ResumeSectionBlock | undefined) ||
+    (rawRecord?.ResumeSection as ResumeSectionBlock | undefined) ||
+    (rawRecord?.grid_section_resume as ResumeSectionBlock | undefined) ||
+    (rawRecord?.experience_timeline as ResumeSectionBlock | undefined) ||
+    data;
 
-  // Layout Tokens
   const rawWidth = width || sectionData?.container_width || sectionData?.width;
   const containerClass = getContainerClass(rawWidth, "large");
 
   const colorModeKey = colorMode || sectionData?.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
 
-  // Raw Content Extraction
   const rawPosition = (
     timelinePosition ||
     sectionData?.timeline_position ||
@@ -571,36 +542,56 @@ export default function ResumeSection({
       : [];
 
   const rawStack = sectionData?.stack || sectionData?.Stack;
+  const rawStackObj =
+    typeof rawStack === "object" && rawStack !== null && !Array.isArray(rawStack)
+      ? (rawStack as Record<string, unknown> & { $?: CSLPContainer })
+      : undefined;
   const tags = extractStackTags(rawStack);
   const hasStack = tags.length > 0;
 
   const stackLabel =
-    (typeof rawStack === "object" && !Array.isArray(rawStack)
-      ? rawStack?.stack_label || rawStack?.Stack_label || rawStack?.stackLabel || rawStack?.label
-      : undefined) ||
+    (typeof rawStackObj?.stack_label === "string"
+      ? rawStackObj.stack_label
+      : typeof rawStackObj?.Stack_label === "string"
+        ? rawStackObj.Stack_label
+        : typeof rawStackObj?.stackLabel === "string"
+          ? rawStackObj.stackLabel
+          : typeof rawStackObj?.label === "string"
+            ? rawStackObj.label
+            : undefined) ||
     sectionData?.stack_label ||
     sectionData?.Stack_label ||
     sectionData?.stackLabel;
 
   const stackLabelCslp =
-    (typeof rawStack === "object" &&
-      rawStack?.$ &&
-      (rawStack.$.stack_label || rawStack.$.Stack_label || rawStack.$.stackLabel || rawStack.$.label)) ||
+    (rawStackObj?.$ &&
+      (rawStackObj.$.stack_label ||
+        rawStackObj.$.Stack_label ||
+        rawStackObj.$.stackLabel ||
+        rawStackObj.$.label)) ||
     sectionData?.$?.stack_label ||
     sectionData?.$?.["stack.stack_label"];
 
   const stackTitle =
-    (typeof rawStack === "object" && !Array.isArray(rawStack)
-      ? rawStack?.stack_title || rawStack?.Stack_title || rawStack?.stackTitle || rawStack?.title
-      : undefined) ||
+    (typeof rawStackObj?.stack_title === "string"
+      ? rawStackObj.stack_title
+      : typeof rawStackObj?.Stack_title === "string"
+        ? rawStackObj.Stack_title
+        : typeof rawStackObj?.stackTitle === "string"
+          ? rawStackObj.stackTitle
+          : typeof rawStackObj?.title === "string"
+            ? rawStackObj.title
+            : undefined) ||
     sectionData?.stack_title ||
     sectionData?.Stack_title ||
     sectionData?.stackTitle;
 
   const stackTitleCslp =
-    (typeof rawStack === "object" &&
-      rawStack?.$ &&
-      (rawStack.$.stack_title || rawStack.$.Stack_title || rawStack.$.stackTitle || rawStack.$.title)) ||
+    (rawStackObj?.$ &&
+      (rawStackObj.$.stack_title ||
+        rawStackObj.$.Stack_title ||
+        rawStackObj.$.stackTitle ||
+        rawStackObj.$.title)) ||
     sectionData?.$?.stack_title ||
     sectionData?.$?.["stack.stack_title"];
 
@@ -615,7 +606,6 @@ export default function ResumeSection({
   const timelineSubtitle = sectionData?.section_title;
   const meta = sectionData?.$;
 
-  // Certifications & Education Data
   const rawCertifications =
     sectionData?.certifications ||
     sectionData?.Certifications ||
@@ -648,7 +638,6 @@ export default function ResumeSection({
     label || title || description || (buttonHref && buttonTitle)
   );
 
-  // Full-width applies if explicitly configured or if single-column without column split
   const isFullWidth =
     isPositionFull ||
     (!rawPosition &&
@@ -660,7 +649,6 @@ export default function ResumeSection({
   const isHtml =
     typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
 
-  // Custom children wrapper override
   if (children) {
     return (
       <section
@@ -675,7 +663,6 @@ export default function ResumeSection({
     );
   }
 
-  // 1. Full-width / Centered Layout
   if (isFullWidth) {
     return (
       <section
@@ -760,7 +747,6 @@ export default function ResumeSection({
     );
   }
 
-  // 2. Column Grid Layout (Intro Sidebar + Timeline)
   const rawLeftCol =
     leftColSpan ||
     sectionData?.left_col_span ||
@@ -800,12 +786,8 @@ export default function ResumeSection({
     >
       <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
         <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 lg:ga1p-16 items-start sm:space-x-24 space-y-24 sm:space-y-0">
-
-          {/* Intro / Sidebar Column */}
           <div className={introColClass}>
             <div className="lg:sticky lg:top-28 space-y-14">
-
-
               <div className="flex flex-col gap-3 lg:gap-3 bg-red-3000 font-content">
                 {label && (
                   <div>
@@ -841,7 +823,6 @@ export default function ResumeSection({
                   </div>
                 )}
 
-
                 {buttonHref && buttonTitle && (
                   <div className="pt-2">
                     <Button
@@ -855,10 +836,7 @@ export default function ResumeSection({
                 )}
               </div>
 
-
-
               <div className="flex flex-col gap-3 lg:gap-3 bg-yellow-3000 font-content">
-
                 {hasStack && (
                   <ResumeStackBlock
                     tags={tags}
@@ -870,14 +848,9 @@ export default function ResumeSection({
                   />
                 )}
               </div>
-
-
-
             </div>
           </div>
 
-
-          {/* Timeline / Content Column */}
           <div className={timelineColClass}>
             {companies.length > 0 && (
               <ExperienceTimelineList

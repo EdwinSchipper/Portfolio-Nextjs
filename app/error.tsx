@@ -12,7 +12,6 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log application / API error for diagnostic monitoring
     console.error("[App Error Boundary caught error]:", error);
   }, [error]);
 

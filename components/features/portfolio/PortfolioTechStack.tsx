@@ -3,7 +3,7 @@ import { Icon } from "@/components/ui";
 
 export interface PortfolioTechStackProps {
   items?: TechStackItem[] | null;
-  cslp?: CSLPAttribute | Record<string, any>;
+  cslp?: CSLPAttribute;
   className?: string;
 }
 
@@ -23,7 +23,6 @@ export default function PortfolioTechStack({
   cslp,
   className = "",
 }: PortfolioTechStackProps) {
-  // Do not render anything if no items are provided in Contentstack
   if (!items || items.length === 0) {
     return null;
   }
@@ -44,7 +43,6 @@ export default function PortfolioTechStack({
                 key={stackItem.label || idx}
                 className="flex flex-col items-center text-center group cursor-default"
               >
-                {/* Circular Coral Badge */}
                 <div
                   {...(meta && meta.icon)}
                   className="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-accent7-900 dark:bg-accent8-900 border-2 border-accent7-200/50 dark:border-accent8-300/40 ring-4 ring-accent7-900/15 dark:ring-accent8-900/25 flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
@@ -55,7 +53,6 @@ export default function PortfolioTechStack({
                   />
                 </div>
 
-                {/* Uppercase Label */}
                 <span
                   {...(meta && meta.label)}
                   className="font-semibold text-content-300 dark:text-content-300 uppercase tracking-wider text-[11px] sm:text-xs shrink-0 mt-3 md:mt-4 select-none"
@@ -63,7 +60,6 @@ export default function PortfolioTechStack({
                   {stackItem.label}
                 </span>
 
-                {/* Specification Value */}
                 <span
                   {...(meta && meta.value)}
                   className="text-smallM md:text-small font-medium text-title-100 dark:text-title-200 mt-0.5"

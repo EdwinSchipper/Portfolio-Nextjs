@@ -38,7 +38,7 @@ function getImageCslp(
  */
 function renderRichOrPlainText(
   text: string | undefined,
-  cslpAttr: Record<string, any> | undefined,
+  cslpAttr: CSLPAttribute | undefined,
   className: string
 ) {
   if (!text) return null;
@@ -73,7 +73,7 @@ function CaseStudySection({
   step: string;
   title: string;
   text?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }) {
   if (!text) return null;
 
@@ -159,11 +159,9 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
 
   const companyOrTitle = item.company || item.title;
 
-  // Overview content
   const overviewText = item.content || item.description;
   const overviewCslp = item?.$ && (item.$.description || item.$.content);
 
-  // Hero image
   const heroImg = item.portfolioimagedetail || item.featured_image;
   const heroImgUrl = getImageUrl(heroImg);
   const heroImgAlt =
@@ -175,7 +173,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
     item?.$ && (item.$.portfolioimagedetail || item.$.featured_image)
   );
 
-  // Banner visuals & CSLP
   const banner1Img = item.banner_visual_1 || item.portfolioimagedetail1;
   const banner1Url = getImageUrl(banner1Img);
   const banner1Cslp = getImageCslp(
@@ -199,7 +196,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
 
   return (
     <article className="w-full">
-      {/* 1. Header */}
       <header className="relative w-full flex flex-col justify-end pt-40 md:pt-40 lg:pt-52 pb-10 md:pb-16 lg:pb-24 overflow-hidden border-b border-border-100/30 dark:border-border-200/5 -mt-[109px] mb-14 lg:mb-20 bg-gradient-to-tl from-accent7-200/30 to-accent7-500/60 dark:from-accent8-100 dark:via-accent8-100 dark:to-accent8-300 font-content">
         <div className="relative z-10 w-full max-w-4xl xl:max-w-6xl px-10 sm:px-14 md:px-20 lg:px-12 mx-auto flex flex-col items-start">
           <Label
@@ -218,7 +214,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         </div>
       </header>
 
-      {/* 2. Breadcrumbs */}
       <section id="portfolio-header" className="mx-auto max-w-4xl xl:max-w-6xl w-full">
         <Breadcrumbs
           items={[
@@ -230,7 +225,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         />
       </section>
 
-      {/* 3. Section 01: Overzicht & Hero Image */}
       <section
         id="page-intro-gsap"
         className="flex lg:items-center justify-center sm:max-w-xl md:max-w-4xl lg:max-w-7xl container lg:w-full px-6 sm:px-0 md:px-14 lg:px-20 xl:px-12 mx-auto z-20 mb-14 lg:mb-40 overflow-hidden"
@@ -238,7 +232,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         <div className="w-full mx-auto z-20 flex flex-col md:grid md:grid-cols-12 items-start justify-start lg:justify-end lg:items-end">
           <h2 className="sr-only">Portfolio</h2>
 
-          {/* Left: Main Hero Image */}
           <div
             id="page-intro-content-left"
             className="w-full relative group rounded-md overflow-hidden order-2 md:order-1 md:col-span-6 lg:col-span-7 mb-8 lg:mb-0 mt-8 md:mt-0 h-[220px] sm:h-[325px] md:h-[400px] lg:h-[500px] xl:h-[50vh] bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200"
@@ -257,7 +250,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             <div className="absolute inset-0 bg-gradient-to-t from-background-900/5 via-background-900/10 dark:from-background-900/5 dark:via-background-900/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
 
-          {/* Right: Overzicht content */}
           <div
             id="page-intro-content-right"
             className="contents lg:relative lg:pt-10 lg:pb-0 md:order-2 md:col-span-6 lg:col-span-5 md:flex md:justify-end md:flex-col md:pl-14 xl:pl-24"
@@ -283,13 +275,11 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         </div>
       </section>
 
-      {/* 4. Tech Stack */}
       <PortfolioTechStack
         items={item.tech_stack}
         cslp={item?.$ && item.$.tech_stack}
       />
 
-      {/* 5. Section 02: Uitdaging */}
       <CaseStudySection
         id="portfolio-section-01"
         step="02 — Uitdaging"
@@ -298,7 +288,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         cslp={item?.$ && item.$.portfolioimagedetail1_txt}
       />
 
-      {/* 6. Banner 1 Visual */}
       <CaseStudyBanner
         id="portfolio-banner-1"
         url={banner1Url}
@@ -306,7 +295,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         cslp={banner1Cslp}
       />
 
-      {/* 7. Section 03: Aanpak */}
       <CaseStudySection
         id="portfolio-section-02"
         step="03 — Aanpak"
@@ -315,7 +303,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         cslp={item?.$ && item.$.portfolioimagedetail2_txt}
       />
 
-      {/* 8. Banner 2 Visual */}
       <CaseStudyBanner
         id="portfolio-banner-2"
         url={banner2Url}
@@ -323,7 +310,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         cslp={banner2Cslp}
       />
 
-      {/* 9. Section 04: Uitkomst */}
       <CaseStudySection
         id="portfolio-section-03"
         step="04 — Uitkomst"
@@ -332,7 +318,6 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         cslp={item?.$ && item.$.portfolioimagedetail3_txt}
       />
 
-      {/* Optionele Banner 3 Visual indien aanwezig */}
       <CaseStudyBanner
         id="portfolio-banner-3"
         url={banner3Url}
@@ -340,12 +325,10 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         cslp={banner3Cslp}
       />
 
-      {/* 10. Horizontal Divider */}
       <section id="portfolio-divider" className="section-divider">
         <hr className="max-w-5xl mx-auto mb-14 lg:mb-14 border-border-100 dark:border-border-200" />
       </section>
 
-      {/* 11. Terug naar portfolio navigatie */}
       <section
         id="aanpak-section"
         className="px-10 md:px-20 lg:px-12 mb-28 md:mb-40 lg:mb-60"

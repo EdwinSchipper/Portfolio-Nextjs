@@ -1,12 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import type { CSLPAttribute } from "@/lib/types";
 
 export type ButtonVariant =
-  | "primary"     // Dark pill: #1b1f24 met hover naar black
-  | "brand"       // Coral brand: #f05a46
-  | "secondary"   // Wit met grijze rand en subtiele hover
-  | "link"        // Oranje inline tekstlink met optionele pijl
-  | "link-dark";  // Zwarte inline tekstlink die oranje kleurt op hover
+  | "primary"
+  | "brand"
+  | "secondary"
+  | "link"
+  | "link-dark";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
@@ -18,7 +19,7 @@ export interface ButtonProps
   arrow?: boolean;
   children?: React.ReactNode;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
   target?: string;
   rel?: string;
 }

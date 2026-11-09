@@ -1,17 +1,21 @@
 import type { CSLPContainer, File, SeoFields, SystemFields } from "./core";
 import type { Blocks } from "./blocks";
 
-// ============================================================================
-// Top-Level Pages & Portfolio Entries
-// ============================================================================
+/**
+ * Top-Level Pages & Portfolio Entries
+ */
 
 export interface BasePageEntry extends SystemFields {
   uid: string;
   title: string;
   seo?: SeoFields;
+  meta_title?: string;
+  seo_title?: string;
+  meta_description?: string;
+  description?: string;
+  og_image?: File | null;
   blocks?: Blocks[];
   $?: CSLPContainer;
-  [key: string]: any;
 }
 
 export type Homepage = BasePageEntry;
@@ -28,7 +32,6 @@ export interface TechStackItem {
   label: string;
   value: string;
   $?: CSLPContainer;
-  [key: string]: any;
 }
 
 export interface PortfolioItem extends SystemFields {
@@ -62,5 +65,4 @@ export interface PortfolioItem extends SystemFields {
   show_breadcrumbs?: boolean;
   breadcrumb_title?: string;
   $?: CSLPContainer;
-  [key: string]: any;
 }

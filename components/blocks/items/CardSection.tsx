@@ -1,7 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CardSectionBlock, CardSectionItem, CSLPAttribute } from "@/lib/types";
+import {
+  CardSectionBlock,
+  CardSectionItem,
+  CSLPAttribute,
+  CSLPContainer,
+} from "@/lib/types";
 import { Label, Icon } from "@/components/ui";
 import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
@@ -13,7 +18,7 @@ export interface CardBoxProps {
   button?: { href?: string; title?: string; url?: string; text?: string };
   children?: React.ReactNode;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPContainer;
 }
 
 export function CardBox({
@@ -33,7 +38,6 @@ export function CardBox({
       href.startsWith("https://") ||
       href.startsWith("/" + "/"));
 
-  // Support tags passed as string with "/" separators (e.g. "Componenten / Vue.js / Nuxt")
   const rawTag = tag;
   const tagList =
     typeof rawTag === "string"
@@ -47,7 +51,6 @@ export function CardBox({
     >
       <div className="relative z-10 flex flex-col h-auto md:h-full">
         <div className="flex gap-5 sm:gap-8 flex-col w-full">
-          {/* Circular Coral Badge with Icon */}
           <div
             {...(cslp && cslp.icon)}
             className="service-icon w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-accent7-900 dark:bg-accent8-900 border-2 border-accent7-200/50 dark:border-accent8-300/40 ring-4 ring-accent7-900/15 dark:ring-accent8-900/25 flex items-center justify-center transition-transform duration-200 group-hover:scale-105"
@@ -63,7 +66,6 @@ export function CardBox({
             />
           </div>
 
-          {/* Titel & Tags */}
           <div className="flex flex-col justify-center gap-y-5 md:gap-y-3 lg:gap-y-1.5">
             {title && (
               <h4
@@ -97,7 +99,6 @@ export function CardBox({
             )}
           </div>
 
-          {/* Beschrijving */}
           {text && (
             <div
               {...(cslp && (cslp.text || cslp.description))}
@@ -132,13 +133,13 @@ export function CardBox({
 }
 
 export interface CardImageTagProps {
-  image?: { url: string; title?: string; $?: any };
+  image?: { url: string; title?: string; $?: CSLPContainer };
   tag?: React.ReactNode;
   text?: React.ReactNode;
   button?: { href?: string; title?: string; url?: string; text?: string };
   children?: React.ReactNode;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPContainer;
 }
 
 export function CardImageTag({
@@ -162,7 +163,6 @@ export function CardImageTag({
       {...cslp}
       className={`flex flex-col h-full group p-8 md:p-12 xl:p-14 ${className}`}
     >
-      {/* Foto met afgeronde hoeken */}
       {image?.url && (
         <div className="relative w-full aspect-16/10 rounded-md overflow-hidden mb-4 shadow-sm bg-background-200 dark:bg-background-900 border border-border-100 dark:border-border-200">
           <Image
@@ -176,7 +176,6 @@ export function CardImageTag({
         </div>
       )}
 
-      {/* Tag / Badge */}
       {tag && (
         <div className="mb-3">
           <Label variant="pill" cslp={cslp && (cslp.tag || cslp.title)}>
@@ -185,7 +184,6 @@ export function CardImageTag({
         </div>
       )}
 
-      {/* Omschrijving */}
       {text && (
         <p
           {...(cslp && (cslp.text || cslp.description))}
@@ -195,7 +193,6 @@ export function CardImageTag({
         </p>
       )}
 
-      {/* Link */}
       {href && (
         <div className="pt-3 mt-auto">
           <Link
@@ -222,7 +219,7 @@ export interface CardItemProps {
   card?: CardSectionItem;
   icon?: string;
   variant?: "default" | "image_tag" | string;
-  image?: { url: string; title?: string; $?: any };
+  image?: { url: string; title?: string; $?: CSLPContainer };
   tag?: React.ReactNode;
   title?: React.ReactNode;
   text?: React.ReactNode;
@@ -230,7 +227,7 @@ export interface CardItemProps {
   button?: { href: string; title?: string };
   children?: React.ReactNode;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPContainer;
 }
 
 export function CardItem({
@@ -295,10 +292,10 @@ export interface CardSectionHeaderProps {
   intro?: React.ReactNode;
   containerClass?: string;
   className?: string;
-  cslp?: Record<string, any>;
-  cslpLabel?: Record<string, any>;
-  cslpTitle?: Record<string, any>;
-  cslpIntro?: Record<string, any>;
+  cslp?: CSLPContainer;
+  cslpLabel?: CSLPAttribute;
+  cslpTitle?: CSLPAttribute;
+  cslpIntro?: CSLPAttribute;
 }
 
 export function CardSectionHeader({
@@ -318,15 +315,12 @@ export function CardSectionHeader({
       {...cslp}
       className={`w-full flex flex-col gap-14 md:gap-8 px-10 md:px-20 xl:px-14 border-t border-border-100 dark:border-border-200 py-14 md:py-24 relative ${className}`}
     >
-      {/* Split background decoratie op desktop (xl) */}
       <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-1/2 bg-border-100/70 dark:bg-border-200/70 pointer-events-none" />
       <div className="hidden xl:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 
-      {/* Content grid - breedte gekoppeld aan Contentstack containerClass */}
       <div
         className={`mx-auto w-full sm:max-w-xl md:max-w-3xl ${containerClass} grid grid-cols-1 xl:grid-cols-12 gap-8 md:gap-10 relative z-10`}
       >
-        {/* Linker kolom: Label & Titel */}
         <div className="col-span-1 md:col-span-6 lg:col-span-6 xl:col-span-6 flex flex-col">
           {label && (
             <Label variant="brand" className="mb-3" cslp={cslpLabel}>
@@ -343,7 +337,6 @@ export function CardSectionHeader({
           )}
         </div>
 
-        {/* Rechter kolom: Intro / beschrijving */}
         {(intro || children) && (
           <div className="col-span-1 md:col-span-6 lg:col-span-6 xl:col-span-6 flex flex-col justify-center">
             {intro && (
@@ -374,7 +367,7 @@ export interface CardGridProps {
   columns?: number | string;
   containerClass?: string;
   className?: string;
-  cslp?: Record<string, any>;
+  cslp?: CSLPAttribute;
 }
 
 export function CardGrid({
@@ -392,7 +385,6 @@ export function CardGrid({
       {...cslp}
       className={`w-full flex flex-col px-10 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 relative ${className}`}
     >
-      {/* Desktop kruisdraad / divider-lijnen op lg schermen (alleen bij 2 kolommen) */}
       {colVal === "2" && (
         <>
           <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
@@ -400,7 +392,6 @@ export function CardGrid({
         </>
       )}
 
-      {/* Grid container met verticale zijranden */}
       <div
         className={`grid ${colGridClass} lg:auto-rows-fr mx-auto w-full sm:max-w-xl md:max-w-3xl ${containerClass} items-start lg:items-stretch gap-0 relative z-10 border-x border-border-100 dark:border-border-200 divide-y lg:divide-y-0 divide-border-100 dark:divide-border-200`}
       >
@@ -438,7 +429,6 @@ export default function CardSection({
   const colorModeKey = colorMode || data?.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
 
-  // Render CMS data if passed directly (e.g. from BlockRenderer)
   if (data && !children) {
     const rawLabel = data?.label_cards || data?.label;
     const sectionTitle = data?.section_title;
@@ -485,7 +475,6 @@ export default function CardSection({
     );
   }
 
-  // Fallback declarative children
   return (
     <section
       {...previewAttr}

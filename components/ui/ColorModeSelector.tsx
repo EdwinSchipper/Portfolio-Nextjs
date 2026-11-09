@@ -47,7 +47,7 @@ const themeStore = {
     try {
       localStorage.setItem("theme", nextDark ? "dark" : "light");
     } catch {
-      // ignore in private browsing / sandboxes
+      /** Ignore storage restrictions in private browsing or sandboxed contexts */
     }
     emitChange();
   },
@@ -60,7 +60,7 @@ const themeStore = {
       document.documentElement.classList.toggle("dark", isDark);
       emitChange();
     } catch {
-      // ignore
+      /** Ignore storage restrictions in private browsing or sandboxed contexts */
     }
   },
 };

@@ -16,8 +16,6 @@ export default function HomePage({ page }: HomePageProps) {
 
   return (
     <section className="homepage-content w-full">
-
-      {/* Container for modular blocks with Contentstack Visual Builder support*/}
       <div
         className={`w-full ${blocks.length === 0
           ? VB_EmptyBlockParentClass

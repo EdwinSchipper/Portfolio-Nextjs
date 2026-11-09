@@ -1,9 +1,9 @@
-import type { BaseEntity, BaseSectionBlock, File, Link, SystemFields } from "./core";
+import type { BaseEntity, BaseSectionBlock, CSLPContainer, File, Link, SystemFields } from "./core";
 import type { PortfolioItem } from "./pages";
 
-// ============================================================================
-// Experience & Timeline Models
-// ============================================================================
+/**
+ * Experience & Timeline Models
+ */
 
 export interface ExperienceRole extends BaseEntity {
   title?: string;
@@ -28,7 +28,7 @@ export type TimelineCompany = ExperienceCompany;
 export interface ExperienceTimelineBlock extends BaseEntity {
   section_title?: string;
   companies?: ExperienceCompany[];
-  experience_timeline?: any;
+  experience_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
 }
 
 export interface ResumeStack extends BaseEntity {
@@ -52,6 +52,27 @@ export interface CertificationItem extends BaseEntity {
   institution?: string;
   location?: string;
 }
+
+export type ResumeStackData =
+  | ResumeStack
+  | {
+      tag?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      Tag?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      tags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      Tags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      stack_tags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      stackTags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      items?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
+      stack_label?: string;
+      stackLabel?: string;
+      stack_title?: string;
+      stackTitle?: string;
+      label?: string;
+      title?: string;
+      $?: CSLPContainer;
+    }
+  | string[]
+  | string;
 
 export interface ResumeSectionBlock extends BaseSectionBlock {
   left_col_span?: number | string;
@@ -77,8 +98,8 @@ export interface ResumeSectionBlock extends BaseSectionBlock {
   stack_title?: string;
   stackTitle?: string;
   Stack_title?: string;
-  stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
-  Stack?: ResumeStack | { tag?: string[]; Tag?: string[]; stack_label?: string; stack_title?: string } | string[] | any;
+  stack?: ResumeStackData;
+  Stack?: ResumeStackData;
   education_label?: string;
   Education_label?: string;
   education_title?: string;
@@ -93,9 +114,9 @@ export interface ResumeSectionBlock extends BaseSectionBlock {
   Education?: CertificationItem[];
 }
 
-// ============================================================================
-// Modular Blocks & Content Components
-// ============================================================================
+/**
+ * Modular Blocks & Content Components
+ */
 
 export interface Block extends BaseEntity {
   title?: string;
@@ -138,9 +159,9 @@ export interface FeaturedProjectsBlock extends BaseSectionBlock {
   projects?: PortfolioItem[];
 }
 
-// ============================================================================
-// Shared Item Models (Cards, Numbered Items, Links, Socials)
-// ============================================================================
+/**
+ * Shared Item Models (Cards, Numbered Items, Links, Socials)
+ */
 
 export interface SectionItem extends BaseEntity {
   number?: string;
@@ -184,9 +205,9 @@ export interface NumberedSectionBlock extends BaseSectionBlock {
   numbered_items?: NumberedItem[];
 }
 
-// ============================================================================
-// Grid Section Models
-// ============================================================================
+/**
+ * Grid Section Models
+ */
 
 /** Nested column group for Grid Section (content_left / content_right) */
 export interface GridSectionColumn extends BaseEntity {
@@ -205,9 +226,9 @@ export interface GridSectionColumn extends BaseEntity {
   button_left?: Link;
   button_right?: Link;
   cards?: GridCard[];
-  resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: any };
-  timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: any };
-  career_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: any };
+  resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+  timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+  career_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
   socials?: GridSocials | SocialLink[];
   social_links?: GridSocials | SocialLink[];
   connect?: GridSocials | SocialLink[];
@@ -221,9 +242,9 @@ export interface GridSectionBlock extends BaseSectionBlock {
   content_right?: GridSectionColumn;
 }
 
-// ============================================================================
-// Hero Block Models
-// ============================================================================
+/**
+ * Hero Block Models
+ */
 
 export interface HeroMicroLink extends BaseEntity {
   title?: string;
@@ -253,9 +274,9 @@ export interface HeroBlock extends BaseEntity {
   image_development?: File;
 }
 
-// ============================================================================
-// Modular Blocks Container
-// ============================================================================
+/**
+ * Modular Blocks Container
+ */
 
 export interface Blocks extends SystemFields {
   hero?: HeroBlock;

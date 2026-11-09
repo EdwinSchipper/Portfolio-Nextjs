@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Newsreader, Cascadia_Mono } from "next/font/google";
 import "./globals.css";
-import { Header, Footer } from "@/components/ui";
+import { Header, Footer, NavigationProgress } from "@/components/ui";
 import { GTMPageTracker, CookieConsent } from "@/components/features/analytics";
 import { env } from "@/lib/env";
 
@@ -65,6 +65,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-background-100 dark:bg-background-800">
+        <NavigationProgress />
         <GTMPageTracker />
         <Header />
         <main>{children}</main>

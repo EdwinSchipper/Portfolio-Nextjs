@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPortfolioItemByUrl, getPortfolioRouteStaticParams, isPreview } from "@/lib/cms";
 import { getPortfolioRouteMetadata } from "@/lib/metadata";
-import { PortfolioDetail, PortfolioPreview } from "@/components/features/portfolio";
+import { PortfolioDetail, PortfolioDetailSkeleton, PortfolioPreview } from "@/components/features/portfolio";
 
 export const revalidate = 60;
 
@@ -22,6 +23,15 @@ export async function generateMetadata({ params }: PortfolioDetailPageProps): Pr
 export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
   const { slug } = await params;
   const path = `/portfolio/${slug}`;
+
+  return (
+    <Suspense key={path} fallback={<PortfolioDetailSkeleton />}>
+      <PortfolioDetailContent path={path} />
+    </Suspense>
+  );
+}
+
+async function PortfolioDetailContent({ path }: { path: string }) {
   const portfolioItem = await getPortfolioItemByUrl(path);
 
   if (!portfolioItem) {

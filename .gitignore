@@ -47,7 +47,5 @@ tree-maker
 .cursor
 .claude/
 .cursor/
-.agents/
-AGENTS.md
 CLAUDE.md
-skills/
+/skills/

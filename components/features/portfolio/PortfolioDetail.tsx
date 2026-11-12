@@ -241,13 +241,13 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                 src={heroImgUrl}
                 alt={heroImgAlt}
                 fill
-                priority
+                preload
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 60vw"
                 className="object-cover"
                 {...heroImgCslp}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-background-900/5 via-background-900/10 dark:from-background-900/5 dark:via-background-900/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-t from-background-900/5 via-background-900/10 dark:from-background-900/5 dark:via-background-900/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
 
           <div

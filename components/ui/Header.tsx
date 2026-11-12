@@ -50,12 +50,14 @@ function getMobileNavLinkClass(isActive: boolean) {
  * Reusable Logo component with dark mode switching and correct intrinsic aspect ratio.
  */
 function HeaderLogo({
-  priority = false,
+  highPriority = false,
   onClick,
 }: {
-  priority?: boolean;
+  highPriority?: boolean;
   onClick?: () => void;
 }) {
+  const fetchPriority = highPriority ? "high" : undefined;
+
   return (
     <Link href="/" onClick={onClick} className="inline-block" aria-label="Edwin Schipper Home">
       <div className="flex gap-2 items-center">
@@ -66,7 +68,7 @@ function HeaderLogo({
           alt="Edwin Schipper"
           width={39}
           height={36}
-          priority={priority}
+          fetchPriority={fetchPriority}
         />
         <Image
           className="block h-10 lg:h-9 w-auto dark:hidden"
@@ -74,7 +76,7 @@ function HeaderLogo({
           alt="Edwin Schipper"
           width={39}
           height={36}
-          priority={priority}
+          fetchPriority={fetchPriority}
         />
       </div>
     </Link>
@@ -136,7 +138,7 @@ export default function Header() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <HeaderLogo priority />
+            <HeaderLogo highPriority />
           </div>
 
           <div className="flex lg:hidden gap-3 lg:gap-1.5 items-center">

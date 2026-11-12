@@ -34,7 +34,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   link:
     "p-0 bg-transparent text-[#f05a46] font-semibold hover:underline shadow-none",
   "link-dark":
-    "p-0 bg-transparent text-gray-900 hover:text-[#f05a46] font-semibold shadow-none transition-colors",
+    "p-0 bg-transparent text-content-100/70 dark:text-content-200/50 hover:text-title-100 dark:hover:text-title-200 font-semibold hover:underline shadow-none transition-colors duration-200",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

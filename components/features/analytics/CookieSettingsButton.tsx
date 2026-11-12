@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui';
+import Button from '@/components/ui/Button';
 
 /**
  * Client button allowing users to re-open the Cookie Consent banner
@@ -17,10 +17,11 @@ export function CookieSettingsButton({ className = '' }: { className?: string })
 
   return (
     <Button
+      type="button"
       variant="link-dark"
-      size="sm"
+      size="md"
       onClick={handleClick}
-      className={`font-semibold hover:underline ${className}`}
+      className={className}
     >
       Cookie-instellingen
     </Button>

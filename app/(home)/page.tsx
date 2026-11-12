@@ -4,7 +4,7 @@ import { getHomePage, isPreview } from "@/lib/cms";
 import { getHomePageMetadata } from "@/lib/metadata";
 import { HomePage, HomePageSkeleton, Preview } from "@/components/features/pages";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   return getHomePageMetadata();

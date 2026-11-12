@@ -40,7 +40,7 @@ Hieronder staat het actuele overzicht van afgeronde mijlpalen (`Done`), lopende 
 | **UI/UX & Responsive Finetuning** | 🔄 `In Progress` | Verfijnen van Tailwind CSS v4 spacing, mobiele layout-uitlijning, typografische schalen en dark-mode contrasten over alle modulaire blokken. |
 | **Code Hygiene & JSDoc Standaardisatie** | 🔄 `In Progress` | Opschonen van resterende legacy inline-comments in oudere `components/blocks/items/` en `components/ui/` bestanden conform de Zero-Comment standaard. |
 | **SEO, Structured Data & Lighthouse** | 📋 `To Do` | Uitbreiden van Schema.org JSON-LD (naast `BreadcrumbList` ook `Person` / `CreativeWork`), valideren van koppenhiërarchie en 95–100 Lighthouse scores borgen. |
-| **Productie Deployment & Domein** | 📋 `To Do` | Definitieve livegang op Vercel met productie environment variables, Contentstack webhook-koppeling en domein-cutover naar `edwinschipper.nl`. |
+| **Productie Deployment & Domein** | 🔄 `In Progress` | Live op Contentstack Launch (`www.edwinschipper.nl`) met Next.js 16 runtime, ISR (`3600s`) & `/api/revalidate` webhook; productie-environment en definitieve domein-afronding nog lopend. |
 
 ---
 
@@ -54,6 +54,7 @@ app/
 ├── (home)/                 # Homepage route-group (page.tsx & loading.tsx met HomePageSkeleton)
 ├── [...slug]/              # Dynamische CMS subpagina's (page.tsx & loading.tsx met PageSkeleton)
 ├── portfolio/[slug]/       # Portfolio case-study detail (page.tsx & loading.tsx met PortfolioDetailSkeleton)
+├── api/revalidate/         # On-demand ISR webhook endpoint voor Contentstack Publish events
 ├── sitemap.ts              # Parallelle (Promise.all) XML-sitemap generator met .only() velden-optimalisatie
 └── robots.ts               # Dynamische robots.txt configuratie gekoppeld aan env.siteUrl
 
@@ -112,7 +113,8 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_CONTENTSTACK_REGION` | Client & Server | Nee | Datacenter-regio (`EU`, `NA` of `AZURE_NA`; standaard `EU`). |
 | `NEXT_PUBLIC_CONTENTSTACK_PREVIEW` | Client & Server | Nee | Schakelt Live Preview / Visual Builder in (`true` of `false`). |
 | `NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME` | Build / Next.js | Nee | Extra toegestane CDN-hostname voor `next/image` optimalisatie. |
-| `NEXT_PUBLIC_SITE_URL` | Client & Server | Nee | Canonieke basis-URL; valt automatisch terug op Vercel-URL of `https://www.edwinschipper.nl`. |
+| `NEXT_PUBLIC_SITE_URL` | Client & Server | Nee | Canonieke basis-URL; valt automatisch terug op `https://www.edwinschipper.nl`. |
+| `CONTENTSTACK_REVALIDATE_SECRET` | Server Only | Nee | Geheim token (`x-revalidate-secret`) voor on-demand ISR via `POST /api/revalidate`. |
 | `NEXT_PUBLIC_GTM_ID` | Client & Server | Nee | Google Tag Manager Container ID (bijv. `GTM-XXXXXXX`). |
 
 ### 3. Development Server Starten
@@ -157,7 +159,7 @@ Elke push en Pull Request naar `main`, `master` of `development` wordt automatis
 | **Typografie** | [Google Fonts](https://fonts.google.com) (`Outfit`, `Newsreader`, `Cascadia Mono`) via `next/font/google` |
 | **Headless CMS & Security** | [Contentstack Delivery SDK v5](https://www.contentstack.com), Live Preview Utils v4, `isomorphic-dompurify` |
 | **Analytics & Privacy** | Google Tag Manager (`@next/third-parties/google`), Google Consent Mode v2 |
-| **Tooling & CI/CD** | [pnpm v10](https://pnpm.io/), ESLint 9, GitHub Actions, Vercel |
+| **Tooling & CI/CD** | [pnpm v10](https://pnpm.io/), ESLint 9, GitHub Actions, Contentstack Launch |
 
 ---
 

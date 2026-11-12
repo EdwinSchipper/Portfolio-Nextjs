@@ -16,6 +16,7 @@ export {
 } from "./client";
 
 export {
+  clearServerQueryCache,
   getHomePage,
   getPage,
   getPortfolioItemByUrl,
@@ -25,4 +26,10 @@ export {
   getPortfolioRouteStaticParams,
 } from "./queries";
 
+export {
+  isValidRevalidateRequest,
+  resolveRevalidationTargets,
+} from "./revalidation";
+
 export type { EntryUrlRecord } from "./queries";
+export type { RevalidationPattern, RevalidationTargets } from "./revalidation";

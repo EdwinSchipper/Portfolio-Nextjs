@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui";
+import { env } from "@/lib/env";
 import type { CSLPAttribute } from "@/lib/types";
 
 export interface BreadcrumbItem {
@@ -13,6 +14,14 @@ interface BreadcrumbsProps {
   currentTitle?: string;
   currentTitleAttr?: CSLPAttribute;
   className?: string;
+}
+
+function toAbsoluteBreadcrumbUrl(href: string): string {
+  if (href.startsWith("http://") || href.startsWith("https://")) {
+    return href;
+  }
+  const normalizedPath = href.startsWith("/") ? href : `/${href}`;
+  return `${env.siteUrl}${normalizedPath}`;
 }
 
 /**
@@ -44,7 +53,7 @@ export default function Breadcrumbs({
       "@type": "ListItem",
       position: index + 1,
       name: item.label,
-      ...(item.href ? { item: item.href } : {}),
+      ...(item.href ? { item: toAbsoluteBreadcrumbUrl(item.href) } : {}),
     })),
   };
 

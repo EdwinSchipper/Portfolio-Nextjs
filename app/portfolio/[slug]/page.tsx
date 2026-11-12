@@ -5,7 +5,7 @@ import { getPortfolioItemByUrl, getPortfolioRouteStaticParams, isPreview } from 
 import { getPortfolioRouteMetadata } from "@/lib/metadata";
 import { PortfolioDetail, PortfolioDetailSkeleton, PortfolioPreview } from "@/components/features/portfolio";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 interface PortfolioDetailPageProps {
   params: Promise<{ slug: string }>;

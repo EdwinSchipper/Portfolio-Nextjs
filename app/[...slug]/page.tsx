@@ -5,7 +5,7 @@ import { getDynamicRouteStaticParams, getPage, isPreview } from "@/lib/cms";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
 import { Page, PageSkeleton, Preview } from "@/components/features/pages";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 interface DynamicRouteProps {
   params: Promise<{ slug: string[] }>;

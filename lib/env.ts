@@ -15,6 +15,7 @@ export interface ContentstackEnvConfig {
 export interface EnvConfig {
   readonly siteUrl: string;
   readonly gtmId?: string;
+  readonly revalidateSecret?: string;
   readonly contentstack: ContentstackEnvConfig;
   readonly isProduction: boolean;
   readonly isDevelopment: boolean;
@@ -27,30 +28,20 @@ function normalizeOptionalString(value: string | undefined): string | undefined 
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
-function stripTrailingSlash(url: string): string {
-  return url.endsWith("/") ? url.slice(0, -1) : url;
+function normalizeBaseUrl(rawUrl: string): string {
+  const hasProtocol = rawUrl.startsWith("https://") || rawUrl.startsWith("http://");
+  const withProtocol = hasProtocol ? rawUrl : `https://${rawUrl}`;
+  return withProtocol.endsWith("/") ? withProtocol.slice(0, -1) : withProtocol;
 }
 
 /**
- * Resolves the canonical base URL for the application with fallbacks
- * for explicit site URL, Vercel production/preview URLs, and default domain.
+ * Resolves the canonical base URL for the application from explicit configuration
+ * with fallback to the default production domain.
  */
 export function getSiteUrl(): string {
   const explicitSiteUrl = normalizeOptionalString(process.env.NEXT_PUBLIC_SITE_URL);
   if (explicitSiteUrl) {
-    return stripTrailingSlash(explicitSiteUrl);
-  }
-
-  const vercelProductionUrl = normalizeOptionalString(
-    process.env.VERCEL_PROJECT_PRODUCTION_URL
-  );
-  if (vercelProductionUrl) {
-    return `https://${stripTrailingSlash(vercelProductionUrl)}`;
-  }
-
-  const vercelPreviewUrl = normalizeOptionalString(process.env.VERCEL_URL);
-  if (vercelPreviewUrl) {
-    return `https://${stripTrailingSlash(vercelPreviewUrl)}`;
+    return normalizeBaseUrl(explicitSiteUrl);
   }
 
   return DEFAULT_SITE_URL;
@@ -111,6 +102,9 @@ export const env: EnvConfig = {
   },
   get gtmId(): string | undefined {
     return normalizeOptionalString(process.env.NEXT_PUBLIC_GTM_ID);
+  },
+  get revalidateSecret(): string | undefined {
+    return normalizeOptionalString(process.env.CONTENTSTACK_REVALIDATE_SECRET);
   },
   get contentstack(): ContentstackEnvConfig {
     return getContentstackEnv();

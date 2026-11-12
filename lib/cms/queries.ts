@@ -27,15 +27,23 @@ const serverQueryCache = new Map<string, CacheRecord<unknown>>();
 const inFlightRequests = new Map<string, Promise<unknown>>();
 
 /**
+ * Clears the in-memory Contentstack query cache on the active server instance.
+ * Called during on-demand webhook revalidation so subsequent renders fetch fresh entries.
+ */
+export function clearServerQueryCache(): void {
+  serverQueryCache.clear();
+}
+
+/**
  * Caches Contentstack SDK responses in server memory across requests and deduplicates
- * concurrent in-flight queries. Bypasses caching in the browser so Contentstack
- * Visual Builder / Live Preview client updates remain real-time.
+ * concurrent in-flight queries. Bypasses caching in the browser and when Live Preview
+ * is enabled so Visual Builder and preview environments always fetch fresh data.
  */
 async function withServerCache<T>(
   cacheKey: string,
   fetcher: () => Promise<T>
 ): Promise<T> {
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" || isPreview) {
     return fetcher();
   }
 

@@ -9,7 +9,7 @@ const nextConfig = {
   images: {
     formats: ["image/webp"],
     qualities: [75],
-    minimumCacheTTL: 2678400, // 31 dagen (Vercel-aanbeveling)
+    minimumCacheTTL: 2678400, // 31 dagen edge/CDN cache-TTL
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [128, 256, 384],
     remotePatterns: [
@@ -51,9 +51,21 @@ const nextConfig = {
   // 4. Externaliseer isomorphic-dompurify / jsdom voor probleemloze SSR compilatie
   serverExternalPackages: ["isomorphic-dompurify"],
 
-  // 5. Open CORS headers voor AI agent discovery (ARD specificatie & llms.txt)
+  // 5. Security-, Visual Builder framing- en open CORS headers voor AI discovery
   async headers() {
     return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://*.contentstack.com;",
+          },
+        ],
+      },
       {
         source: "/ai-catalog.json",
         headers: [

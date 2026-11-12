@@ -7,7 +7,8 @@ Edwin Schipper is een Senior Digital Designer en Front-end Developer die organis
 
 ## Belangrijke pagina's
 - [Home](https://www.edwinschipper.nl/): Overzicht van diensten, recente projecten, ervaring en expertise.
-- [Over mij](https://www.edwinschipper.nl/over-ons): Achtergrond, werkervaring, opleiding en vaardigheden.
+- [Over mij](https://www.edwinschipper.nl/overmij): Achtergrond, werkervaring, opleiding en vaardigheden.
+- [Curriculum Vitae](https://www.edwinschipper.nl/resume): Overzicht van werkervaring, opleiding, certificeringen en tech stack.
 - [Portfolio](https://www.edwinschipper.nl/portfolio): Overzicht van geselecteerde design- en ontwikkelingsprojecten.
 
 ## Uitgelichte Case Studies

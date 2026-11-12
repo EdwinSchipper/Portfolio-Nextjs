@@ -1,16 +1,36 @@
+const contentstackApiKey = (process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY || "").trim();
+const contentstackAssetPathname = contentstackApiKey
+  ? `/v3/assets/${contentstackApiKey}/**`
+  : "/v3/assets/**";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. Razendsnelle beeldoptimalisatie (AVIF/WebP) & langere cache voor Contentstack assets
+  // 1. Kostenefficiënte beeldoptimalisatie (WebP, 1 quality, 31d TTL) & afgeschermde Contentstack hosts
   images: {
-    formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 dagen
-    qualities: [75, 90],
-    // Configure allowed hostnames for Next.js Image Optimization
+    formats: ["image/webp"],
+    qualities: [75],
+    minimumCacheTTL: 2678400, // 31 dagen (Vercel-aanbeveling)
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [128, 256, 384],
     remotePatterns: [
-      { hostname: "images.contentstack.io" },
-      { hostname: "*-images.contentstack.com" },
+      {
+        protocol: "https",
+        hostname: "images.contentstack.io",
+        pathname: contentstackAssetPathname,
+      },
+      {
+        protocol: "https",
+        hostname: "*-images.contentstack.com",
+        pathname: contentstackAssetPathname,
+      },
       ...(process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME
-        ? [{ hostname: process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME }]
+        ? [
+            {
+              protocol: "https",
+              hostname: process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME,
+              pathname: contentstackAssetPathname,
+            },
+          ]
         : []),
     ],
   },

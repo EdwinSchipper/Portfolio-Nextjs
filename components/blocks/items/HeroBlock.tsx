@@ -154,9 +154,9 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
                   alt={img1?.title || "Grafische Vormgeving"}
                   width={940}
                   height={560}
-                  sizes="sm:50vw md:940px"
+                  sizes="(max-width: 1023px) 42vw, 25vw"
                   className="w-full h-full object-cover rounded-md max-h-[315px] sm:max-h-[560px] md:max-h-[460px] xl:max-h-[560px]"
-                  priority
+                  preload
                   {...(img1?.$ && img1?.$.url)}
                 />
               ) : null}
@@ -169,9 +169,9 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
                   alt={img2?.title || "Frontend Development"}
                   width={440}
                   height={217}
-                  sizes="sm:50vw md:440px"
+                  sizes="(max-width: 1023px) 50vw, 28vw"
                   className="w-full h-full object-cover rounded-md max-h-[115px] sm:max-h-[217px] md:max-h-[217px] lg:max-h-[217px]"
-                  priority
+                  loading="eager"
                   {...(img2?.$ && img2?.$.url)}
                 />
               ) : null}
@@ -184,8 +184,9 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
                   alt={img3?.title || "UX Design"}
                   width={1240}
                   height={332}
-                  sizes="sm:50vw md:1240px"
+                  sizes="(max-width: 1023px) 58vw, 33vw"
                   className="w-full h-full object-cover rounded-md max-h-[115px] sm:max-h-[332px] md:max-h-[232px] lg:max-h-[332px]"
+                  loading="eager"
                   {...(img3?.$ && img3?.$.url)}
                 />
               ) : null}

@@ -117,7 +117,6 @@ export default function FeaturedProjectsBlock({
                           alt={post.alt_text || company}
                           width={730}
                           height={440}
-                          quality={90}
                           loading="lazy"
                           className="rounded-md w-full h-[220px] sm:h-[325px] md:h-[240px] lg:h-[400px] xl:h-[440px] object-cover group-hover:scale-[1.02] transition-transform duration-500 border border-border-100 dark:border-border-200"
                           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 730px"

@@ -241,7 +241,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                 src={heroImgUrl}
                 alt={heroImgAlt}
                 fill
-                priority
+                preload
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 60vw"
                 className="object-cover"
                 {...heroImgCslp}

@@ -3,7 +3,7 @@ import type { CSLPAttribute } from "@/lib/types";
 import HeroVideoLayer from "./HeroVideoLayer";
 
 export interface HeroBackgroundVideoProps {
-  videoUrl: string;
+  videoUrl?: string;
   fallbackImageUrl: string;
   videoCslp?: CSLPAttribute;
   imageCslp?: CSLPAttribute;

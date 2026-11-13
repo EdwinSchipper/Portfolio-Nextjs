@@ -73,7 +73,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
     <section
       {...previewAttr}
       aria-labelledby="hero-top"
-      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-10 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-14 sm:pb-24 lg:pb-36 xl:pb-28 font-content min-h-dvh"
+      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-8 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-8 sm:pb-24 lg:pb-36 xl:pb-28 font-content min-h-dvh"
       id="hero-section"
     >
       <HeroBackgroundVideo
@@ -105,7 +105,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
         </div>
 
         <div className="col-span-12 xl:col-span-4 self-end">
-          <div className="text-content-200 flex flex-col items-end text-right text-mediumM sm:text-medium w-full">
+          <div className="text-content-200 flex flex-col items-end text-right text-smallM sm:text-medium w-full">
             <HeroLocalClock />
             <span className="inline-flex items-center gap-2">
               <span>

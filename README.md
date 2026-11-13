@@ -28,7 +28,7 @@ Hieronder staat het actuele overzicht van afgeronde mijlpalen (`Done`), lopende 
 
 | Onderdeel | Status | Omschrijving |
 | :--- | :---: | :--- |
-| **Driepijler Component-Architectuur** | ✅ `Done` | Strikte scheiding tussen `ui/` (Design System primitives), `blocks/` (Contentstack Modular Blocks) en `features/` (`analytics`, `pages`, `portfolio`) met expliciete barrel-exports. |
+| **Driepijler Component-Architectuur** | ✅ `Done` | Strikte scheiding tussen `ui/` (Design System primitives), `layout/` (globale site-chrome), `blocks/` (Contentstack Modular Blocks) en `features/` (`analytics`, `pages`, `portfolio`) met expliciete barrel-exports. |
 | **Headless CMS & Visual Builder** | ✅ `Done` | Contentstack Delivery SDK v5 gekoppeld met Live Preview v4 (`$`), `VB_EmptyBlockParentClass` en `skipInitialRender` voor real-time editing zonder dubbele client-fetches. |
 | **RSC Streaming & Waterfall Preventie** | ✅ `Done` | Symmetrische route-shells (`/`, `/[...slug]`, `/portfolio/[slug]`) met `<Suspense>` streaming, CLS-vrije skeletons (`HomePageSkeleton`, `PageSkeleton`, `PortfolioDetailSkeleton`), `React.cache()` deduplicatie en `Promise.all` sitemap-queries. |
 | **Centrale Environment (`lib/env.ts`)** | ✅ `Done` | Type-veilige single source of truth (`env` & `getSiteUrl()`) voor alle Contentstack-, GTM- en site-URL variabelen; `0` losse `process.env` aanroepen buiten `lib/env.ts`. |
@@ -67,8 +67,10 @@ lib/
 └── index.ts                # Centrale barrel export (@/lib)
 
 components/
-├── ui/                     # Design System primitives & globale navigatie
-│                           # (Button, Label, Icon, Breadcrumbs, ColorModeSelector, Toast, Header, Footer)
+├── ui/                     # Pure Design System primitives
+│                           # (Button, Label, Icon, Toast, RichText)
+├── layout/                 # Globale navigatie & layout-chrome
+│                           # (Header, Footer, Breadcrumbs, ColorModeSelector, NavigationProgress)
 ├── blocks/                 # Contentstack Modular Blocks & automatische BlockRenderer registry
 │   ├── BlockRenderer.tsx
 │   ├── items/              # HeroBlock, CtaBlock, ResumeSection, GridSection, CardSection,

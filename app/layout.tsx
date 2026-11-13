@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Newsreader, Cascadia_Mono } from "next/font/google";
 import "./globals.css";
-import { Header, Footer, NavigationProgress } from "@/components/ui";
+import { Header, Footer, NavigationProgress } from "@/components/layout";
 import { GTMPageTracker, CookieConsent } from "@/components/features/analytics";
 import { env } from "@/lib/env";
 

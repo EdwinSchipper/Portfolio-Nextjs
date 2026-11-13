@@ -9,7 +9,7 @@ export interface BreadcrumbItem {
   active?: boolean;
 }
 
-interface BreadcrumbsProps {
+export interface BreadcrumbsProps {
   items?: BreadcrumbItem[];
   currentTitle?: string;
   currentTitleAttr?: CSLPAttribute;
@@ -77,7 +77,7 @@ export default function Breadcrumbs({
                 <Icon
                   name="chevron-right"
                   size="xs"
-                  className="text-gray-400 stroke-2"
+                  className="text-content-300 dark:text-content-200/70 stroke-2"
                 />
               )}
 

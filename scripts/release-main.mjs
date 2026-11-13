@@ -30,11 +30,13 @@ if (dirtyFiles) {
   process.exit(1);
 }
 
+runGit(["fetch", "origin", "main"]);
+
 const sourceCommit = runGit(["rev-parse", "--short", "development"]);
 const tempWorktree = mkdtempSync(join(tmpdir(), "release-main-"));
 
 try {
-  runGit(["worktree", "add", tempWorktree, "main"]);
+  runGit(["worktree", "add", "-B", "release/main", tempWorktree, "origin/main"]);
   runGit(["read-tree", "--reset", "-u", "development"], tempWorktree);
   runGit(
     ["rm", "-rf", "--ignore-unmatch", ".agents", "AGENTS.md"],
@@ -50,7 +52,7 @@ try {
 
   if (!hasChanges) {
     console.log(
-      "Geen wijzigingen: branch 'main' is al synchroon met 'development' (zonder .agents/ en AGENTS.md)."
+      "Geen wijzigingen: 'origin/main' is al synchroon met 'development' (zonder .agents/ en AGENTS.md)."
     );
     process.exit(0);
   }
@@ -58,15 +60,17 @@ try {
   const commitTitle = `chore(release): synchroniseer main met development (${sourceCommit}) zonder agent-bestanden`;
   const commitBody = [
     "- Waarom: live release van geverifieerde wijzigingen op development zonder .agents/ en AGENTS.md in de openbare main-branch",
-    `- Wat: exacte tree-synchronisatie vanuit development (${sourceCommit}) met uitsluiting van .agents/ en AGENTS.md`,
-    "- Impact: main blijft vrij van agent-metadata; development en lokale werkmap blijven volledig intact",
+    `- Wat: exacte tree-synchronisatie vanuit development (${sourceCommit}) op basis van origin/main met uitsluiting van .agents/ en AGENTS.md`,
+    "- Impact: release/main kan via een Pull Request groen naar main gemerged worden terwijl development en de lokale werkmap volledig intact blijven",
   ].join("\n");
 
   runGit(["commit", "-m", commitTitle, "-m", commitBody], tempWorktree);
   console.log(
-    `Commit aangemaakt op 'main' vanuit 'development' (${sourceCommit}), exclusief .agents/ en AGENTS.md.`
+    `Branch 'release/main' aangemaakt vanaf 'origin/main' met inhoud van 'development' (${sourceCommit}), exclusief .agents/ en AGENTS.md.`
   );
-  console.log("Controleer desgewenst met 'git log -1 main' en push handmatig met 'git push origin main'.");
+  console.log(
+    "Push met 'git push -u --force-with-lease origin release/main' en open op GitHub een Pull Request van 'release/main' naar 'main'."
+  );
 } finally {
   try {
     runGit(["worktree", "remove", "--force", tempWorktree]);
@@ -74,4 +78,3 @@ try {
     rmSync(tempWorktree, { recursive: true, force: true });
   }
 }
-

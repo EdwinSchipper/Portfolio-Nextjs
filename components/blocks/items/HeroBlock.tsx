@@ -66,10 +66,8 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
 
   const backgroundVideo = data?.background_video || data?.video;
   const backgroundImage = data?.background_image || data?.fallback_image;
-  const backgroundVideoUrl =
-    backgroundVideo?.url || "/videos/hero-background.mp4";
-  const backgroundImageUrl =
-    backgroundImage?.url || "/img/hero/hero-background-fallback.jpg";
+  const backgroundVideoUrl = backgroundVideo?.url;
+  const backgroundImageUrl = backgroundImage?.url || "/img/hero/hero-background-fallback.jpg";
 
   return (
     <section

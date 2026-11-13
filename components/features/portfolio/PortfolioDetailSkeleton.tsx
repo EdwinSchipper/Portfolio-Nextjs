@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * Tailored skeleton for the portfolio case study detail view.
  * Matches PortfolioDetail's exact layout, header gradient, and visual dimensions

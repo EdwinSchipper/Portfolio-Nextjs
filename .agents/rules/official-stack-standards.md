@@ -21,6 +21,8 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 - **Components**: UI-blokken en features hebben een eigen modulaire structuur onder `components/blocks/`, `components/features/` en `components/ui/` met duidelijke exportdefinities.
 - **Props**: Component-props gebruiken altijd `camelCase`, worden gedefinieerd met een geëxporteerde `export interface *Props` en uitgepakt via object destructuring. Vermijd onnodige hardcoded fallback-strings in component-parameters wanneer de parent deze props verplicht aanlevert.
 - **State & Client Boundaries**: Voeg `'use client'` uitsluitend toe aan specifieke interactieve leaf-componenten die daadwerkelijk React state (`useState`, `useSyncExternalStore`), event-listeners of browser APIs gebruiken.
+- **React 19 JSX Transform & Imports**: `tsconfig.json` gebruikt `"jsx": "react-jsx"`. Voeg daarom nooit `import React from "react"` toe zonder direct runtime-gebruik, en geef bij types de voorkeur aan `import type { ReactNode }` boven de `React.*` namespace.
+- **Toegankelijkheid (WCAG 2.2 AA)**: Volg bij alle UI-, media- en CMS-componenten [`.agents/rules/accessibility.md`](accessibility.md).
 
 ## 3. Data Layer, Environment & Type-Safety (`lib/`, `lib/env.ts` & `lib/types/`)
 - **Strikte Scheiding**:

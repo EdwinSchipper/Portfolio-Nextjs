@@ -205,13 +205,15 @@ Vóór ELKE commit en vóór ELKE push naar een remote branch MOET de agent de M
      *(0 resultaten toegestaan)*.
 4. **Zero-Overfetching & Safe Sanitization**:
    - Alle Contentstack Rich Text weergaves in `dangerouslySetInnerHTML` moeten gezuiverd zijn met `isomorphic-dompurify`.
-5. **Image Optimization Gate** ([`.agents/rules/image-optimization.md`](.agents/rules/image-optimization.md)):
+5. **Image Optimization & Design Token Gates** ([`.agents/rules/image-optimization.md`](.agents/rules/image-optimization.md), [`.agents/rules/accessibility.md`](.agents/rules/accessibility.md)):
    - ```bash
      git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"
      git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"
+     git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-\[#[0-9a-fA-F]{3,8}\]" -- "app/" "components/"
      ```
      *(0 resultaten toegestaan)*.
-6. **Linter & Type-Safety Gates**:
+6. **Linter, Unused-Code & Type-Safety Gates**:
+   - `pnpm exec tsc --noEmit --noUnusedLocals --noUnusedParameters` (0 ongebruikte imports/locals/parameters).
    - `pnpm type-check` (0 errors, `tsc --noEmit`).
    - `pnpm lint` (0 warnings/errors).
    - `pnpm build` (succesvolle Next.js productiebuild).
@@ -224,6 +226,7 @@ Strikte regels en kwaliteitsstandaarden voor agents zijn georganiseerd in [`.age
 
 | Regel | Pad | Doel |
 | --- | --- | --- |
+| Accessibility | [`.agents/rules/accessibility.md`](.agents/rules/accessibility.md) | WCAG 2.2 AA landmarks, `<time>`/`sr-only` semantiek, touch targets (`44px`/`36px`), scrims & `prefers-reduced-motion` |
 | Change Approval | [`.agents/rules/change-approval.md`](.agents/rules/change-approval.md) | Nooit zelfstandig committen of pushen; altijd expliciete toestemming |
 | Git Commits | [`.agents/rules/git-commits.md`](.agents/rules/git-commits.md) | Conventional Commits standaard met verplichte body bij grotere wijzigingen; **voertaal ALTIJD Nederlands** |
 | Import Integrity | [`.agents/rules/import-integrity.md`](.agents/rules/import-integrity.md) | Opschonen oude paden/barrels na refactor, `tsc --noEmit` & lint |

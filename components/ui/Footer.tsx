@@ -134,43 +134,43 @@ export default function Footer() {
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                 <span>© {currentYear} Edwin Schipper</span>
                 {legalLinks.map((link) => (
-                  <Link
+                  <Button
                     key={link.label}
                     href={link.href}
-                    className="font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline"
+                    variant="link-dark"
                   >
                     {link.label}
-                  </Link>
+                  </Button>
                 ))}
 
                 <span className="text-balance">
                   Ontworpen in{" "}
-                  <a
+                  <Button
                     href="https://www.figma.com/nl-nl/"
+                    variant="link-dark"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline"
                   >
                     Figma
-                  </a>
+                  </Button>
                   , gebouwd met{" "}
-                  <a
+                  <Button
                     href="https://nextjs.org/"
+                    variant="link-dark"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline"
                   >
                     Next.js
-                  </a>{" "}
+                  </Button>{" "}
                   &amp;{" "}
-                  <a
+                  <Button
                     href="https://tailwindcss.com/"
+                    variant="link-dark"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold hover:text-title-100 dark:hover:text-title-200 transition-colors duration-200 hover:underline"
                   >
                     Tailwind
-                  </a>
+                  </Button>
                 </span>
               </div>
 

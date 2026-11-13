@@ -266,6 +266,11 @@ export interface HeroBlock extends BaseEntity {
   cta_button?: Link;
   button?: Link;
   cta_note?: string;
+  is_available?: boolean;
+  background_video?: File;
+  video?: File;
+  background_image?: File;
+  fallback_image?: File;
   image_1?: File;
   image_ux?: File;
   image_2?: File;

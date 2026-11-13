@@ -45,15 +45,21 @@ Geen achtergebleven `console.log` statements in client- of servercode:
   ```
   *(Moet altijd gezuiverd zijn met DOMPurify.sanitize of het officiële Contentstack Consent/JSON-LD script betreffen)*.
 
-## 5. Image Optimization Gate (`next/image`)
-Conform [`.agents/rules/image-optimization.md`](image-optimization.md):
+## 5. Image Optimization & Accessibility Gates (`next/image` & WCAG 2.2 AA)
+Conform [`.agents/rules/image-optimization.md`](image-optimization.md) en [`.agents/rules/accessibility.md`](accessibility.md):
 ```bash
 git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"
 git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"
+git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-\[#[0-9a-fA-F]{3,8}\]" -- "app/" "components/"
 ```
-*(0 resultaten toegestaan: `priority` is deprecated sinds Next.js 16 → gebruik `preload`; `sizes` bevat uitsluitend geldige media queries. `quality={...}` waarden moeten in `images.qualities` staan.)*
+*(0 resultaten toegestaan: `priority` is deprecated sinds Next.js 16 → gebruik `preload`; `sizes` bevat uitsluitend geldige media queries; kleuren gebruiken uitsluitend `@theme` tokens uit `app/globals.css`. `quality={...}` waarden moeten in `images.qualities` staan.)*
 
-## 6. Linter & Type-Safety Gates
+## 6. Linter, Unused-Code & Type-Safety Gates
+- **Ongebruikte imports, variabelen & parameters (`react-jsx`)**:
+  ```bash
+  pnpm exec tsc --noEmit --noUnusedLocals --noUnusedParameters
+  ```
+  *(0 resultaten toegestaan; voorkomt o.a. achtergebleven `import React from "react"` en dode lokale bindings)*.
 - **TypeScript compilatie**:
   ```bash
   pnpm type-check

@@ -17,7 +17,7 @@ description: Pull Request checklist, architectuurbewaking en severity-richtlijne
 - **DRY CMS Queries & Caching**: Worden nieuwe queries in [`lib/cms/queries.ts`](../../../lib/cms/queries.ts) afgehandeld via `fetchSingleEntry`, `fetchEntryUrls` en `withServerCache` + `React.cache()`?
 - **Environment Integriteit**: Worden alle omgevingsvariabelen uit [`lib/env.ts`](../../../lib/env.ts) gelezen en is [`.env.example`](../../../.env.example) gesynchroniseerd?
 - **Veiligheid & Live Preview**: Wordt alle Rich Text HTML gezuiverd met `isomorphic-dompurify` vóór `dangerouslySetInnerHTML` en blijven `$` (`data-cslp`) attributen behouden?
-- **UI & Types**: Worden uitsluitend UI primitives uit [`components/ui/`](../../../components/ui/) en `@heroicons/react` gebruikt, zonder `as any` casts, zonder `@deprecated` API's en zonder achtergebleven `//` comments of `console.log`?
+- **UI, A11Y & Types**: Worden uitsluitend UI primitives uit [`components/ui/`](../../../components/ui/) en `@heroicons/react` gebruikt, zonder `as any` casts, zonder `@deprecated` API's, zonder ongebruikte `import React`, zonder hardcoded hex-kleuren, en conform [`accessibility.md`](../../rules/accessibility.md) (landmarks, `<time>`, `sr-only`/`aria-hidden`, touch targets `44px`/`36px`, `prefers-reduced-motion` via `useSyncExternalStore`)?
 - **Image Optimization**: Volgen `next/image` en `next.config.mjs` [`image-optimization.md`](../../rules/image-optimization.md)? Geldige media queries in `sizes`, maximaal één LCP-`preload` per route (geen deprecated `priority`), `quality` binnen `images.qualities`, `unoptimized` voor SVG/GIF/< 10 KB, `width`/`height` of `fill` voor CLS en `remotePatterns` beperkt met `pathname`?
-- **Quality Gate**: Slagen `pnpm type-check`, `pnpm lint` en `pnpm build` zonder waarschuwingen?
+- **Quality Gate**: Slagen `tsc --noEmit --noUnusedLocals --noUnusedParameters`, `pnpm type-check`, `pnpm lint` en `pnpm build` zonder waarschuwingen?
 

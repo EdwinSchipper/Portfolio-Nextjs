@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import DOMPurify from "isomorphic-dompurify";
 import { CtaBlock as CtaBlockType, CSLPAttribute } from "@/lib/types";

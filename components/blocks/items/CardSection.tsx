@@ -1,13 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   CardSectionBlock,
   CardSectionItem,
   CSLPAttribute,
   CSLPContainer,
 } from "@/lib/types";
-import { Label, Icon } from "@/components/ui";
+import { Button, Label, Icon } from "@/components/ui";
 import { getContainerClass, getColorModeClass } from "@/lib/layout";
 
 export interface CardBoxProps {
@@ -110,18 +109,16 @@ export function CardBox({
 
           {href && (
             <div className="pt-2 mt-auto">
-              <Link
+              <Button
                 href={href}
+                variant="link-neutral"
+                arrow
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noopener noreferrer" : undefined}
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-title-100 dark:text-title-200 hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors cursor-pointer"
-                {...(cslp && cslp.button)}
+                cslp={cslp && cslp.button}
               >
-                <span>{button?.title || button?.text || "Lees meer"}</span>
-                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-                  →
-                </span>
-              </Link>
+                {button?.title || button?.text || "Lees meer"}
+              </Button>
             </div>
           )}
 
@@ -195,18 +192,16 @@ export function CardImageTag({
 
       {href && (
         <div className="pt-3 mt-auto">
-          <Link
+          <Button
             href={href}
+            variant="link"
+            arrow
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-accent7-900 dark:text-accent8-900 hover:underline transition-colors cursor-pointer"
-            {...(cslp && cslp.button)}
+            cslp={cslp && cslp.button}
           >
-            <span>{button?.title || button?.text || "Lees meer"}</span>
-            <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
+            {button?.title || button?.text || "Lees meer"}
+          </Button>
         </div>
       )}
 

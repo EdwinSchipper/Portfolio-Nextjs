@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useSyncExternalStore } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import { Toast, Button } from '@/components/ui';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { buildPageViewPayload, updateGoogleConsent } from './analytics-utils';

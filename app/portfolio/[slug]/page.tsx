@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPortfolioItemByUrl, getPortfolioRouteStaticParams, isPreview } from "@/lib/cms";
 import { getPortfolioRouteMetadata } from "@/lib/metadata";
-import { PortfolioDetail, PortfolioDetailSkeleton, PortfolioPreview } from "@/components/features/portfolio";
+import { PortfolioDetail, PortfolioDetailSkeleton } from "@/components/features/portfolio";
 
 export const revalidate = 3600;
 
@@ -38,9 +38,12 @@ async function PortfolioDetailContent({ path }: { path: string }) {
     notFound();
   }
 
-  return isPreview ? (
-    <PortfolioPreview path={path} initialItem={portfolioItem} />
-  ) : (
-    <PortfolioDetail item={portfolioItem} />
-  );
+  if (isPreview) {
+    const { default: PortfolioPreview } = await import(
+      "@/components/features/portfolio/PortfolioPreview"
+    );
+    return <PortfolioPreview path={path} initialItem={portfolioItem} />;
+  }
+
+  return <PortfolioDetail item={portfolioItem} />;
 }

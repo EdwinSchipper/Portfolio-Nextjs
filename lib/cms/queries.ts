@@ -100,8 +100,8 @@ async function fetchSingleEntry<T extends { uid: string }>(
       }
 
       const result = url
-        ? await entryCall.query().where("url", QueryOperation.EQUALS, url).find<T>()
-        : await entryCall.find<T>();
+        ? await entryCall.query().where("url", QueryOperation.EQUALS, url).limit(1).find<T>()
+        : await entryCall.limit(1).find<T>();
 
       const entry = result.entries?.[0];
       if (entry && isPreview) {
@@ -134,6 +134,7 @@ async function fetchEntryUrls(
         .contentType(contentType)
         .entry()
         .only(["url", "updated_at"])
+        .limit(100)
         .find<{ url?: string; updated_at?: string }>();
 
       return (result.entries || []).map((entry) => ({

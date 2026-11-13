@@ -1,7 +1,7 @@
 import Image from "next/image";
-import DOMPurify from "isomorphic-dompurify";
 import { CtaBlock as CtaBlockType, CSLPAttribute } from "@/lib/types";
-import { Button, Label } from "@/components/ui";
+import { normalizeCtaBlock } from "@/lib/cms";
+import { Button, Label, RichText } from "@/components/ui";
 
 export interface CtaBlockProps {
   data?: CtaBlockType;
@@ -21,19 +21,17 @@ export default function CtaBlock({
 }: CtaBlockProps) {
   if (!data) return null;
 
-  const label = data.label;
-  const title = data.title;
-  const description = data.description || data.text_cta || data.text;
-  const isHtml = typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
-
-  const buttonHref = data.button_cta?.href || data.button_to || data.to;
-  const buttonText = data.button_cta?.title || data.button_text || "Bekijk CV";
-
-  const imageLight = data.image || data.image_light;
-  const imageDark = data.image_dark_mode || data.image_dark;
-  const imageAlt = data.image_alt || imageLight?.title || imageDark?.title || title || "CTA image";
-
-  const meta = data.$;
+  const {
+    label,
+    title,
+    description,
+    buttonHref,
+    buttonText,
+    imageLight,
+    imageDark,
+    imageAlt,
+    meta,
+  } = normalizeCtaBlock(data);
 
   return (
     <section
@@ -66,24 +64,13 @@ export default function CtaBlock({
               </h3>
             )}
             {description && (
-              isHtml ? (
-                <div
-                  id="services-text"
-                  className="text-mediumM sm:text-medium text-pretty sm:text-balance font-content text-content-100 dark:text-content-200"
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(description),
-                  }}
-                  {...(meta && (meta.text_cta || meta.description || meta.text))}
-                />
-              ) : (
-                <p
-                  id="services-text"
-                  className="text-mediumM sm:text-medium text-pretty sm:text-balance font-content text-content-100 dark:text-content-200"
-                  {...(meta && (meta.text_cta || meta.description || meta.text))}
-                >
-                  {description}
-                </p>
-              )
+              <RichText
+                id="services-text"
+                content={description}
+                plainTextClassName=""
+                className="text-mediumM sm:text-medium text-pretty sm:text-balance font-content text-content-100 dark:text-content-200"
+                cslp={meta && (meta.text_cta || meta.description || meta.text)}
+              />
             )}
           </div>
 

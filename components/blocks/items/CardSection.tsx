@@ -45,7 +45,6 @@ export function CardBox({
 
   return (
     <div
-      {...cslp}
       className={`services-card h-fit md:h-full group relative overflow-hidden flex flex-col p-8 md:p-12 xl:p-14 bg-transparent border-0 rounded-none ${className} font-content`}
     >
       <div className="relative z-10 flex flex-col h-auto md:h-full">
@@ -157,7 +156,6 @@ export function CardImageTag({
 
   return (
     <div
-      {...cslp}
       className={`flex flex-col h-full group p-8 md:p-12 xl:p-14 ${className}`}
     >
       {image?.url && (
@@ -287,7 +285,6 @@ export interface CardSectionHeaderProps {
   intro?: React.ReactNode;
   containerClass?: string;
   className?: string;
-  cslp?: CSLPContainer;
   cslpLabel?: CSLPAttribute;
   cslpTitle?: CSLPAttribute;
   cslpIntro?: CSLPAttribute;
@@ -300,14 +297,12 @@ export function CardSectionHeader({
   intro,
   containerClass = "w-full lg:max-w-7xl",
   className = "",
-  cslp,
   cslpLabel,
   cslpTitle,
   cslpIntro,
 }: CardSectionHeaderProps) {
   return (
     <header
-      {...cslp}
       className={`w-full flex flex-col gap-14 md:gap-8 px-10 md:px-20 xl:px-14 border-t border-border-100 dark:border-border-200 py-14 md:py-24 relative ${className}`}
     >
       <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-1/2 bg-border-100/70 dark:bg-border-200/70 pointer-events-none" />
@@ -397,7 +392,6 @@ export function CardGrid({
 }
 
 export interface CardSectionProps {
-  children?: React.ReactNode;
   data?: CardSectionBlock;
   previewAttr?: CSLPAttribute;
   width?: "small" | "default" | "large" | "wide" | string;
@@ -410,7 +404,6 @@ export interface CardSectionProps {
  * CardSection: Consolidated section with desktop split header and hairline crosshair grid.
  */
 export default function CardSection({
-  children,
   data,
   previewAttr,
   width,
@@ -418,67 +411,55 @@ export default function CardSection({
   columns,
   className = "",
 }: CardSectionProps) {
-  const rawWidth = width || data?.width || data?.container_width;
+  if (!data) return null;
+
+  const rawWidth = width || data.width || data.container_width;
   const containerClass = getContainerClass(rawWidth, "large");
 
-  const colorModeKey = colorMode || data?.color_mode;
+  const colorModeKey = colorMode || data.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
 
-  if (data && !children) {
-    const rawLabel = data?.label_cards || data?.label;
-    const sectionTitle = data?.section_title;
-    const sectionIntro = data?.section_intro;
-    const cards = data?.cards || [];
-    const colVal = String(columns || data?.columns || "").match(/[1-4]/)?.[0] || "3";
+  const rawLabel = data.label_cards || data.label;
+  const sectionTitle = data.section_title;
+  const sectionIntro = data.section_intro;
+  const cards = data.cards || [];
+  const colVal = String(columns || data.columns || "").match(/[1-4]/)?.[0] || "3";
 
-    const hasHeader = Boolean(rawLabel || sectionTitle || sectionIntro);
-
-    return (
-      <section
-        {...previewAttr}
-        data-color-mode={colorModeKey}
-        data-container-width={rawWidth}
-        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
-      >
-        {hasHeader && (
-          <CardSectionHeader
-            label={rawLabel}
-            title={sectionTitle}
-            intro={sectionIntro}
-            containerClass={containerClass}
-            cslpLabel={data?.$ && (data?.$.label_cards || data?.$.label)}
-            cslpTitle={data?.$ && data?.$.section_title}
-            cslpIntro={data?.$ && data?.$.section_intro}
-          />
-        )}
-
-        {cards.length > 0 && (
-          <CardGrid
-            columns={colVal}
-            containerClass={containerClass}
-            cslp={data?.$ && data?.$.cards}
-          >
-            {cards.map((card, idx) => (
-              <CardItem
-                key={card._metadata?.uid || `card-${idx}`}
-                card={card}
-              />
-            ))}
-          </CardGrid>
-        )}
-      </section>
-    );
-  }
+  const hasHeader = Boolean(rawLabel || sectionTitle || sectionIntro);
 
   return (
     <section
       {...previewAttr}
       data-color-mode={colorModeKey}
+      data-container-width={rawWidth}
       className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
     >
-      <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
-        {children}
-      </div>
+      {hasHeader && (
+        <CardSectionHeader
+          label={rawLabel}
+          title={sectionTitle}
+          intro={sectionIntro}
+          containerClass={containerClass}
+          cslpLabel={data.$ && (data.$.label_cards || data.$.label)}
+          cslpTitle={data.$ && data.$.section_title}
+          cslpIntro={data.$ && data.$.section_intro}
+        />
+      )}
+
+      {cards.length > 0 && (
+        <CardGrid
+          columns={colVal}
+          containerClass={containerClass}
+          cslp={data.$ && data.$.cards}
+        >
+          {cards.map((card, idx) => (
+            <CardItem
+              key={card._metadata?.uid || `card-${idx}`}
+              card={card}
+            />
+          ))}
+        </CardGrid>
+      )}
     </section>
   );
 }

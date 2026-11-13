@@ -31,5 +31,22 @@ export {
   resolveRevalidationTargets,
 } from "./revalidation";
 
+export {
+  resolveAssetUrl,
+  resolveFirstAssetUrl,
+  resolveAssetCslp,
+  normalizeFeaturedProject,
+  normalizeCtaBlock,
+  extractStackTags,
+  normalizeExperienceTimeline,
+  normalizeResumeSection,
+} from "./mappers";
+
 export type { EntryUrlRecord } from "./queries";
 export type { RevalidationPattern, RevalidationTargets } from "./revalidation";
+export type {
+  NormalizedFeaturedProject,
+  NormalizedCtaBlock,
+  ResumeNormalizationOptions,
+  NormalizedResumeSection,
+} from "./mappers";

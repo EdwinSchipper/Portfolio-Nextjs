@@ -1,12 +1,12 @@
 import {
   ExperienceTimelineBlock as ExperienceTimelineBlockType,
-  ResumeSectionBlock,
   CSLPAttribute,
 } from "@/lib/types";
+import { normalizeExperienceTimeline } from "@/lib/cms";
 import ResumeSection from "./ResumeSection";
 
 interface ExperienceTimelineBlockProps {
-  data: ExperienceTimelineBlockType;
+  data?: ExperienceTimelineBlockType;
   previewAttr?: CSLPAttribute;
   className?: string;
 }
@@ -20,17 +20,11 @@ export default function ExperienceTimelineBlock({
   previewAttr,
   className = "",
 }: ExperienceTimelineBlockProps) {
-  const nestedTimeline = data.experience_timeline;
-  const timelineData: ResumeSectionBlock =
-    data.companies || data.section_title
-      ? data
-      : Array.isArray(nestedTimeline)
-        ? { companies: nestedTimeline, $: data.$ }
-        : nestedTimeline || data;
+  if (!data) return null;
 
   return (
     <ResumeSection
-      data={timelineData}
+      data={normalizeExperienceTimeline(data)}
       previewAttr={previewAttr}
       className={className}
     />

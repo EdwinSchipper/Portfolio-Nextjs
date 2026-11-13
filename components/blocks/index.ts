@@ -10,7 +10,6 @@ export {
   ResumeSection,
   ServiceCardBlock,
   HeroBlock,
-  BLOCK_COMPONENTS,
 } from "./items";
 
 

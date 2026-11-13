@@ -50,6 +50,12 @@ export default function PortfolioTechStack({
                   <Icon
                     name={stackItem.icon || "code-bracket"}
                     className="w-5 h-5 md:w-6 md:h-6 text-title-200 dark:text-title-100 stroke-[1.75]"
+                    fallback={
+                      <Icon
+                        name="sparkles"
+                        className="w-5 h-5 md:w-6 md:h-6 text-title-200 dark:text-title-100 stroke-[1.75]"
+                      />
+                    }
                   />
                 </div>
 

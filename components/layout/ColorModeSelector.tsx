@@ -2,17 +2,18 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
-import Button, { iconButtonSizeClass } from "./Button";
+import Button, { iconButtonSizeClass } from "@/components/ui/Button";
 
 export interface ColorModeSelectorProps {
   className?: string;
   isOverHero?: boolean;
 }
 
-let listeners: Array<() => void> = [];
+let themeListeners: Array<() => void> = [];
+let mountedListeners: Array<() => void> = [];
 
-function emitChange() {
-  for (const listener of listeners) {
+function emitThemeChange() {
+  for (const listener of themeListeners) {
     listener();
   }
 }
@@ -26,19 +27,19 @@ const themeStore = {
     return false;
   },
   subscribe(listener: () => void) {
-    listeners.push(listener);
+    themeListeners.push(listener);
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleMedia = (e: MediaQueryListEvent) => {
       if (!localStorage.getItem("theme")) {
         document.documentElement.classList.toggle("dark", e.matches);
-        emitChange();
+        emitThemeChange();
       }
     };
     mediaQuery.addEventListener("change", handleMedia);
 
     return () => {
-      listeners = listeners.filter((l) => l !== listener);
+      themeListeners = themeListeners.filter((l) => l !== listener);
       mediaQuery.removeEventListener("change", handleMedia);
     };
   },
@@ -51,7 +52,7 @@ const themeStore = {
     } catch {
       /** Ignore storage restrictions in private browsing or sandboxed contexts */
     }
-    emitChange();
+    emitThemeChange();
   },
   init() {
     if (typeof window === "undefined") return;
@@ -60,7 +61,7 @@ const themeStore = {
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       const isDark = stored === "dark" || (!stored && prefersDark);
       document.documentElement.classList.toggle("dark", isDark);
-      emitChange();
+      emitThemeChange();
     } catch {
       /** Ignore storage restrictions in private browsing or sandboxed contexts */
     }
@@ -69,9 +70,9 @@ const themeStore = {
 
 const mountedStore = {
   subscribe(listener: () => void) {
-    listeners.push(listener);
+    mountedListeners.push(listener);
     return () => {
-      listeners = listeners.filter((l) => l !== listener);
+      mountedListeners = mountedListeners.filter((l) => l !== listener);
     };
   },
   getSnapshot() {

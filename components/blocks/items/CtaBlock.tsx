@@ -56,7 +56,6 @@ export default function CtaBlock({
             )}
             {title && (
               <h3
-                id="services-heading"
                 className="text-title_3M sm:text-title_3 text-pretty font-bold text-title-100 dark:text-title-200 -mt-3"
                 {...(meta && meta.title)}
               >
@@ -65,7 +64,6 @@ export default function CtaBlock({
             )}
             {description && (
               <RichText
-                id="services-text"
                 content={description}
                 plainTextClassName=""
                 className="text-mediumM sm:text-medium text-pretty sm:text-balance font-content text-content-100 dark:text-content-200"

@@ -21,6 +21,6 @@ description: Next.js 16 App Router structuur, pure route-shells, RSC Suspense st
 ### Server vs. Client Components
 
 - Plaats `'use client'` uitsluitend op interactieve leaf-componenten en maak een Client Component nooit `async`.
-- [`components/features/pages/Page.tsx`](../../../components/features/pages/Page.tsx) en [`HomePage.tsx`](../../../components/features/pages/HomePage.tsx) zijn Server Components; [`Preview.tsx`](../../../components/features/pages/Preview.tsx) en [`PortfolioPreview.tsx`](../../../components/features/portfolio/PortfolioPreview.tsx) verzorgen client-side Live Preview updates.
+- [`components/features/pages/Page.tsx`](../../../components/features/pages/Page.tsx) en [`HomePage.tsx`](../../../components/features/pages/HomePage.tsx) zijn Server Components; [`Preview.tsx`](../../../components/features/pages/Preview.tsx) en [`PortfolioPreview.tsx`](../../../components/features/portfolio/PortfolioPreview.tsx) verzorgen client-side Live Preview updates (houd client-preview los van productie-bundles en vermijd `import *` op icon-sets in client-reachable code).
 - Gebruik in submappen altijd expliciete named barrel exports (`export { X } from "./X"`), nooit `export *`.
 

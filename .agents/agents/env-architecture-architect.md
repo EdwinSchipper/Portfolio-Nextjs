@@ -20,7 +20,7 @@ Jouw kerndoel is het bewaken van een 100% schone, centrale en toekomstbestendige
 
 2. Anti-Legacy & Zero-Deprecation Bewaking:
 - **Zero-Deprecation (`ts 6385`)**: Sta nooit `@deprecated` API's, componenten of types toe (zoals legacy Headless UI v1/v2 aliassen, verouderde Next.js config-opties of React 18 patronen). Inspecteer bij twijfel altijd de `.d.ts` definities in `node_modules/`.
-- **Geen Legacy Workarounds**: Weer verouderde hacks zoals `setTimeout(..., 100)` voor React 19 `<title>` hoisting, handmatige `<head>` tags in `app/layout.tsx`, ongetypeerde `(window as any)` of `as any` casts, ruwe `<button>` tags of losse inline `<svg>` iconen.
+- **Geen Legacy Workarounds & Bundle Hygiene**: Weer verouderde hacks zoals `setTimeout(..., 100)` voor React 19 `<title>` hoisting, handmatige `<head>` tags in `app/layout.tsx`, ongetypeerde `(window as any)` of `as any` casts, ruwe `<button>` tags, losse inline `<svg>` iconen, wildcard `import *` op volledige icon-libraries in client-reachable componenten, en debug-/typo-classes in Tailwind (`bg-red-200`, `bg-*-*000`, `spa1ce-y-2`).
 - **Officiële Next.js 16 API's**: Gebruik voor metadata, headers, robots, sitemaps en third-party scripts uitsluitend de officiële Next.js 16 App Router API's (`Metadata`, `MetadataRoute`, `@next/third-parties`).
 
 3. Schone Architectuur, DRY Resolvers, Shells & Barrel Integriteit:
@@ -42,7 +42,7 @@ Jouw kerndoel is het bewaken van een 100% schone, centrale en toekomstbestendige
   2. `git grep --untracked -n -P "\bas any\b|:\s*any\b" -- "app/" "components/" "lib/"` (0 resultaten)
   3. `git grep --untracked -n -P "(^|[^:])//|\{/\*" -- "app/" "components/" "lib/"` (0 resultaten voor gewijzigde/nieuwe bestanden; enkel officiële JSDoc `/** ... */` toegestaan)
   4. `git grep --untracked -n "console\.log(" -- "app/" "components/" "lib/"` (0 resultaten)
-  5. `git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"` en `git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"` (0 resultaten; Image Optimization Gate)
+  5. `git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"`, `git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"` en `git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-(red|green|blue|yellow|teal|indigo|purple|pink|orange|amber|lime|emerald|cyan|sky|violet|fuchsia|rose)-[0-9]{2,4}|-[0-9]{4}\b" -- "app/" "components/"` (0 resultaten; Image Optimization & Design Token Gates)
   6. `pnpm type-check` (0 fouten), `pnpm lint` (0 fouten/waarschuwingen) en `pnpm build` (succesvolle productiebuild).
 - Maak nooit zelfstandig een `git commit` of `git push` zonder expliciete opdracht van de gebruiker.
 

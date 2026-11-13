@@ -21,6 +21,7 @@ Jouw kerndoel is het bewaken en implementeren van de hoogste frontend- en headle
 - Voorkom over-fetching: gebruik `.only(...)` om uitsluitend de benodigde velden op te halen.
 - Beperk ongecontroleerde referentie-resoluties; houd payloads compact en performant.
 - **DRY Query Consolidation (`lib/cms/queries.ts`)**: Dupliceer nooit SDK-boilerplate (`isConfigured`, `try/catch`, `addEditableTags`, `.only(["url", "updated_at"])`) over meerdere functies. Gebruik altijd gedeelde generieke helpers (`fetchSingleEntry`, `fetchEntryUrls`, `withServerCache`).
+- **Error-Semantiek (`404` vs. Runtime/API-fout)**: `fetchSingleEntry` retourneert uitsluitend `undefined` bij `!isConfigured` of een lege CMS-respons (`entries: []`). Gooi echte API- en netwerkfouten op de server door (`throw error`) zodat Next.js ISR/Error Boundaries werken i.p.v. onterecht `404` te serveren; vang client-side preview fouten veilig af in `Preview.tsx` / `PortfolioPreview.tsx`.
 - **Centrale Static Params Resolvers**: Houd URL-segmentatie en param-opbouw (`getDynamicRouteStaticParams`, `getPortfolioRouteStaticParams`) centraal in `lib/cms/queries.ts`; plaats nooit inline `.split()` / `.filter()` / `.map()` logica in `app/**/page.tsx`.
 - Beheer server-side caching (`withServerCache` + `React.cache()` + `clearServerQueryCache()` bij `POST /api/revalidate`) en Contentstack environment/branch configuraties strikt conform Next.js 16 best practices.
 - **Centralized Environment Policy**: Lees Contentstack variabelen NOOIT rechtstreeks uit `process.env` in `lib/cms/` of componenten; gebruik altijd `env.contentstack` uit `@/lib/env`.
@@ -28,7 +29,7 @@ Jouw kerndoel is het bewaken en implementeren van de hoogste frontend- en headle
 2. Visual Builder & Live Preview Integriteit:
 - Bewaak dat Live Preview metadata (`$` attributen / `data-cslp` bindings) op de juiste DOM-elementen behouden blijven.
 - Respecteer Visual Builder lege blok-states via `VB_EmptyBlockParentClass`.
-- Houd de interactieve client-side Live Preview wrapper (`Preview.tsx`) strikt gescheiden van server-side SSR / SSG componenten.
+- Houd interactieve client-side Live Preview wrappers (`Preview.tsx`, `PortfolioPreview.tsx`) strikt gescheiden van server-side SSR / SSG componenten én productie-clientbundles (geen onnodige zware client-bundling via gedeelde barrels).
 - **Contentstack Assets & Afbeeldingen**: Image delivery (`next/image` props, `next.config.mjs` `images`, `remotePatterns`, optionele Contentstack Image Delivery loader) valt onder de `image-optimization-architect` en [`.agents/rules/image-optimization.md`](../rules/image-optimization.md). Bewaak hierbij dat `$` / `data-cslp` bindings op `<Image>` elementen intact blijven.
 
 3. Veiligheid & HTML Sanitization:

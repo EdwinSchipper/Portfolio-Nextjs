@@ -26,12 +26,16 @@ In dit project hanteren we strikte kwaliteits-, beveiligings- en performance-eis
 ## 4. Live Preview & Visual Builder Integriteit
 - Garandeer dat Live Preview attributen (`page?.$` / block `$` bindings en `data-cslp`) intact blijven op DOM-nodes, zodat contentredacteuren in Visual Builder direct realtime previews kunnen zien en klikken.
 - Respecteer lege blok-states via de geëigende Visual Builder classes (`VB_EmptyBlockParentClass`).
-- Zorg dat client-side Live Preview wrappers (`Preview.tsx`) strikt gescheiden blijven van Server Components en geen onnodige hydrate-mismatches veroorzaken.
+- Zorg dat client-side Live Preview wrappers (`Preview.tsx`, `PortfolioPreview.tsx`) strikt gescheiden blijven van Server Components: importeer ze niet statisch via gedeelde route-barrels in productie-clientbundles als daardoor server/block/DOMPurify/SDK-bomen naar de client worden meegebundeld, en voorkom onnodige hydrate-mismatches.
 - Bewaak dat `initLivePreview()` een module-level guard gebruikt zodat `ContentstackLivePreview.init()` maximaal één keer per browsersessie wordt aangeroepen.
 
-## 5. DRY Query Architectuur & Server Caching (`lib/cms/queries.ts`)
+## 5. DRY Query Architectuur, Server Caching & Error-Semantiek (`lib/cms/queries.ts`)
 - **Geen Gedupliceerde SDK-Boilerplate (DRY Principle)**:
   - Schrijf nooit losse copy-paste functies voor vergelijkbare Contentstack queries. Gebruik centrale, generieke interne helpers (`fetchSingleEntry`, `fetchEntryUrls`, `withServerCache`) die `isConfigured`-validatie, `try/catch`-afhandeling, `includeReference`, `QueryOperation.EQUALS` en `contentstack.Utils.addEditableTags` op één centrale plek afhandelen.
+- **Expliciete Error-Semantiek (`404` vs. Runtime/API-fout)**:
+  - `fetchSingleEntry` retourneert uitsluitend `undefined` wanneer `!isConfigured` of wanneer Contentstack geldig `entries: []` teruggeeft (zodat `notFound()` alleen bij daadwerkelijk ontbrekende entries `404` serveert).
+  - Netwerk-, API- en runtime-fouten op de server worden gelogd én doorgegooid (`throw error`), zodat Next.js ISR bij storingen de laatst geldige cache behoudt of `app/error.tsx` activeert in plaats van een `404` te serveren/cachen.
+  - Client-side Live Preview refresh-aanroepen (`Preview.tsx`, `PortfolioPreview.tsx`) vangen fouten zelf veilig af in een `try/catch`.
 - **Centrale Static Params & URL Resolvers**:
   - Alle URL-segmentatie (`splitUrlSegments`) en opbouw van `generateStaticParams` arrays (`getDynamicRouteStaticParams`, `getPortfolioRouteStaticParams`) horen centraal in `lib/cms/queries.ts` en nooit inline in `app/**/page.tsx`.
 - **Server-Side TTL Cache & In-Flight Deduplicatie**:

@@ -18,12 +18,13 @@ description: Contentstack Delivery SDK v5, DRY queries, server TTL-caching (with
 - **[`lib/cms/client.ts`](../../../lib/cms/client.ts)**: Initialiseert `stack` via `@contentstack/delivery-sdk` en `getContentstackEndpoint` uit `@contentstack/utils` op basis van [`lib/env.ts`](../../../lib/env.ts). `initLivePreview()` bevat een module-level `isLivePreviewInitialized` guard zodat `ContentstackLivePreview.init()` maximaal één keer per browsersessie draait.
 - **[`lib/cms/queries.ts`](../../../lib/cms/queries.ts)**:
   - **DRY Query Consolidation**: Gebruik altijd de gedeelde interne helpers `fetchSingleEntry`, `fetchEntryUrls` en `withServerCache` (60s server TTL-cache + in-flight Promise deduplicatie) in combinatie met `React.cache()`, plus `clearServerQueryCache()` voor on-demand revalidatie via [`lib/cms/revalidation.ts`](../../../lib/cms/revalidation.ts).
+  - **Error-Semantiek (`404` vs. API-fout)**: `fetchSingleEntry` retourneert alleen `undefined` bij `!isConfigured` of een lege CMS-respons (`entries: []`); API-/netwerkfouten worden op de server doorgegooid (`throw error`) voor ISR-behoud/`error.tsx` en in client-preview wrappers (`Preview.tsx`, `PortfolioPreview.tsx`) veilig afgevangen.
   - **Centrale Static Params Resolvers**: `getDynamicRouteStaticParams()` en `getPortfolioRouteStaticParams()` bouwen de statische route-parameters centraal op via `splitUrlSegments()`.
   - Browser-aanroepen (`typeof window !== "undefined"`) en Live Preview (`isPreview`) slaan `withServerCache` automatisch over zodat Visual Builder wijzigingen real-time zichtbaar zijn.
 
 ### Veiligheid & Live Preview Bindings
 
 - Render Contentstack Rich Text HTML uitsluitend gezuiverd via `isomorphic-dompurify` (`DOMPurify.sanitize`).
-- Behoud `page?.$` en block `$` (`data-cslp`) attributen en `VB_EmptyBlockParentClass` voor Visual Builder.
+- Behoud `page?.$` en block `$` (`data-cslp`) attributen en `VB_EmptyBlockParentClass` voor Visual Builder, en houd client preview-wrappers los van productie-clientbundles.
 - Houd alle interfaces in [`lib/types/`](../../../lib/types/) 100% vrij van `as any` casts.
 

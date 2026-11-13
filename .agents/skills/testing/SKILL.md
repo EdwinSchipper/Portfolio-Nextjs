@@ -21,7 +21,7 @@ Voer vóór elke commit lokaal de volgende controles uit:
 3. **Zero-Any & Centralized Env check**:
    `git grep --untracked -n -P "\bas any\b|:\s*any\b" -- "app/" "components/" "lib/"` en `git grep --untracked -n "process\.env" -- "app/" "components/" "lib/" ":!lib/env.ts"` (0 resultaten).
 4. **Image Optimization & Design Token checks** ([`image-optimization.md`](../../rules/image-optimization.md)):
-   `git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"`, `git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"` en `git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-\[#[0-9a-fA-F]{3,8}\]" -- "app/" "components/"` (0 resultaten).
+   `git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"`, `git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"`, `git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-\[#[0-9a-fA-F]{3,8}\]" -- "app/" "components/"` en `git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-(red|green|blue|yellow|teal|indigo|purple|pink|orange|amber|lime|emerald|cyan|sky|violet|fuchsia|rose)-[0-9]{2,4}|-[0-9]{4}\b" -- "app/" "components/"` (0 resultaten; verwijder ook typo-uitgeschakelde classes altijd direct).
 5. **Unused-Code, Type-check, Lint & Build**:
    `pnpm exec tsc --noEmit --noUnusedLocals --noUnusedParameters`, `pnpm type-check`, `pnpm lint` en `pnpm build` moeten met 0 fouten of waarschuwingen slagen.
 

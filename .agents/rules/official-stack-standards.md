@@ -34,8 +34,8 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 - **Hergebruik van UI Primitives**: Gebruik voor interactieve elementen en feedback altijd de officiële componenten uit `components/ui/` (`Button`, `Toast`, `Label`, etc.).
 - **Verbod op Raw `<button>` Elements**: Schrijf NOOIT ruwe `<button>` HTML-tags met ad-hoc Tailwind styling in features, blokken of pagina's. Gebruik altijd `<Button>` met de juiste variant (`primary`, `brand`, `secondary`, `link`, `link-dark`).
 - **Geen Ad-Hoc Styling-Overrides op UI Componenten**: Vervuil UI-componenten niet met inline styling-overrides via `className` (zoals handmatige `opacity`, `dark:bg-*` of `dark:text-*` hacks). Laat de centrale UI-component zijn eigen styling bepalen; positionering en layout worden verzorgd door de parent container (bijv. een grid of flex wrapper).
-- **Icons**: Gebruik altijd `@heroicons/react` iconen in plaats van losse inline `<svg>` elementen.
-- **Tailwind CSS v4 Design Tokens**: Gebruik uitsluitend de gecentraliseerde design tokens en utility classes gedefinieerd in `app/globals.css`.
+- **Icons**: Gebruik altijd `@heroicons/react` (of `react-icons` voor merkiconen zoals GitHub/LinkedIn) in plaats van losse inline `<svg>` elementen. Gebruik in componenten die door client-boundaries geraakt kunnen worden geen wildcard `import * as ...` op volledige icon-sets; gebruik expliciete named imports of een begrensde icon-map zodat tree-shaking intact blijft.
+- **Tailwind CSS v4 Design Tokens**: Gebruik uitsluitend de gecentraliseerde design tokens en utility classes gedefinieerd in `app/globals.css`. Gebruik nooit debug-kleuren of ongeldige/typo-classes (zoals `bg-red-200`, `bg-teal-3000`, `spa1ce-y-2`) om styling tijdelijk uit te schakelen — verwijder ongebruikte classes altijd direct.
 
 ## 5. Semantische & Domeingerichte Naamgeving (Semantic Domain Naming Policy)
 - **STRIKT VERPLICHT: Betekenisvolle variabelenamen conform projectcontext**:

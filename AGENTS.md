@@ -210,8 +210,9 @@ Vóór ELKE commit en vóór ELKE push naar een remote branch MOET de agent de M
      git grep --untracked -n -P "\bpriority\b" -- "app/" "components/" ":!app/sitemap.ts"
      git grep --untracked -n -P "sizes=\x22[^\x22]*\b(sm|md|lg|xl):" -- "app/" "components/"
      git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-\[#[0-9a-fA-F]{3,8}\]" -- "app/" "components/"
+     git grep --untracked -n -P "(bg|text|border|ring|fill|stroke|from|via|to)-(red|green|blue|yellow|teal|indigo|purple|pink|orange|amber|lime|emerald|cyan|sky|violet|fuchsia|rose)-[0-9]{2,4}|-[0-9]{4}\b" -- "app/" "components/"
      ```
-     *(0 resultaten toegestaan)*.
+     *(0 resultaten toegestaan; verwijder ook typo-uitgeschakelde of debug-classes altijd direct)*.
 6. **Linter, Unused-Code & Type-Safety Gates**:
    - `pnpm exec tsc --noEmit --noUnusedLocals --noUnusedParameters` (0 ongebruikte imports/locals/parameters).
    - `pnpm type-check` (0 errors, `tsc --noEmit`).

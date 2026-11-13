@@ -103,8 +103,8 @@ export default function Footer() {
 
             <div className="w-full h-px bg-border-100 dark:bg-border-200 mb-6 hidden md:block" />
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-8 md:gap-y-2 justify-between text-mediumM sm:text-small text-content-100/80 dark:text-content-200/75 font-normal">
-              <div className="flex flex-wrap items-center gap-x-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-8 md:gap-y-2 justify-between text-smallM sm:text-small text-content-100/80 dark:text-content-200/75 font-normal">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 md:gap-y-0">
                 <span className="w-full sm:w-auto">© {currentYear} Edwin Schipper</span>
                 {legalLinks.map((link) => (
                   <Button

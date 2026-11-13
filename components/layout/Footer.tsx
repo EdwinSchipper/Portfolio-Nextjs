@@ -42,7 +42,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="font-content relative z-10 mt-20" aria-label="Site footer">
+    <footer className="font-content relative z-10 -mt-28 md:mt-20" aria-label="Site footer">
       <div className="md:px-20 lg:px-12 pb-0 sm:pb-8 lg:pb-12">
         <div className="bg-background-200 dark:bg-background-900 md:rounded-md border border-border-100/50 dark:border-border-200/50 pt-16 md:pt-36 pb-16 md:pb-10 px-10 md:px-20 lg:px-20">
           <div className="container mx-auto">

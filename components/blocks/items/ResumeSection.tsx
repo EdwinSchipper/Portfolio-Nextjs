@@ -363,7 +363,6 @@ export function ResumeCertifications({
         {label && (
           <div>
             <Label
-              id="synergy-label"
               variant="brand"
               cslp={meta && (meta.education_label || meta.certifications_label)}
             >
@@ -373,7 +372,6 @@ export function ResumeCertifications({
         )}
         {title && (
           <h2
-            id="synergy-title"
             className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-sm md:max-w-xl lg:max-w-xl text-balance mt-2"
             {...(meta && (meta.education_title || meta.certifications_title))}
           >

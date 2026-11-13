@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { PortfolioItem, CSLPAttribute } from "@/lib/types";
 import { resolveAssetUrl, resolveAssetCslp } from "@/lib/cms";
-import { Breadcrumbs, Label, Icon, RichText } from "@/components/ui";
+import { Breadcrumbs } from "@/components/layout";
+import { Label, Icon, RichText } from "@/components/ui";
 import PortfolioTechStack from "./PortfolioTechStack";
 
 interface PortfolioDetailProps {
@@ -205,11 +206,10 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             className="contents lg:relative lg:pt-10 lg:pb-0 md:order-2 md:col-span-6 lg:col-span-5 md:flex md:justify-end md:flex-col md:pl-14 xl:pl-24"
           >
             <div className="flex flex-col md:mb-4 lg:mb-10 order-1 lg:order-none w-full mx-auto px-4 sm:px-0">
-              <Label variant="numbered" id="synergy-label" className="mb-2">
+              <Label variant="numbered" className="mb-2">
                 01 — Overzicht
               </Label>
               <h2
-                id="synergy-title"
                 className="text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-sm md:max-w-xl lg:max-w-6xl text-balance"
               >
                 De essentie van het project

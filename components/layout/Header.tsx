@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import ColorModeSelector from "./ColorModeSelector";
-import Button from "./Button";
+import { Button } from "@/components/ui";
 
 export interface NavItem {
   name: string;
@@ -26,7 +26,6 @@ export const expertiseItems: NavItem[] = [
 export const mainNavItems: NavItem[] = [
   { name: "Over mij", href: "/overmij" },
   { name: "Portfolio", href: "/portfolio" },
-  // { name: "Curriculum Vitae", href: "/resume" }
 ];
 
 const baseNavClass =

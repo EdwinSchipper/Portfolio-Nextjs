@@ -16,7 +16,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "release:main": "node scripts/release-main.mjs"
   },
   "dependencies": {
     "@contentstack/delivery-sdk": "^5.6.0",

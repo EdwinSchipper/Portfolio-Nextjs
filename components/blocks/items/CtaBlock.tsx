@@ -37,7 +37,7 @@ export default function CtaBlock({
     <section
       {...previewAttr}
       id="resume-cta"
-      className={`col-span-full w-full -mt-20 sm:-mt-32 lg:mt-0 lg:mb-32 font-content ${className}`}
+      className={`col-span-full w-full -mt-28 sm:-mt-32 lg:mt-0 lg:mb-32 font-content ${className}`}
     >
       <div
         className="mx-auto w-full md:max-w-4xl lg:border border-border-100 dark:border-border-200 lg:rounded-md bg-background-200 dark:bg-background-900 py-14 p-10 sm:p-14 md:p-20 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16 group"

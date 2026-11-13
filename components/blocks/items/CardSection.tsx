@@ -432,7 +432,7 @@ export default function CardSection({
       {...previewAttr}
       data-color-mode={colorModeKey}
       data-container-width={rawWidth}
-      className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
+      className={`col-span-full w-full mb-28 md:mb-32 ${colorModeClass} ${className}`}
     >
       {hasHeader && (
         <CardSectionHeader

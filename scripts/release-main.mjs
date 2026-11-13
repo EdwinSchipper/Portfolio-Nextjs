@@ -57,11 +57,11 @@ try {
     process.exit(0);
   }
 
-  const commitTitle = `chore(release): synchroniseer main met development (${sourceCommit}) zonder agent-bestanden`;
+  const commitTitle = `chore(release): synchroniseer productie-branch main met development (${sourceCommit})`;
   const commitBody = [
-    "- Waarom: live release van geverifieerde wijzigingen op development zonder .agents/ en AGENTS.md in de openbare main-branch",
-    `- Wat: exacte tree-synchronisatie vanuit development (${sourceCommit}) op basis van origin/main met uitsluiting van .agents/ en AGENTS.md`,
-    "- Impact: release/main kan via een Pull Request groen naar main gemerged worden terwijl development en de lokale werkmap volledig intact blijven",
+    "- Waarom: live release van gevalideerde wijzigingen vanaf development naar main",
+    `- Wat: productiesynchronisatie vanaf development (${sourceCommit}) op basis van origin/main`,
+    "- Impact: release/main is gereed voor een schone Pull Request en productie-deployment via main",
   ].join("\n");
 
   runGit(["commit", "-m", commitTitle, "-m", commitBody], tempWorktree);

@@ -281,7 +281,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
 
       <section
         id="aanpak-section"
-        className="px-10 md:px-20 lg:px-12 mb-28 md:mb-40 lg:mb-60"
+        className="px-10 md:px-20 lg:px-12 mb-40 md:mb-40 lg:mb-60"
       >
         <div className="container mx-auto max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
           <div

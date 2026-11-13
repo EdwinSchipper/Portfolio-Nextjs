@@ -25,7 +25,6 @@ export const footerSections: FooterSection[] = [
   {
     title: "Pagina's",
     links: [
-      { label: "Contact", href: "/contact" },
       { label: "Curriculum Vitae", href: "/resume" },
       { label: "Over mij", href: "/overmij" },
       { label: "Portfolio", href: "/portfolio" },
@@ -35,7 +34,8 @@ export const footerSections: FooterSection[] = [
 
 const legalLinks: FooterLink[] = [
   { label: "Algemene Voorwaarden", href: "/algemene-voorwaarden" },
-  { label: "Privacy", href: "/privacy" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy", href: "/privacy" }
 ];
 
 export default function Footer() {
@@ -82,7 +82,7 @@ export default function Footer() {
                       <h3 className="font-content text-accent7-900 dark:text-accent8-900 text-label_smallM md:text-label_small font-semibold tracking-wider uppercase mb-4 lg:mb-5">
                         {section.title}
                       </h3>
-                      <ul className="space-y-2 text-mediumM lg:text-base font-normal text-content-100 dark:text-content-200">
+                      <ul className="space-y-2 md:space-y-1 text-mediumM lg:text-base font-normal text-content-100 dark:text-content-200">
                         {section.links.map((item) => (
                           <li key={item.label}>
                             <Link

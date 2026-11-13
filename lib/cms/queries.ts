@@ -113,7 +113,7 @@ async function fetchSingleEntry<T extends { uid: string }>(
         `[Contentstack] Failed to fetch "${contentType}"${url ? ` for url "${url}"` : ""}:`,
         error
       );
-      return undefined;
+      throw error;
     }
   });
 }

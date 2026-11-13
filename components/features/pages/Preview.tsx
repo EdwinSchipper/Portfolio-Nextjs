@@ -31,8 +31,12 @@ export default function Preview({
   const [page, setPage] = useState<PageProps | undefined>(initialPage);
 
   const getContent = useCallback(async () => {
-    const data = isHomePage ? await getHomePage() : await getPage(path);
-    setPage(data);
+    try {
+      const data = isHomePage ? await getHomePage() : await getPage(path);
+      setPage(data);
+    } catch (error) {
+      console.error("[LivePreview] Failed to refresh page content:", error);
+    }
   }, [path, isHomePage]);
 
   useEffect(() => {

@@ -18,8 +18,12 @@ export default function PortfolioPreview({
   const [item, setItem] = useState<PortfolioItem | undefined>(initialItem);
 
   const getContent = useCallback(async () => {
-    const data = await getPortfolioItemByUrl(path);
-    setItem(data);
+    try {
+      const data = await getPortfolioItemByUrl(path);
+      setItem(data);
+    } catch (error) {
+      console.error("[LivePreview] Failed to refresh portfolio item:", error);
+    }
   }, [path]);
 
   useEffect(() => {

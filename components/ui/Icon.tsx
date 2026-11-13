@@ -1,23 +1,164 @@
-import React from "react";
-import * as OutlineIcons from "@heroicons/react/24/outline";
-import * as SolidIcons from "@heroicons/react/24/solid";
-import * as MiniIcons from "@heroicons/react/20/solid";
-import * as MicroIcons from "@heroicons/react/16/solid";
+import {
+  createElement,
+  type ComponentType,
+  type ReactNode,
+  type SVGProps,
+} from "react";
+import {
+  AcademicCapIcon,
+  AdjustmentsHorizontalIcon,
+  ArrowLongLeftIcon,
+  ArrowRightIcon,
+  ArrowTopRightOnSquareIcon,
+  ArrowUpRightIcon,
+  BookOpenIcon,
+  BuildingStorefrontIcon,
+  CalendarIcon,
+  ChartBarIcon,
+  ChartPieIcon,
+  CheckBadgeIcon,
+  CheckCircleIcon,
+  ChevronRightIcon,
+  CircleStackIcon,
+  ClockIcon,
+  CloudIcon,
+  CodeBracketIcon,
+  CommandLineIcon,
+  ComputerDesktopIcon,
+  CpuChipIcon,
+  CubeIcon,
+  CubeTransparentIcon,
+  CursorArrowRaysIcon,
+  DevicePhoneMobileIcon,
+  DeviceTabletIcon,
+  DocumentTextIcon,
+  EnvelopeIcon,
+  EyeIcon,
+  FireIcon,
+  GlobeAltIcon,
+  HeartIcon,
+  HomeIcon,
+  InformationCircleIcon,
+  KeyIcon,
+  LanguageIcon,
+  LightBulbIcon,
+  LinkIcon,
+  LockClosedIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  PaintBrushIcon,
+  PencilIcon,
+  PencilSquareIcon,
+  PhoneIcon,
+  PhotoIcon,
+  PuzzlePieceIcon,
+  RectangleGroupIcon,
+  RectangleStackIcon,
+  RocketLaunchIcon,
+  ServerIcon,
+  ServerStackIcon,
+  ShieldCheckIcon,
+  ShoppingBagIcon,
+  SparklesIcon,
+  Square2StackIcon,
+  Square3Stack3DIcon,
+  Squares2X2Icon,
+  StarIcon,
+  SwatchIcon,
+  TagIcon,
+  TrophyIcon,
+  UserGroupIcon,
+  UserIcon,
+  UsersIcon,
+  WindowIcon,
+  WrenchScrewdriverIcon,
+} from "@heroicons/react/24/outline";
 import { CSLPAttribute } from "@/lib/types";
 
+export type IconComponent = ComponentType<
+  SVGProps<SVGSVGElement> & { title?: string; titleId?: string }
+>;
+
+const OUTLINE_ICONS = {
+  AcademicCapIcon,
+  AdjustmentsHorizontalIcon,
+  ArrowLongLeftIcon,
+  ArrowRightIcon,
+  ArrowTopRightOnSquareIcon,
+  ArrowUpRightIcon,
+  BookOpenIcon,
+  BuildingStorefrontIcon,
+  CalendarIcon,
+  ChartBarIcon,
+  ChartPieIcon,
+  CheckBadgeIcon,
+  CheckCircleIcon,
+  ChevronRightIcon,
+  CircleStackIcon,
+  ClockIcon,
+  CloudIcon,
+  CodeBracketIcon,
+  CommandLineIcon,
+  ComputerDesktopIcon,
+  CpuChipIcon,
+  CubeIcon,
+  CubeTransparentIcon,
+  CursorArrowRaysIcon,
+  DevicePhoneMobileIcon,
+  DeviceTabletIcon,
+  DocumentTextIcon,
+  EnvelopeIcon,
+  EyeIcon,
+  FireIcon,
+  GlobeAltIcon,
+  HeartIcon,
+  HomeIcon,
+  InformationCircleIcon,
+  KeyIcon,
+  LanguageIcon,
+  LightBulbIcon,
+  LinkIcon,
+  LockClosedIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  PaintBrushIcon,
+  PencilIcon,
+  PencilSquareIcon,
+  PhoneIcon,
+  PhotoIcon,
+  PuzzlePieceIcon,
+  RectangleGroupIcon,
+  RectangleStackIcon,
+  RocketLaunchIcon,
+  ServerIcon,
+  ServerStackIcon,
+  ShieldCheckIcon,
+  ShoppingBagIcon,
+  SparklesIcon,
+  Square2StackIcon,
+  Square3Stack3DIcon,
+  Squares2X2Icon,
+  StarIcon,
+  SwatchIcon,
+  TagIcon,
+  TrophyIcon,
+  UserGroupIcon,
+  UserIcon,
+  UsersIcon,
+  WindowIcon,
+  WrenchScrewdriverIcon,
+} as const satisfies Record<string, IconComponent>;
+
 /**
- * All known Heroicon names in PascalCase (e.g. 'ArrowRightIcon', 'SparklesIcon', 'TagIcon').
+ * Curated Heroicon names in PascalCase (e.g. 'ArrowRightIcon', 'SparklesIcon', 'TagIcon').
  * Also allows string for dynamic Contentstack inputs (e.g. 'arrow-right', 'tag').
  */
-export type KnownHeroIconName = keyof typeof OutlineIcons;
+export type KnownHeroIconName = keyof typeof OUTLINE_ICONS;
 export type IconName = KnownHeroIconName | (string & {});
 
 /**
- * Heroicons style variants:
- * - outline: 24x24 stroke icons (Heroicons default)
- * - solid: 24x24 filled icons
- * - mini: 20x20 filled icons (for tight UI / badges)
- * - micro: 16x16 filled icons (for ultra-compact inline text)
+ * Icon style variants preserved for prop compatibility.
+ * Resolves to the curated Heroicons 24x24 outline registry for optimal tree-shaking.
  */
 export type IconVariant = "outline" | "solid" | "mini" | "micro";
 
@@ -37,11 +178,7 @@ export const iconSizeStyles: Record<IconSize, string> = {
   custom: "",
 };
 
-export type IconComponent = React.ComponentType<
-  React.ComponentProps<"svg"> & { title?: string; titleId?: string }
->;
-
-export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, "ref"> {
+export interface IconProps extends Omit<SVGProps<SVGSVGElement>, "ref"> {
   /**
    * Icon name from Heroicons (e.g. 'ArrowRightIcon', 'arrow-right', 'calendar', 'sparkles').
    * Supports PascalCase, kebab-case, snake_case, and camelCase.
@@ -79,20 +216,17 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, "ref"> {
    * Optional fallback React element rendered when the requested icon name is not found.
    * @default null
    */
-  fallback?: React.ReactNode;
+  fallback?: ReactNode;
 }
 
-/**
- * Map of icon libraries indexed by variant.
- */
 const variantIconLibraries: Record<
   IconVariant,
   Record<string, IconComponent | undefined>
 > = {
-  outline: OutlineIcons,
-  solid: SolidIcons,
-  mini: MiniIcons,
-  micro: MicroIcons,
+  outline: OUTLINE_ICONS,
+  solid: OUTLINE_ICONS,
+  mini: OUTLINE_ICONS,
+  micro: OUTLINE_ICONS,
 };
 
 /**
@@ -129,7 +263,7 @@ export function resolveIconComponent(
   if (icon) return icon;
   if (!name) return null;
 
-  const library = variantIconLibraries[variant] || OutlineIcons;
+  const library = variantIconLibraries[variant] || OUTLINE_ICONS;
 
   if (library[name]) {
     return library[name] ?? null;
@@ -140,26 +274,12 @@ export function resolveIconComponent(
     return library[normalized] ?? null;
   }
 
-  if (variant !== "outline" && OutlineIcons[normalized as keyof typeof OutlineIcons]) {
-    return OutlineIcons[normalized as keyof typeof OutlineIcons];
-  }
-
   return null;
 }
 
 /**
- * Universal Icon Component for Next.js, Hero Icons, and Contentstack.
- *
- * Features:
- * - Full Heroicons support: outline (24x24), solid (24x24), mini (20x20), micro (16x16).
- * - React Server Component (RSC) compatible: 0 client runtime overhead when rendered on the server.
- * - Dual usage:
- *   1. Direct component import: `<Icon icon={ChevronRightIcon} size="sm" />` (100% tree-shakeable)
- *   2. Dynamic name lookup: `<Icon name="arrow-right" variant="solid" />` (Contentstack CMS friendly)
- * - Automatic name normalization: handles 'arrow-right', 'arrow_right', 'ArrowRight', or 'ArrowRightIcon'.
- * - Contentstack Live Preview: binds `cslp` / `data-cslp` attributes directly.
- * - Accessibility by default: `aria-hidden="true"` when decorative, or `role="img"` with `aria-label` when `label` is provided.
- * - Fluid sizing with default `shrink-0` to prevent SVG squashing in flex containers.
+ * Universal Icon Component for Next.js, Heroicons, and Contentstack.
+ * Uses an explicit tree-shakeable Heroicons registry instead of wildcard imports.
  */
 export default function Icon({
   name,
@@ -191,7 +311,7 @@ export default function Icon({
         "aria-hidden": true as const,
       };
 
-  return React.createElement(ResolvedIcon, {
+  return createElement(ResolvedIcon, {
     className: combinedClassName,
     strokeWidth,
     ...accessibilityProps,

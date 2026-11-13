@@ -266,6 +266,11 @@ export interface HeroBlock extends BaseEntity {
   cta_button?: Link;
   button?: Link;
   cta_note?: string;
+  is_available?: boolean;
+  background_video?: File;
+  video?: File;
+  background_image?: File;
+  fallback_image?: File;
   image_1?: File;
   image_ux?: File;
   image_2?: File;
@@ -283,6 +288,7 @@ export interface Blocks extends SystemFields {
   hero_block?: HeroBlock;
   Hero?: HeroBlock;
   hero_section?: HeroBlock;
+  heroBlock?: HeroBlock;
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
@@ -290,6 +296,7 @@ export interface Blocks extends SystemFields {
   resume_section?: ResumeSectionBlock;
   Resume_Section?: ResumeSectionBlock;
   ResumeSection?: ResumeSectionBlock;
+  resumeSection?: ResumeSectionBlock;
   grid_section_resume?: ResumeSectionBlock;
   resume_grid_section?: ResumeSectionBlock;
   grid_section?: GridSectionBlock;
@@ -301,5 +308,6 @@ export interface Blocks extends SystemFields {
   numbered_list?: NumberedSectionBlock;
   cta_resume?: CtaBlock;
   CTA_Resume?: CtaBlock;
+  c_t_a_resume?: CtaBlock;
   CtaBlock?: CtaBlock;
 }

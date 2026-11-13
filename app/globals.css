@@ -21,6 +21,9 @@
   --text-labelM: 16px;
   --text-labelM--line-height: 21px;
 
+  --text-heroM: 18px;
+  --text-heroM--line-height: 29px;
+
   --text-label_smallM: 12px;
   --text-label_smallM--line-height: 16px;
 
@@ -36,8 +39,8 @@
   --text-largeM: 18px;
   --text-largeM--line-height: 29px;
 
-  --text-title_heroM: 40px;
-  --text-title_heroM--line-height: 43px;
+  --text-title_heroM: 44px;
+  --text-title_heroM--line-height: 53px;
   --text-title_heroM--letter-spacing: -0.02em;
 
   --text-title_1M: 33px;
@@ -85,12 +88,16 @@
   --text-base: 21px;
   --text-base--line-height: 34px;
 
-  --text-hero: 21px;
-  --text-hero--line-height: 34px;
+  --text-hero: 30px;
+  --text-hero--line-height: 43px;
 
   --text-title_hero: 80px;
-  --text-title_hero--line-height: 70px;
-  --text-title_hero--letter-spacing: -0.02em;
+  --text-title_hero--line-height: 90px;
+  --text-title_hero--letter-spacing: -0.03em;
+
+  --text-title_hero_xl: 120px;
+  --text-title_hero_xl--line-height: 100%;
+  --text-title_hero_xl--letter-spacing: -0.03em;
 
   --text-title_1: 60px;
   --text-title_1--line-height: 107%;
@@ -183,6 +190,7 @@
   --color-background-300: #DFE3E3;
   --color-background-800: #222222;
   --color-background-900: #1E1E1E;
+  --color-background-950: #0A0A0A;
 
   /* Border */
   --color-border-100: #EAE9E2;
@@ -198,8 +206,44 @@ html {
   scrollbar-gutter: stable;
 }
 
+@layer base {
+  :is(a, button, input, select, textarea, summary, [tabindex]):not([tabindex="-1"]):focus-visible {
+    outline: 2px solid var(--color-accent7-900);
+    outline-offset: 3px;
+  }
+
+  .dark :is(a, button, input, select, textarea, summary, [tabindex]):not([tabindex="-1"]):focus-visible {
+    outline-color: var(--color-accent8-900);
+  }
+}
+
 html:has(#headlessui-portal-root:not(:empty)),
 body:has(#headlessui-portal-root:not(:empty)) {
   overflow: auto !important;
   padding-right: 0px !important;
+}
+
+/* ==========================================================================
+   Hero Headline Brush Underline Animation
+   Smooth left-to-right stroke reveal matching prefers-reduced-motion.
+   ========================================================================== */
+@keyframes hero-underline-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.hero-underline-draw {
+  animation: hero-underline-draw 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-underline-draw {
+    animation: none;
+    clip-path: none;
+  }
 }

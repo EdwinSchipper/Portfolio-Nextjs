@@ -65,10 +65,18 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-background-100 dark:bg-background-800">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-background-900 focus:px-4 focus:py-2.5 focus:text-small focus:font-semibold focus:text-title-200 focus:shadow-lg dark:focus:bg-background-200 dark:focus:text-title-100"
+        >
+          Ga naar hoofdinhoud
+        </a>
         <NavigationProgress />
         <GTMPageTracker />
         <Header />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1} className="focus:outline-none">
+          {children}
+        </main>
         <Footer />
         <CookieConsent />
       </body>

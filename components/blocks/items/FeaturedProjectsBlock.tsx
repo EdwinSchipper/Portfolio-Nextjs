@@ -1,11 +1,10 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   FeaturedProjectsBlock as FeaturedProjectsBlockType,
   CSLPAttribute,
-  File,
 } from "@/lib/types";
+import { normalizeFeaturedProject } from "@/lib/cms";
 import { Button, Label } from "@/components/ui";
 import { CardSectionHeader } from "./CardSection";
 
@@ -43,7 +42,6 @@ export default function FeaturedProjectsBlock({
           label={label}
           title={sectionTitle}
           intro={sectionIntro}
-          cslp={data?.$}
           cslpLabel={data?.$ && (data.$.label || data.$.label_projects)}
           cslpTitle={data?.$ && (data.$.section_title || data.$.title)}
           cslpIntro={data?.$ && (data.$.section_intro || data.$.intro)}
@@ -52,54 +50,31 @@ export default function FeaturedProjectsBlock({
 
       <div
         id="home-case-list"
-        className="w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-60 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content"
+        className="w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-40 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content"
       >
         <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 
         <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl gap-14 sm:gap-20 flex flex-col relative z-10">
           {projects.length > 0 ? (
             projects.map((post, index) => {
-              const postUrl = post.url || `/portfolio/${post.uid || post.id || index}`;
-              const thumbnailCandidate =
-                post.case_thumbnail ||
-                post.featured_image ||
-                (typeof post.portfolioimagedetail === "object"
-                  ? post.portfolioimagedetail
-                  : null);
-              const imageObj =
-                typeof thumbnailCandidate === "object" && thumbnailCandidate !== null
-                  ? (thumbnailCandidate as File)
-                  : null;
-              const imageUrl =
-                imageObj?.url ||
-                (typeof post.case_thumbnail === "string"
-                  ? post.case_thumbnail
-                  : typeof post.portfolioimagedetail === "string"
-                    ? post.portfolioimagedetail
-                    : null);
-
-              const projectTag =
-                post.project_tag ||
-                (Array.isArray(post.category) ? post.category[0] : post.category) ||
-                "Recent werk";
-
-              const projectTitle =
-                post.project_title ||
-                post.title ||
-                "Consistente Merktaal & Platform";
-
-              const projectDesc =
-                post.project_desc ||
-                post.description ||
-                "";
-
-              const company = post.company || post.title || "Project";
-              const isOdd = index % 2 !== 0;
-              const numStr = String(index + 1).padStart(2, "0");
+              const {
+                key,
+                url: postUrl,
+                imageUrl,
+                imageAlt,
+                imageCslp,
+                tag: projectTag,
+                title: projectTitle,
+                description: projectDesc,
+                company,
+                numberLabel: numStr,
+                isOdd,
+                cslp: postCslp,
+              } = normalizeFeaturedProject(post, index);
 
               return (
                 <article
-                  key={post.uid || `project-${index}`}
+                  key={key}
                   className="case-card grid grid-cols-1 md:grid-cols-12 w-full gap-10 md:gap-10"
                 >
                   <div
@@ -114,13 +89,13 @@ export default function FeaturedProjectsBlock({
                       {imageUrl && (
                         <Image
                           src={imageUrl}
-                          alt={post.alt_text || company}
+                          alt={imageAlt}
                           width={730}
                           height={440}
                           loading="lazy"
                           className="rounded-md w-full h-[220px] sm:h-[325px] md:h-[240px] lg:h-[400px] xl:h-[440px] object-cover group-hover:scale-[1.02] transition-transform duration-500 border border-border-100 dark:border-border-200"
                           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 730px"
-                          {...(imageObj?.$?.url || post?.$?.case_thumbnail || post?.$?.featured_image)}
+                          {...imageCslp}
                         />
                       )}
                     </Link>
@@ -128,15 +103,15 @@ export default function FeaturedProjectsBlock({
 
                   <div
                     className={`col-span-1 md:col-span-5 lg:col-span-5 flex flex-col justify-center ${isOdd
-                        ? "md:order-1 lg:order-1 md:pr-10 xl:pr-16"
-                        : "md:order-2 lg:order-2 md:pl-10 xl:pl-16"
+                      ? "md:order-1 lg:order-1 md:pr-10 xl:pr-16"
+                      : "md:order-2 lg:order-2 md:pl-10 xl:pl-16"
                       }`}
                   >
                     <div className="flex flex-col gap-y-5 md:gap-y-6">
                       <div className="case-label">
                         <Label
                           id={`case-label-${index}`}
-                          cslp={post?.$ && (post?.$.project_tag || post?.$.category)}
+                          cslp={postCslp && (postCslp.project_tag || postCslp.category)}
                         >
                           {`${numStr} — ${projectTag}`}
                         </Label>
@@ -145,7 +120,7 @@ export default function FeaturedProjectsBlock({
                       <div className="-mt-2">
                         <h3
                           className="case-title text-title_5M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
-                          {...(post?.$ && (post?.$.project_title || post?.$.title))}
+                          {...(postCslp && (postCslp.project_title || postCslp.title))}
                         >
                           <Link
                             href={postUrl}
@@ -160,7 +135,7 @@ export default function FeaturedProjectsBlock({
                         <div>
                           <p
                             className="case-desc text-smallM sm:text-medium text-content-300 dark:text-content-200 font-medium text-pretty md:text-balance line-clamp-3"
-                            {...(post?.$ && (post?.$.project_desc || post?.$.description))}
+                            {...(postCslp && (postCslp.project_desc || postCslp.description))}
                           >
                             {projectDesc}
                           </p>
@@ -172,7 +147,7 @@ export default function FeaturedProjectsBlock({
                           href={postUrl}
                           size="sm"
                           aria-label={`Lees de volledige case van ${company}`}
-                          cslp={post?.$ && post?.$.url}
+                          cslp={postCslp && postCslp.url}
                         >
                           Bekijk project
                         </Button>

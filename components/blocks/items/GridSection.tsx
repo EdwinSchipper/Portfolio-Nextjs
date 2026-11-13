@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import DOMPurify from "isomorphic-dompurify";
 import {
   GridSectionBlock,
   GridSectionColumn,
@@ -11,44 +10,32 @@ import {
   CSLPAttribute,
   CSLPContainer,
 } from "@/lib/types";
-import { Button, Label, Icon } from "@/components/ui";
+import { Button, Label, Icon, RichText } from "@/components/ui";
 import { getContainerClass, getColorModeClass, colSpans, getHeadingTag } from "@/lib/layout";
 
 export interface GridQuoteProps {
   quote?: string;
-  children?: React.ReactNode;
   className?: string;
   cslp?: CSLPAttribute;
 }
 
 export function GridQuote({
   quote,
-  children,
   className = "",
   cslp,
 }: GridQuoteProps) {
-  const content = quote || children;
-  if (!content) return null;
-
-  const isHtml = typeof content === "string" && /<[a-z][\s\S]*>/i.test(content);
+  if (!quote) return null;
 
   return (
     <blockquote
       {...cslp}
       className={`font-quote my-14 border-l-2 border-accent7-200 dark:border-accent8-200 pl-10 ${className}`}
     >
-      {isHtml ? (
-        <div
-          className="font-playfull font-normal quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_4M md:text-title_4 [&>p]:m-0"
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(content as string),
-          }}
-        />
-      ) : (
-        <p className="font-playfull font-normal quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_4M md:text-title_4">
-          {content}
-        </p>
-      )}
+      <RichText
+        content={quote}
+        plainTextClassName=""
+        className="font-playfull font-normal quote-text text-pretty text-content-100 dark:text-content-200 italic text-title_4M md:text-title_4 [&>p]:m-0"
+      />
     </blockquote>
   );
 }
@@ -354,141 +341,129 @@ export function GridSocials({
 export interface GridColumnProps {
   span?: number | string;
   data?: GridSectionColumn;
-  children?: React.ReactNode;
   className?: string;
 }
 
 export function GridColumn({
   span = 6,
   data,
-  children,
   className = "",
 }: GridColumnProps) {
+  if (!data) return null;
+
   const colClass = colSpans[String(span)] ?? colSpans["6"];
-
-  if (data && !children) {
-    const label = data.label_left || data.label_right;
-    const title = data.title_h1 || data.title_h1r;
-    const headingTag = getHeadingTag(data.heading_type, "h2");
-    const text = data.text_left || data.text_right;
-    const extendedText = data.text_right_extended;
-    const quote = data.quote_left || data.quote_right;
-    const image = data.image_left || data.image_right;
-    const button = data.button_left || data.button_right;
-    const cards = data.cards;
-    const resumeTimeline =
-      data.resume_timeline ||
-      data.timeline ||
-      data.career_timeline;
-    const socials =
-      data.socials ||
-      data.social_links ||
-      data.connect;
-    const cslp = data.$;
-
-    return (
-      <div className={`${colClass} ${className}`}>
-        <div className="space-y-8 sm:space-y-8 mb-14 sm:mb-0">
-          {label && (
-            <Label cslp={cslp && (cslp.label_left || cslp.label_right)}>
-              {label}
-            </Label>
-          )}
-
-          {title &&
-            React.createElement(
-              headingTag,
-              {
-                ...(cslp && (cslp.title_h1 || cslp.title_h1r)),
-                className:
-                  "text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full font-content",
-              },
-              title
-            )}
-
-          {text && (
-            <div
-              {...(cslp && (cslp.text_left || cslp.text_right))}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(text),
-              }}
-              className="text-baseM sm:text-base w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content"
-            />
-          )}
-
-          {image?.url && (
-            <div className="relative w-full aspect-4/3 rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200 mt-14 sm:mt-0">
-              <Image
-                src={image.url}
-                alt={image.title || title || "Image"}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                {...(image?.$ && image?.$.url)}
-              />
-            </div>
-          )}
-
-          {socials && (
-            <GridSocials
-              socials={socials}
-              cslp={cslp && (cslp.socials || cslp.social_links || cslp.connect)}
-            />
-          )}
-
-          {quote && (
-            <GridQuote
-              quote={quote}
-              cslp={cslp && (cslp.quote_left || cslp.quote_right)}
-            />
-          )}
-
-          {extendedText && (
-            <div
-              {...(cslp && cslp.text_right_extended)}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(extendedText),
-              }}
-              className="text-baseM sm:text-base w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content"
-            />
-          )}
-
-          {button?.href && button?.title && (
-            <div className="mb-14 sm:mb-0">
-              <Button
-                href={button.href}
-                variant="primary"
-                cslp={cslp && (cslp.button_left || cslp.button_right)}
-              >
-                {button.title}
-              </Button>
-            </div>
-          )}
-
-          {cards && cards.length > 0 && (
-            <GridCards cards={cards} cslp={cslp && cslp.cards} />
-          )}
-
-          {resumeTimeline && (
-            <GridTimeline
-              timeline={resumeTimeline}
-              cslp={cslp && (cslp.resume_timeline || cslp.timeline)}
-            />
-          )}
-        </div>
-      </div>
-    );
-  }
+  const label = data.label_left || data.label_right;
+  const title = data.title_h1 || data.title_h1r;
+  const headingTag = getHeadingTag(data.heading_type, "h2");
+  const text = data.text_left || data.text_right;
+  const extendedText = data.text_right_extended;
+  const quote = data.quote_left || data.quote_right;
+  const image = data.image_left || data.image_right;
+  const button = data.button_left || data.button_right;
+  const cards = data.cards;
+  const resumeTimeline =
+    data.resume_timeline ||
+    data.timeline ||
+    data.career_timeline;
+  const socials =
+    data.socials ||
+    data.social_links ||
+    data.connect;
+  const cslp = data.$;
 
   return (
     <div className={`${colClass} ${className}`}>
-      <div className="space-y-4">{children}</div>
+      <div className="space-y-8 sm:space-y-8 mb-14 sm:mb-0">
+        {label && (
+          <Label cslp={cslp && (cslp.label_left || cslp.label_right)}>
+            {label}
+          </Label>
+        )}
+
+        {title &&
+          React.createElement(
+            headingTag,
+            {
+              ...(cslp && (cslp.title_h1 || cslp.title_h1r)),
+              className:
+                "text-title_2M sm:text-title_2 font-bold text-title-100 dark:text-title-200 max-w-2xl text-balance w-11/12 md:w-full font-content",
+            },
+            title
+          )}
+
+        {text && (
+          <RichText
+            content={text}
+            mode="html"
+            cslp={cslp && (cslp.text_left || cslp.text_right)}
+            className="text-baseM sm:text-base w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content"
+          />
+        )}
+
+        {image?.url && (
+          <div className="relative w-full aspect-4/3 rounded-md overflow-hidden shadow-sm bg-background-200 dark:bg-background-900 border-dashed border-border-100 dark:border-border-200 mt-14 sm:mt-0">
+            <Image
+              src={image.url}
+              alt={image.title || title || "Image"}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              {...(image?.$ && image?.$.url)}
+            />
+          </div>
+        )}
+
+        {socials && (
+          <GridSocials
+            socials={socials}
+            cslp={cslp && (cslp.socials || cslp.social_links || cslp.connect)}
+          />
+        )}
+
+        {quote && (
+          <GridQuote
+            quote={quote}
+            cslp={cslp && (cslp.quote_left || cslp.quote_right)}
+          />
+        )}
+
+        {extendedText && (
+          <RichText
+            content={extendedText}
+            mode="html"
+            cslp={cslp && cslp.text_right_extended}
+            className="text-baseM sm:text-base w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content"
+          />
+        )}
+
+        {button?.href && button?.title && (
+          <div className="mb-14 sm:mb-0">
+            <Button
+              href={button.href}
+              variant="primary"
+              cslp={cslp && (cslp.button_left || cslp.button_right)}
+            >
+              {button.title}
+            </Button>
+          </div>
+        )}
+
+        {cards && cards.length > 0 && (
+          <GridCards cards={cards} cslp={cslp && cslp.cards} />
+        )}
+
+        {resumeTimeline && (
+          <GridTimeline
+            timeline={resumeTimeline}
+            cslp={cslp && (cslp.resume_timeline || cslp.timeline)}
+          />
+        )}
+      </div>
     </div>
   );
 }
 
 export interface GridSectionProps {
-  children?: React.ReactNode;
   data?: GridSectionBlock;
   previewAttr?: CSLPAttribute;
   width?: "small" | "default" | "large" | "wide" | string;
@@ -500,40 +475,24 @@ export interface GridSectionProps {
  * GridSection: Consolidated 2-column modular grid section.
  */
 export default function GridSection({
-  children,
   data,
   previewAttr,
   width,
   colorMode,
   className = "",
 }: GridSectionProps) {
-  const rawWidth = width || data?.container_width;
+  if (!data) return null;
+
+  const rawWidth = width || data.container_width;
   const containerClass = getContainerClass(rawWidth, "default");
 
-  const colorModeKey = colorMode || data?.color_mode;
+  const colorModeKey = colorMode || data.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
 
-  if (data && !children) {
-    const leftCol = data.left_col_span ?? "5";
-    const rightCol = data.right_col_span ?? "7";
-    const contentLeft = data.content_left;
-    const contentRight = data.content_right;
-
-    return (
-      <section
-        {...previewAttr}
-        data-color-mode={colorModeKey}
-        className={`col-span-full w-full mb-20 md:mb-40 lg:mb-40 ${colorModeClass} ${className}`}
-      >
-        <div
-          className={`sm:grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 gap-14 lg:gap-x-10 xl:gap-x-24`}
-        >
-          {contentLeft && <GridColumn span={leftCol} data={contentLeft} />}
-          {contentRight && <GridColumn span={rightCol} data={contentRight} />}
-        </div>
-      </section>
-    );
-  }
+  const leftCol = data.left_col_span ?? "5";
+  const rightCol = data.right_col_span ?? "7";
+  const contentLeft = data.content_left;
+  const contentRight = data.content_right;
 
   return (
     <section
@@ -544,7 +503,8 @@ export default function GridSection({
       <div
         className={`sm:grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 gap-14 lg:gap-x-10 xl:gap-x-24`}
       >
-        {children}
+        {contentLeft && <GridColumn span={leftCol} data={contentLeft} />}
+        {contentRight && <GridColumn span={rightCol} data={contentRight} />}
       </div>
     </section>
   );

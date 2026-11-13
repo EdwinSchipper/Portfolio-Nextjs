@@ -1,5 +1,3 @@
-import React from "react";
-import DOMPurify from "isomorphic-dompurify";
 import {
   ResumeSectionBlock,
   ExperienceCompany,
@@ -8,7 +6,8 @@ import {
   CSLPAttribute,
   CSLPContainer,
 } from "@/lib/types";
-import { Label, Button } from "@/components/ui";
+import { normalizeResumeSection } from "@/lib/cms";
+import { Label, Button, RichText } from "@/components/ui";
 import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
 
 /**
@@ -17,64 +16,6 @@ import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
 function getInitial(name?: string): string {
   if (!name) return "•";
   return name.trim().charAt(0).toUpperCase();
-}
-
-/**
- * Robust extractor for tech stack tags from Contentstack payloads.
- * Handles nested objects, repeatable tags, and ignores label/title keys.
- */
-export function extractStackTags(stackData: unknown): string[] {
-  if (!stackData) return [];
-  const results: string[] = [];
-
-  const addTag = (val: unknown) => {
-    if (val === null || val === undefined) return;
-    if (typeof val === "string") {
-      const trimmed = val.trim();
-      if (trimmed) results.push(trimmed);
-    } else if (Array.isArray(val)) {
-      val.forEach(addTag);
-    } else if (typeof val === "object") {
-      const record = val as Record<string, unknown>;
-      const tagVal =
-        record.tag ?? record.Tag ?? record.name ?? record.value ?? record.title;
-      if (tagVal !== undefined) {
-        addTag(tagVal);
-      }
-    }
-  };
-
-  if (Array.isArray(stackData)) {
-    stackData.forEach(addTag);
-  } else if (typeof stackData === "object") {
-    const record = stackData as Record<string, unknown>;
-    const rawTags =
-      record.tag ??
-      record.Tag ??
-      record.tags ??
-      record.Tags ??
-      record.items;
-
-    if (rawTags !== undefined) {
-      addTag(rawTags);
-    } else {
-      Object.entries(record).forEach(([key, val]) => {
-        const lowerKey = key.toLowerCase();
-        if (
-          !lowerKey.includes("label") &&
-          !lowerKey.includes("title") &&
-          !key.startsWith("_") &&
-          key !== "$"
-        ) {
-          addTag(val);
-        }
-      });
-    }
-  } else if (typeof stackData === "string") {
-    addTag(stackData);
-  }
-
-  return results;
 }
 
 export interface ResumeSectionProps {
@@ -86,7 +27,6 @@ export interface ResumeSectionProps {
   rightColSpan?: number | string;
   timelinePosition?: "left" | "right" | "full" | string;
   className?: string;
-  children?: React.ReactNode;
 }
 
 export interface ResumeStackBlockProps {
@@ -144,7 +84,7 @@ export function ResumeStackBlock({
 
   return (
     <div
-      className={`flex flex-col gap-6 lg:gap-5 bg-teal-3000 font-content ${className}`}
+      className={`flex flex-col gap-6 lg:gap-5 font-content ${className}`}
     >
       {label && (
         <div>
@@ -309,7 +249,7 @@ export function ExperienceTimelineList({
                           )}
                         </div>
                       ) : (
-                        <div className="max-w-3xl flex flex-col spa1ce-y-2">
+                        <div className="max-w-3xl flex flex-col">
                           {role.title && (
                             <h5
                               className="text-title_6M sm:text-title_6 font-bold text-title-100 dark:text-title-200"
@@ -359,7 +299,7 @@ export function ExperienceTimelineList({
                         >
                           {secRole.title && (
                             <h6
-                              className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200 mb-1 w-full bg-red-200 relative z-50"
+                              className="text-title_5M sm:text-title_5 font-bold text-title-100 dark:text-title-200 mb-1 w-full"
                               {...(secRole?.$ && secRole?.$.title)}
                             >
                               {secRole.title}
@@ -499,169 +439,46 @@ export default function ResumeSection({
   rightColSpan,
   timelinePosition,
   className = "",
-  children,
 }: ResumeSectionProps) {
-  const rawRecord = data as Record<string, unknown> | undefined;
-  const sectionData: ResumeSectionBlock | undefined =
-    (rawRecord?.resume_section as ResumeSectionBlock | undefined) ||
-    (rawRecord?.Resume_Section as ResumeSectionBlock | undefined) ||
-    (rawRecord?.ResumeSection as ResumeSectionBlock | undefined) ||
-    (rawRecord?.grid_section_resume as ResumeSectionBlock | undefined) ||
-    (rawRecord?.experience_timeline as ResumeSectionBlock | undefined) ||
-    data;
+  const normalized = normalizeResumeSection(data, {
+    width,
+    colorMode,
+    leftColSpan,
+    rightColSpan,
+    timelinePosition,
+  });
 
-  const rawWidth = width || sectionData?.container_width || sectionData?.width;
+  if (!normalized) return null;
+
+  const {
+    rawWidth,
+    colorModeKey,
+    isTimelineLeft,
+    isFullWidth,
+    leftColSpan: resolvedLeftCol,
+    rightColSpan: resolvedRightCol,
+    label,
+    title,
+    description,
+    buttonHref,
+    buttonTitle,
+    timelineSubtitle,
+    companies,
+    tags,
+    hasStack,
+    stackLabel,
+    stackLabelCslp,
+    stackTitle,
+    stackTitleCslp,
+    certifications,
+    hasCertifications,
+    educationLabel,
+    educationTitle,
+    meta,
+  } = normalized;
+
   const containerClass = getContainerClass(rawWidth, "large");
-
-  const colorModeKey = colorMode || sectionData?.color_mode;
   const colorModeClass = getColorModeClass(colorModeKey);
-
-  const rawPosition = (
-    timelinePosition ||
-    sectionData?.timeline_position ||
-    sectionData?.timeline_placement ||
-    ""
-  )
-    .trim()
-    .toLowerCase();
-
-  const isPositionFull =
-    rawPosition === "full" ||
-    rawPosition === "center" ||
-    rawPosition === "full width" ||
-    rawPosition === "volledig";
-
-  const isTimelineLeft = rawPosition === "left" || rawPosition === "links";
-
-  const rawCompanies =
-    sectionData?.companies || sectionData?.Companies;
-  const companies: ExperienceCompany[] = Array.isArray(rawCompanies)
-    ? rawCompanies
-    : rawCompanies
-      ? [rawCompanies]
-      : [];
-
-  const rawStack = sectionData?.stack || sectionData?.Stack;
-  const rawStackObj =
-    typeof rawStack === "object" && rawStack !== null && !Array.isArray(rawStack)
-      ? (rawStack as Record<string, unknown> & { $?: CSLPContainer })
-      : undefined;
-  const tags = extractStackTags(rawStack);
-  const hasStack = tags.length > 0;
-
-  const stackLabel =
-    (typeof rawStackObj?.stack_label === "string"
-      ? rawStackObj.stack_label
-      : typeof rawStackObj?.Stack_label === "string"
-        ? rawStackObj.Stack_label
-        : typeof rawStackObj?.stackLabel === "string"
-          ? rawStackObj.stackLabel
-          : typeof rawStackObj?.label === "string"
-            ? rawStackObj.label
-            : undefined) ||
-    sectionData?.stack_label ||
-    sectionData?.Stack_label ||
-    sectionData?.stackLabel;
-
-  const stackLabelCslp =
-    (rawStackObj?.$ &&
-      (rawStackObj.$.stack_label ||
-        rawStackObj.$.Stack_label ||
-        rawStackObj.$.stackLabel ||
-        rawStackObj.$.label)) ||
-    sectionData?.$?.stack_label ||
-    sectionData?.$?.["stack.stack_label"];
-
-  const stackTitle =
-    (typeof rawStackObj?.stack_title === "string"
-      ? rawStackObj.stack_title
-      : typeof rawStackObj?.Stack_title === "string"
-        ? rawStackObj.Stack_title
-        : typeof rawStackObj?.stackTitle === "string"
-          ? rawStackObj.stackTitle
-          : typeof rawStackObj?.title === "string"
-            ? rawStackObj.title
-            : undefined) ||
-    sectionData?.stack_title ||
-    sectionData?.Stack_title ||
-    sectionData?.stackTitle;
-
-  const stackTitleCslp =
-    (rawStackObj?.$ &&
-      (rawStackObj.$.stack_title ||
-        rawStackObj.$.Stack_title ||
-        rawStackObj.$.stackTitle ||
-        rawStackObj.$.title)) ||
-    sectionData?.$?.stack_title ||
-    sectionData?.$?.["stack.stack_title"];
-
-  const label = sectionData?.label || sectionData?.section_label;
-  const title = sectionData?.title || sectionData?.section_title_main;
-  const description =
-    sectionData?.description || sectionData?.text || sectionData?.intro;
-  const button = sectionData?.button || sectionData?.button_cta;
-  const buttonHref = button?.href || button?.url;
-  const buttonTitle = button?.title || button?.text;
-
-  const timelineSubtitle = sectionData?.section_title;
-  const meta = sectionData?.$;
-
-  const rawCertifications =
-    sectionData?.certifications ||
-    sectionData?.Certifications ||
-    sectionData?.education ||
-    sectionData?.Education;
-
-  const certifications: CertificationItem[] = Array.isArray(rawCertifications)
-    ? rawCertifications
-    : rawCertifications
-      ? [rawCertifications]
-      : [];
-
-  const hasCertifications = certifications.length > 0;
-
-  const educationLabel =
-    sectionData?.education_label ||
-    sectionData?.Education_label ||
-    sectionData?.certifications_label ||
-    sectionData?.Certifications_label ||
-    "02 — Opleiding";
-
-  const educationTitle =
-    sectionData?.education_title ||
-    sectionData?.Education_title ||
-    sectionData?.certifications_title ||
-    sectionData?.Certifications_title ||
-    "Opleiding & Certificeringen";
-
-  const hasIntroContent = Boolean(
-    label || title || description || (buttonHref && buttonTitle)
-  );
-
-  const isFullWidth =
-    isPositionFull ||
-    (!rawPosition &&
-      companies.length === 0 &&
-      !sectionData?.left_col_span &&
-      !sectionData?.right_col_span) ||
-    !hasIntroContent;
-
-  const isHtml =
-    typeof description === "string" && /<[a-z][\s\S]*>/i.test(description);
-
-  if (children) {
-    return (
-      <section
-        {...previewAttr}
-        data-color-mode={colorModeKey}
-        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
-      >
-        <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
-          {children}
-        </div>
-      </section>
-    );
-  }
 
   if (isFullWidth) {
     return (
@@ -688,20 +505,11 @@ export default function ResumeSection({
               </h2>
             )}
             {description && (
-              <div
-                {...(meta && (meta.description || meta.text))}
+              <RichText
+                content={description}
+                cslp={meta && (meta.description || meta.text)}
                 className="text-baseM sm:text-base text-content-100 dark:text-content-200 mb-8 font-content max-w-3xl"
-              >
-                {isHtml ? (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(description),
-                    }}
-                  />
-                ) : (
-                  <p className="whitespace-pre-line">{description}</p>
-                )}
-              </div>
+              />
             )}
             {buttonHref && buttonTitle && (
               <div className="mb-8">
@@ -747,26 +555,15 @@ export default function ResumeSection({
     );
   }
 
-  const rawLeftCol =
-    leftColSpan ||
-    sectionData?.left_col_span ||
-    sectionData?.left_col ||
-    sectionData?.leftCol;
-  const rawRightCol =
-    rightColSpan ||
-    sectionData?.right_col_span ||
-    sectionData?.right_col ||
-    sectionData?.rightCol;
-
   const defaultLeft = isTimelineLeft ? "8" : "4";
   const defaultRight = isTimelineLeft ? "4" : "8";
 
   const leftSpanClass =
-    colSpans[String(rawLeftCol || defaultLeft)] ||
+    colSpans[String(resolvedLeftCol || defaultLeft)] ||
     colSpans[defaultLeft] ||
     "col-span-12 lg:col-span-4";
   const rightSpanClass =
-    colSpans[String(rawRightCol || defaultRight)] ||
+    colSpans[String(resolvedRightCol || defaultRight)] ||
     colSpans[defaultRight] ||
     "col-span-12 lg:col-span-8";
 
@@ -785,10 +582,10 @@ export default function ResumeSection({
       className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
     >
       <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
-        <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 lg:ga1p-16 items-start sm:space-x-24 space-y-24 sm:space-y-0">
+        <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 items-start sm:space-x-24 space-y-24 sm:space-y-0">
           <div className={introColClass}>
             <div className="lg:sticky lg:top-28 space-y-14">
-              <div className="flex flex-col gap-3 lg:gap-3 bg-red-3000 font-content">
+              <div className="flex flex-col gap-3 lg:gap-3 font-content">
                 {label && (
                   <div>
                     <Label variant="brand" cslp={meta && meta.label}>
@@ -807,20 +604,11 @@ export default function ResumeSection({
                 )}
 
                 {description && (
-                  <div
-                    {...(meta && (meta.description || meta.text))}
+                  <RichText
+                    content={description}
+                    cslp={meta && (meta.description || meta.text)}
                     className="text-content-100 dark:text-content-200 text-mediumM sm:text-medium"
-                  >
-                    {isHtml ? (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(description),
-                        }}
-                      />
-                    ) : (
-                      <p className="whitespace-pre-line">{description}</p>
-                    )}
-                  </div>
+                  />
                 )}
 
                 {buttonHref && buttonTitle && (
@@ -836,7 +624,7 @@ export default function ResumeSection({
                 )}
               </div>
 
-              <div className="flex flex-col gap-3 lg:gap-3 bg-yellow-3000 font-content">
+              <div className="flex flex-col gap-3 lg:gap-3 font-content">
                 {hasStack && (
                   <ResumeStackBlock
                     tags={tags}

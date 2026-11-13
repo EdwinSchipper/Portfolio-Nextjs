@@ -14,3 +14,6 @@ export { default as ColorModeSelector } from "./ColorModeSelector";
 export { default as NavigationProgress } from "./NavigationProgress";
 export { default as Icon } from "./Icon";
 export type { IconProps, IconName, IconVariant, IconSize, KnownHeroIconName } from "./Icon";
+
+export { default as RichText } from "./RichText";
+export type { RichTextProps } from "./RichText";

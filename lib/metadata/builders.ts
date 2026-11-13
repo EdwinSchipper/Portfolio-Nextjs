@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Page, PortfolioItem, Homepage } from "../types";
+import { resolveFirstAssetUrl } from "../cms/mappers";
 
 export const DEFAULT_TITLE = "Edwin Schipper";
 export const DEFAULT_DESCRIPTION = "Portfolio Website van Edwin Schipper";
@@ -48,23 +49,13 @@ export function buildPortfolioMetadata(item: PortfolioItem): Metadata {
     DEFAULT_DESCRIPTION;
 
   const imageUrl =
-    item.seo?.og_image?.url ||
-    (typeof item.case_thumbnail === "object"
-      ? item.case_thumbnail?.url
-      : typeof item.case_thumbnail === "string"
-      ? item.case_thumbnail
-      : undefined) ||
-    (typeof item.featured_image === "object" ? item.featured_image?.url : undefined) ||
-    (typeof item.portfolioimagedetail === "object"
-      ? item.portfolioimagedetail?.url
-      : typeof item.portfolioimagedetail === "string"
-      ? item.portfolioimagedetail
-      : undefined) ||
-    (typeof item.banner_visual_1 === "object"
-      ? item.banner_visual_1?.url
-      : typeof item.banner_visual_1 === "string"
-      ? item.banner_visual_1
-      : undefined);
+    resolveFirstAssetUrl(
+      item.seo?.og_image,
+      item.case_thumbnail,
+      item.featured_image,
+      item.portfolioimagedetail,
+      item.banner_visual_1
+    ) ?? undefined;
 
   const canonicalPath = item.url ? (item.url.startsWith("/") ? item.url : `/${item.url}`) : undefined;
 

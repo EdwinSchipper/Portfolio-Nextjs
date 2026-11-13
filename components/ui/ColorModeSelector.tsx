@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import Button, { iconButtonSizeClass } from "./Button";
 
 export interface ColorModeSelectorProps {
   className?: string;
+  isOverHero?: boolean;
 }
 
 let listeners: Array<() => void> = [];
@@ -86,6 +88,7 @@ const mountedStore = {
  */
 export default function ColorModeSelector({
   className = "",
+  isOverHero = false,
 }: ColorModeSelectorProps) {
   const isMounted = useSyncExternalStore(
     mountedStore.subscribe,
@@ -107,24 +110,29 @@ export default function ColorModeSelector({
     return (
       <span
         aria-hidden="true"
-        className="inline-flex w-9 h-9 items-center justify-center rounded-full border border-border-100/50 dark:border-border-200/30 opacity-0"
+        className={`inline-flex ${iconButtonSizeClass} items-center justify-center rounded-full border opacity-0 ${isOverHero
+          ? "border-border-200/30"
+          : "border-border-100/50 dark:border-border-200/30"
+          }`}
       />
     );
   }
 
   return (
-    <button
+    <Button
       type="button"
+      variant={isOverHero ? "icon-inverted" : "icon"}
+      size="icon"
       onClick={() => themeStore.toggle()}
       aria-label={isDark ? "Schakel naar lichte modus" : "Schakel naar donkere modus"}
       title={isDark ? "Lichte modus" : "Donkere modus"}
-      className={`inline-flex items-center justify-center w-9 h-9 rounded-full bg-background-100 dark:bg-background-800 text-content-100 dark:text-content-200 border border-border-100/50 dark:border-border-200/30 transition-all duration-200 hover:border-border-100 dark:hover:border-border-200/60 hover:text-title-100 dark:hover:text-title-200 cursor-pointer ${className}`}
+      className={className}
     >
       {isDark ? (
         <SunIcon className="w-4 h-4 text-accent8-900 transition-transform duration-200 hover:rotate-45" />
       ) : (
         <MoonIcon className="w-4 h-4 text-accent7-900 transition-transform duration-200 hover:-rotate-12" />
       )}
-    </button>
+    </Button>
   );
 }

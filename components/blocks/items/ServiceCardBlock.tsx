@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import { ServiceCardBlock as ServiceCardBlockType, CSLPAttribute } from "@/lib/types";
 import { Label } from "@/components/ui";

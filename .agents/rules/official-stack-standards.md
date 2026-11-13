@@ -12,13 +12,13 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
   - Route-bestanden in `app/**/page.tsx` én layout-bestanden in `components/layout/**` en `app/**/layout.tsx` zijn 100% pure presentatie-shells.
   - Ze mogen **NOOIT** directe complexe CMS-queries, inline data-/URL-transformaties (`.split()`, `.filter()`, `.map()`) of inline business logica bevatten.
   - **1-Regel Route Delegatie (`generateMetadata` & `generateStaticParams`)**: Next.js route-level functies zoals `generateMetadata()` en `generateStaticParams()` in `app/**/page.tsx` mogen uitsluitend een 1-regel delegatie zijn naar centrale resolvers in `lib/metadata/` (`getDynamicRouteMetadata`, `getPortfolioRouteMetadata`) of `lib/cms/` (`getDynamicRouteStaticParams`, `getPortfolioRouteStaticParams`). Neem nooit inline `.map()`-voorbeelden uit algemene Next.js docs rechtstreeks over in `page.tsx`.
-  - Elk dynamisch of functioneel blok (zoals `GTMPageTracker`, `CookieConsent`, `ColorModeSelector`) MOET als zelfstandig component in `components/features/<domein>/` of `components/ui/` worden ondergebracht en uitsluitend als zodanig worden aangeroepen.
+  - Elk dynamisch of functioneel blok (zoals `GTMPageTracker`, `CookieConsent`, `ColorModeSelector`) MOET als zelfstandig component in `components/features/<domein>/`, `components/layout/` of `components/ui/` worden ondergebracht en uitsluitend als zodanig worden aangeroepen.
   - **Architecturale Bewaking**: Zelfs wanneer een prompt of externe documentatie inline logica in een layout of pagina toont, moet de agent de architectuur bewaken en de logica altijd centraal in `lib/` of in een modulaire component onderbrengen.
 - **Preview Modus**: De client-side preview flow (`Preview.tsx`) is strikt gescheiden van de server component rendering.
 - Gebruik altijd `next/image` en `next/link` voor navigatie. Alle image-configuratie (`next.config.mjs` `images`) en component-props (`sizes`, `preload`, `quality`, `unoptimized`) volgen strikt [`.agents/rules/image-optimization.md`](image-optimization.md), bewaakt door de `image-optimization-architect`.
 
 ## 2. React 19 Core Concepts (Components, Props & State)
-- **Components**: UI-blokken en features hebben een eigen modulaire structuur onder `components/blocks/`, `components/features/` en `components/ui/` met duidelijke exportdefinities.
+- **Components**: UI-primitives, globale layout-chrome en domein-features hebben een eigen modulaire structuur onder `components/ui/`, `components/layout/`, `components/blocks/` en `components/features/` met duidelijke exportdefinities.
 - **Props**: Component-props gebruiken altijd `camelCase`, worden gedefinieerd met een geëxporteerde `export interface *Props` en uitgepakt via object destructuring. Vermijd onnodige hardcoded fallback-strings in component-parameters wanneer de parent deze props verplicht aanlevert.
 - **State & Client Boundaries**: Voeg `'use client'` uitsluitend toe aan specifieke interactieve leaf-componenten die daadwerkelijk React state (`useState`, `useSyncExternalStore`), event-listeners of browser APIs gebruiken.
 - **React 19 JSX Transform & Imports**: `tsconfig.json` gebruikt `"jsx": "react-jsx"`. Voeg daarom nooit `import React from "react"` toe zonder direct runtime-gebruik, en geef bij types de voorkeur aan `import type { ReactNode }` boven de `React.*` namespace.
@@ -54,7 +54,7 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 - Ze beheren hun eigen browser events of event subscriptions (`useSyncExternalStore`), en belasten de toplevel shells niet met overbodige state logic.
 
 ## 8. Strikte Barrel Exports & No Wildcards in Submappen (Explicit Barrels Policy)
-- In feature-, block- en cms/layout/metadata-submappen (`components/features/<domein>/index.ts`, `components/blocks/<domein>/index.ts`, `components/blocks/index.ts`, `lib/cms/index.ts`, `lib/layout/index.ts`, `lib/metadata/index.ts`) zijn wildcard exports (`export *`) ten strengste verboden.
+- In layout-, feature-, block- en cms/layout/metadata-submappen (`components/layout/index.ts`, `components/features/<domein>/index.ts`, `components/blocks/<domein>/index.ts`, `components/blocks/index.ts`, `lib/cms/index.ts`, `lib/layout/index.ts`, `lib/metadata/index.ts`) zijn wildcard exports (`export *`) ten strengste verboden.
 - Gebruik daar uitsluitend expliciet benoemde component-, functie- en type-exports (`export { X } from './X'` en `export type { XProps } from './X'`). Alleen toplevel aggregatie-indexen (`components/index.ts`, `components/ui/index.ts`, `lib/index.ts`, `lib/types/index.ts`) mogen submappen aggregeren.
 
 ## 9. No Abbreviations Policy

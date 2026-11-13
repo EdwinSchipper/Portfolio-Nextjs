@@ -28,10 +28,10 @@ description: Next.js 16.4 (Turbopack), React 19, Tailwind CSS v4, PostCSS, Headl
   - `images`: De `formats`, `qualities`, `minimumCacheTTL`, `deviceSizes`, `imageSizes` en `remotePatterns` (met `pathname`) worden uitsluitend bepaald door [`.agents/rules/image-optimization.md`](../../rules/image-optimization.md) en bewaakt door de [`image-optimization-architect`](../../agents/image-optimization-architect.md). Wijzig deze waarden nooit zonder die rule en de lokale versie-docs (`node_modules/next/dist/docs/01-app/03-api-reference/02-components/image.md`) te raadplegen.
   - `serverExternalPackages: ["isomorphic-dompurify"]` voor stabiele SSR compilatie.
   - `compiler.removeConsole` in productie (met behoud van `error`).
-  - `headers()` voor AI agent discovery (`/ai-catalog.json`, `/.well-known/ai-catalog.json`, `/llms.txt`).
+  - `headers()` voor HTTP Security Headers ([`.agents/rules/security-headers.md`](../../rules/security-headers.md): `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`) en AI agent discovery (`/ai-catalog.json`, `/.well-known/ai-catalog.json`, `/llms.txt`).
 
-### Tailwind CSS v4 & UI Primitives
+### Tailwind CSS v4, Layout & UI Primitives
 
 - [`app/globals.css`](../../../app/globals.css) definieert alle centrale `@theme` design tokens, typografie en animaties.
-- Gebruik altijd de UI primitives uit [`components/ui/`](../../../components/ui/) (`Button`, `Toast`, `Label`, `Image`, `SectionContainer`, `GridContainer`) zonder ruwe `<button>` elementen of inline `<svg>` tags.
+- Gebruik altijd de UI primitives uit [`components/ui/`](../../../components/ui/) (`Button`, `Toast`, `Label`, `Icon`, `RichText`) en globale site-chrome uit [`components/layout/`](../../../components/layout/) (`Header`, `Footer`, `Breadcrumbs`, `ColorModeSelector`, `NavigationProgress`) zonder ruwe `<button>` elementen of inline `<svg>` tags.
 

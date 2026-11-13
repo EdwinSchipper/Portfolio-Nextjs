@@ -75,7 +75,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
     <section
       {...previewAttr}
       aria-labelledby="hero-top"
-      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-10 sm:px-14 md:px-20 lg:px-20 xl:px-28 py-14 sm:py-24 lg:py-36 xl:py-28 font-content min-h-dvh"
+      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-10 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-14 sm:pb-24 lg:pb-36 xl:pb-28 font-content min-h-dvh"
       id="hero-section"
     >
       <HeroBackgroundVideo

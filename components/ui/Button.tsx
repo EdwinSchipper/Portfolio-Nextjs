@@ -47,7 +47,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   icon: `${iconBaseStyles} bg-background-100 dark:bg-background-800 text-content-100 dark:text-content-200 border-border-100 dark:border-border-200 hover:border-border-100 dark:hover:border-border-200/60 hover:text-title-100 dark:hover:text-title-200`,
   "icon-inverted": `${iconBaseStyles} bg-background-900/70 text-title-200 border-border-200/50 hover:border-border-200 hover:text-title-200`,
   link: `${linkBaseStyles} text-accent7-900 dark:text-accent8-900 hover:underline`,
-  "link-dark": `${linkBaseStyles} text-content-100/70 dark:text-content-200/50 hover:text-title-100 dark:hover:text-title-200 hover:underline`,
+  "link-dark": `${linkBaseStyles} text-content-100/80 dark:text-content-200/75 hover:text-title-100 dark:hover:text-title-200 hover:underline`,
   "link-neutral": `${linkBaseStyles} text-title-100 dark:text-title-200 hover:text-accent7-900 dark:hover:text-accent8-900`,
 };
 

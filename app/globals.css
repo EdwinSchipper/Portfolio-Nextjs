@@ -206,6 +206,17 @@ html {
   scrollbar-gutter: stable;
 }
 
+@layer base {
+  :is(a, button, input, select, textarea, summary, [tabindex]):not([tabindex="-1"]):focus-visible {
+    outline: 2px solid var(--color-accent7-900);
+    outline-offset: 3px;
+  }
+
+  .dark :is(a, button, input, select, textarea, summary, [tabindex]):not([tabindex="-1"]):focus-visible {
+    outline-color: var(--color-accent8-900);
+  }
+}
+
 html:has(#headlessui-portal-root:not(:empty)),
 body:has(#headlessui-portal-root:not(:empty)) {
   overflow: auto !important;

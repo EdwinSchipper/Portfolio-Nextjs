@@ -238,7 +238,7 @@ export default function Header() {
                 >
                   <span>Expertise</span>
                   <ChevronDownIcon
-                    className={`size-5 flex-none text-accent7-800 dark:text-accent8-800 group-hover:translate-y-px transition-transform duration-300 -mr-1 ml-0.5 ${isExpertiseOpen ? "rotate-180" : ""
+                    className={`size-5 flex-none text-content-300 dark:text-content-300 group-hover:translate-y-px transition-transform duration-300 -mr-1 ml-0.5 ${isExpertiseOpen ? "rotate-180" : ""
                       }`}
                     aria-hidden="true"
                   />

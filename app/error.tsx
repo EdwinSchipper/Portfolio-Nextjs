@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { Button, Label } from "@/components/ui";
 
 export default function ErrorBoundary({
@@ -40,12 +39,9 @@ export default function ErrorBoundary({
           <Button onClick={() => reset()} variant="primary">
             Opnieuw proberen
           </Button>
-          <Link
-            href="/"
-            className="font-medium text-noteM sm:text-note text-title-100 dark:text-title-200 hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors px-4 py-2"
-          >
-            Naar homepagina →
-          </Link>
+          <Button href="/" variant="link-neutral" arrow>
+            Naar homepagina
+          </Button>
         </div>
       </div>
     </section>

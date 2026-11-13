@@ -15,6 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Guard against agent files on production branch
+        if: github.base_ref == 'main' || github.base_ref == 'master' || github.ref_name == 'main' || github.ref_name == 'master'
+        run: |
+          if [ -e ".agents" ] || [ -e "AGENTS.md" ]; then
+            echo "::error::.agents/ en AGENTS.md mogen niet op de main-branch staan."
+            exit 1
+          fi
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:

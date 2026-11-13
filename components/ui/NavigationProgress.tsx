@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useRef, Suspense } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-function NavigationProgressBar() {
+/**
+ * Universal Navigation Progress Bar providing immediate visual feedback on page transitions.
+ */
+export default function NavigationProgress() {
   const pathname = usePathname();
   const barRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -105,16 +108,5 @@ function NavigationProgressBar() {
         className="h-full bg-accent7-900 dark:bg-accent8-900 shadow-[0_0_8px_rgba(240,90,70,0.6)] dark:shadow-[0_0_8px_rgba(242,101,82,0.8)]"
       />
     </div>
-  );
-}
-
-/**
- * Universal Navigation Progress Bar providing immediate visual feedback on page transitions.
- */
-export default function NavigationProgress() {
-  return (
-    <Suspense fallback={null}>
-      <NavigationProgressBar />
-    </Suspense>
   );
 }

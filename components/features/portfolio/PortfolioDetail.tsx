@@ -1,62 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import DOMPurify from "isomorphic-dompurify";
-import { PortfolioItem, File, CSLPAttribute } from "@/lib/types";
-import { Breadcrumbs, Label, Icon } from "@/components/ui";
+import { PortfolioItem, CSLPAttribute } from "@/lib/types";
+import { resolveAssetUrl, resolveAssetCslp } from "@/lib/cms";
+import { Breadcrumbs, Label, Icon, RichText } from "@/components/ui";
 import PortfolioTechStack from "./PortfolioTechStack";
 
 interface PortfolioDetailProps {
   item?: PortfolioItem | null;
-}
-
-/**
- * Safely extracts an image URL from either a Contentstack File object or string URL.
- */
-function getImageUrl(img?: File | string | null): string | null {
-  if (!img) return null;
-  if (typeof img === "string") return img;
-  if (typeof img === "object" && img.url) return img.url;
-  return null;
-}
-
-/**
- * Safely extracts CSLP live-preview attributes for an image.
- */
-function getImageCslp(
-  img?: File | string | null,
-  fallbackCslp?: CSLPAttribute
-): CSLPAttribute | undefined {
-  if (fallbackCslp) return fallbackCslp;
-  if (typeof img === "object" && img?.$) {
-    return img.$.url || img.$;
-  }
-  return undefined;
-}
-
-/**
- * Renders either sanitized HTML or plain text with Live Preview attributes.
- */
-function renderRichOrPlainText(
-  text: string | undefined,
-  cslpAttr: CSLPAttribute | undefined,
-  className: string
-) {
-  if (!text) return null;
-  const isHtml = /<[a-z][\s\S]*>/i.test(text);
-  if (isHtml) {
-    return (
-      <div
-        {...cslpAttr}
-        className={className}
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
-      />
-    );
-  }
-  return (
-    <p {...cslpAttr} className={`${className} whitespace-pre-line`}>
-      {text}
-    </p>
-  );
 }
 
 /**
@@ -94,11 +44,11 @@ function CaseStudySection({
           </div>
 
           <div className="lg:col-span-8 flex flex-col gap-6">
-            {renderRichOrPlainText(
-              text,
-              cslp,
-              "text-content-100 dark:text-content-200 text-baseM sm:text-base font-normal text-pretty leading-relaxed [&>p]:mb-4"
-            )}
+            <RichText
+              content={text}
+              cslp={cslp}
+              className="text-content-100 dark:text-content-200 text-baseM sm:text-base font-normal text-pretty leading-relaxed [&>p]:mb-4"
+            />
           </div>
         </div>
       </div>
@@ -163,33 +113,33 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
   const overviewCslp = item?.$ && (item.$.description || item.$.content);
 
   const heroImg = item.portfolioimagedetail || item.featured_image;
-  const heroImgUrl = getImageUrl(heroImg);
+  const heroImgUrl = resolveAssetUrl(heroImg);
   const heroImgAlt =
     item.alt_text ||
     (typeof heroImg === "object" && heroImg?.title) ||
     companyOrTitle;
-  const heroImgCslp = getImageCslp(
+  const heroImgCslp = resolveAssetCslp(
     heroImg,
     item?.$ && (item.$.portfolioimagedetail || item.$.featured_image)
   );
 
   const banner1Img = item.banner_visual_1 || item.portfolioimagedetail1;
-  const banner1Url = getImageUrl(banner1Img);
-  const banner1Cslp = getImageCslp(
+  const banner1Url = resolveAssetUrl(banner1Img);
+  const banner1Cslp = resolveAssetCslp(
     banner1Img,
     item?.$ && (item.$.banner_visual_1 || item.$.portfolioimagedetail1)
   );
 
   const banner2Img = item.banner_visual_2 || item.portfolioimagedetail2;
-  const banner2Url = getImageUrl(banner2Img);
-  const banner2Cslp = getImageCslp(
+  const banner2Url = resolveAssetUrl(banner2Img);
+  const banner2Cslp = resolveAssetCslp(
     banner2Img,
     item?.$ && (item.$.banner_visual_2 || item.$.portfolioimagedetail2)
   );
 
   const banner3Img = item.portfolioimagedetail3;
-  const banner3Url = getImageUrl(banner3Img);
-  const banner3Cslp = getImageCslp(
+  const banner3Url = resolveAssetUrl(banner3Img);
+  const banner3Cslp = resolveAssetCslp(
     banner3Img,
     item?.$ && item.$.portfolioimagedetail3
   );
@@ -266,11 +216,11 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
               </h2>
             </div>
 
-            {renderRichOrPlainText(
-              overviewText,
-              overviewCslp,
-              "text-mediumM sm:text-medium w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content order-3 lg:order-none max-w-xl mx-auto px-4 sm:px-0 leading-relaxed [&>p]:mb-4"
-            )}
+            <RichText
+              content={overviewText}
+              cslp={overviewCslp}
+              className="text-mediumM sm:text-medium w-full text-content-100 dark:text-content-200 text-pretty font-normal font-content order-3 lg:order-none max-w-xl mx-auto px-4 sm:px-0 leading-relaxed [&>p]:mb-4"
+            />
           </div>
         </div>
       </section>

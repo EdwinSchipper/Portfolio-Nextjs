@@ -8,6 +8,7 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
+      "react/jsx-uses-react": "off",
     },
   },
 ];

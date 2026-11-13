@@ -1,7 +1,6 @@
-import React from "react";
 import Image from "next/image";
-import DOMPurify from "isomorphic-dompurify";
 import { Block, CSLPAttribute } from "@/lib/types";
+import { RichText } from "@/components/ui";
 
 export interface ContentBlockProps {
   data?: Block;
@@ -59,12 +58,11 @@ export default function ContentBlock({
           )}
 
           {data.copy && (
-            <div
+            <RichText
+              content={data.copy}
+              mode="html"
               className="text-mediumM sm:text-small text-content-100 dark:text-content-200 leading-relaxed font-content"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(data.copy),
-              }}
-              {...(data?.$ && data?.$.copy)}
+              cslp={data?.$ && data?.$.copy}
             />
           )}
         </div>

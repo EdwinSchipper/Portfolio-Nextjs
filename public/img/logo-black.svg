@@ -1,16 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="_Ñëîé_1" data-name="Ñëîé 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108.94 100.1">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: #141413;
-      }
-
-      .cls-2 {
-        fill: #30302e;
-      }
-    </style>
-  </defs>
-  <polygon class="cls-2" points="2.32 76.27 9.15 100.1 103.3 73.11 47.61 63.29 2.32 76.27"/>
-  <polygon class="cls-1" points="60.96 35.65 102.16 23.83 95.33 0 0 27.33 6.83 51.17 7.01 51.12 6.98 51.3 104.64 68.52 108.94 44.11 60.96 35.65"/>
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_30388_16164)">
+<mask id="mask0_30388_16164" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="44" height="44">
+<path d="M44 22C44 9.84974 34.1503 0 22 0C9.84974 0 0 9.84974 0 22C0 34.1503 9.84974 44 22 44C34.1503 44 44 34.1503 44 22Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_30388_16164)">
+<path d="M50.839 32.7002L-5.14204 48.7542L-9.20312 34.5791L17.7261 26.8672L50.839 32.7002Z" fill="#1CE990"/>
+<path d="M57.5754 39.4444L1.59428 55.4925L-2.4668 41.3233L24.4624 33.6055L57.5754 39.4444Z" fill="#1CE990"/>
+<path d="M-3.87597 5.22612L-6.43555 19.7422L51.6346 29.9815L54.1941 15.4655L-3.87597 5.22612Z" fill="#1CE990"/>
+<path d="M46.1016 -10.7688L-10.5801 5.48438L-6.51718 19.6534L50.1645 3.40016L46.1016 -10.7688Z" fill="#1CE990"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_30388_16164">
+<rect width="44" height="44" fill="white"/>
+</clipPath>
+</defs>
 </svg>

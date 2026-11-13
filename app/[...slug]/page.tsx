@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDynamicRouteStaticParams, getPage, isPreview } from "@/lib/cms";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
-import { Page, PageSkeleton, Preview } from "@/components/features/pages";
+import { Page, PageSkeleton } from "@/components/features/pages";
 
 export const revalidate = 3600;
 
@@ -38,5 +38,10 @@ async function DynamicRouteContent({ path }: { path: string }) {
     notFound();
   }
 
-  return isPreview ? <Preview path={path} initialPage={page} /> : <Page page={page} />;
+  if (isPreview) {
+    const { default: Preview } = await import("@/components/features/pages/Preview");
+    return <Preview path={path} initialPage={page} />;
+  }
+
+  return <Page page={page} />;
 }

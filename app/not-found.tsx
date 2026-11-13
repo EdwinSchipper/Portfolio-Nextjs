@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Button, Label } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -27,12 +26,9 @@ export default function NotFound() {
           <Button href="/" variant="primary" arrow>
             Terug naar home
           </Button>
-          <Link
-            href="/portfolio"
-            className="font-medium text-noteM sm:text-note text-title-100 dark:text-title-200 hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors px-4 py-2"
-          >
-            Bekijk portfolio →
-          </Link>
+          <Button href="/portfolio" variant="link-neutral" arrow>
+            Bekijk portfolio
+          </Button>
         </div>
       </div>
     </section>

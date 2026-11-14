@@ -73,7 +73,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
     <section
       {...previewAttr}
       aria-labelledby="hero-top"
-      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-8 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-8 sm:pb-24 lg:pb-36 xl:pb-28 font-content min-h-dvh"
+      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-8 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-8 sm:pb-24 lg:pb-30 xl:pb-20 font-content min-h-dvh"
       id="hero-section"
     >
       <HeroBackgroundVideo
@@ -96,7 +96,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
 
             <p
               id="hero-middle"
-              className="text-heroM sm:text-hero text-balance sm:text-pretty font-content font-normal text-title-200 max-w-2xl"
+              className="text-heroM sm:text-hero text-balance sm:text-pretty font-content font-normal text-title-200 max-w-3xl"
               {...(cslp && (cslp.text || cslp.description))}
             >
               {text}

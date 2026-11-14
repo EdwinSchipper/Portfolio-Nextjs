@@ -305,7 +305,7 @@ export function CardSectionHeader({
     <header
       className={`w-full flex flex-col gap-14 md:gap-8 px-10 md:px-20 xl:px-14 border-t border-border-100 dark:border-border-200 py-14 md:py-24 relative ${className}`}
     >
-      <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-1/2 bg-border-100/70 dark:bg-border-200/70 pointer-events-none" />
+      <div className="hidden xl:block absolute right-0 top-0 bottom-0 w-1/2 bg-border-100/40 dark:bg-border-200/70 pointer-events-none" />
       <div className="hidden xl:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 
       <div

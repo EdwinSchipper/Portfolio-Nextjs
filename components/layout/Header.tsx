@@ -285,7 +285,7 @@ export default function Header() {
             <Button
               href="/contact"
               variant={isOverHero ? "inverted" : "primary"}
-              size="sm"
+              size="md"
             >
               Plan een kennismaking
             </Button>

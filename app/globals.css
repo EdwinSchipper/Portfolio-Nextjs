@@ -21,8 +21,8 @@
   --text-labelM: 16px;
   --text-labelM--line-height: 21px;
 
-  --text-heroM: 18px;
-  --text-heroM--line-height: 29px;
+  --text-heroM: 15px;
+  --text-heroM--line-height: 2em;
 
   --text-label_smallM: 12px;
   --text-label_smallM--line-height: 16px;
@@ -39,7 +39,7 @@
   --text-largeM: 18px;
   --text-largeM--line-height: 29px;
 
-  --text-title_heroM: 44px;
+  --text-title_heroM: 50px;
   --text-title_heroM--line-height: 53px;
   --text-title_heroM--letter-spacing: -0.02em;
 

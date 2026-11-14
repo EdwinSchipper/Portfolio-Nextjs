@@ -51,8 +51,8 @@ export default function Footer() {
 
               <div className="lg:col-span-7 flex flex-col space-y-10 md:space-y-12">
 
-                <div className="pr-20">
-                  <h2 className="text-title_heroM lg:text-title_hero font-content text-title-100 dark:text-title-200 font-light max-w-3xl text-pretty">
+                <div className="md:pr-20 pt-20 md:pt-0">
+                  <h2 className="text-[length:calc(var(--text-title_heroM)*0.7)] max-lg:leading-[1.2] max-lg:tracking-[-0.02em] lg:text-title_hero font-content text-title-100 dark:text-title-200 font-light max-w-3xl text-pretty">
                     Benieuwd wat ik{" "}
                     <span className="italic font-semibold">
                       voor jouw

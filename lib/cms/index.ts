@@ -1,5 +1,5 @@
 /**
- * CMS Module: Contentstack Delivery SDK client and data queries.
+ * CMS Module: Contentstack Delivery SDK client, server queries, mappers, and revalidation helpers.
  */
 
 export {
@@ -17,6 +17,7 @@ export {
 
 export {
   clearServerQueryCache,
+  resolveCmsPath,
   getHomePage,
   getPage,
   getPortfolioItemByUrl,

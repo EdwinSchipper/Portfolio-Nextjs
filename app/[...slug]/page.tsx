@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getDynamicRouteStaticParams, getPage, isPreview } from "@/lib/cms";
+import { getDynamicRouteStaticParams, getPage, isPreview, resolveCmsPath } from "@/lib/cms";
 import { getDynamicRouteMetadata } from "@/lib/metadata";
 import { Page, PageSkeleton } from "@/components/features/pages";
 
@@ -17,21 +17,20 @@ export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
 
 export async function generateMetadata({ params }: DynamicRouteProps): Promise<Metadata> {
   const { slug } = await params;
-  return getDynamicRouteMetadata(`/${slug.join("/")}`);
+  return getDynamicRouteMetadata(slug);
 }
 
-export default async function DynamicRoute({ params }: DynamicRouteProps) {
-  const { slug } = await params;
-  const path = `/${slug.join("/")}`;
-
+export default function DynamicRoute({ params }: DynamicRouteProps) {
   return (
-    <Suspense key={path} fallback={<PageSkeleton />}>
-      <DynamicRouteContent path={path} />
+    <Suspense fallback={<PageSkeleton />}>
+      <DynamicRouteContent params={params} />
     </Suspense>
   );
 }
 
-async function DynamicRouteContent({ path }: { path: string }) {
+async function DynamicRouteContent({ params }: DynamicRouteProps) {
+  const { slug } = await params;
+  const path = resolveCmsPath(slug);
   const page = await getPage(path);
 
   if (!page) {

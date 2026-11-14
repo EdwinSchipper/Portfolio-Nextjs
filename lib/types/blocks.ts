@@ -1,4 +1,11 @@
-import type { BaseEntity, BaseSectionBlock, CSLPContainer, File, Link, SystemFields } from "./core";
+import type {
+  BaseEntity,
+  BaseSectionBlock,
+  CSLPContainer,
+  File,
+  Link,
+  SystemFields,
+} from "./core";
 import type { PortfolioItem } from "./pages";
 
 /**
@@ -13,6 +20,7 @@ export interface ExperienceRole extends BaseEntity {
   badge?: string;
   description?: string;
 }
+
 export type TimelineRole = ExperienceRole;
 
 export interface ExperienceCompany extends BaseEntity {
@@ -23,12 +31,24 @@ export interface ExperienceCompany extends BaseEntity {
   roles?: ExperienceRole[];
   Roles?: ExperienceRole[];
 }
+
 export type TimelineCompany = ExperienceCompany;
 
 export interface ExperienceTimelineBlock extends BaseEntity {
   section_title?: string;
   companies?: ExperienceCompany[];
-  experience_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+  experience_timeline?:
+    | ExperienceCompany[]
+    | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+}
+
+export interface ResumeStackTagItem {
+  tag?: string;
+  Tag?: string;
+  name?: string;
+  value?: string;
+  text?: string;
+  title?: string;
 }
 
 export interface ResumeStack extends BaseEntity {
@@ -38,11 +58,16 @@ export interface ResumeStack extends BaseEntity {
   stackTitle?: string;
   label?: string;
   title?: string;
-  tag?: string[];
-  tags?: string[];
-  Tag?: string[];
-  Tags?: string[];
+  tag?: string | string[] | ResumeStackTagItem[];
+  Tag?: string | string[] | ResumeStackTagItem[];
+  tags?: string | string[] | ResumeStackTagItem[];
+  Tags?: string | string[] | ResumeStackTagItem[];
+  stack_tags?: string | string[] | ResumeStackTagItem[];
+  stackTags?: string | string[] | ResumeStackTagItem[];
+  items?: string | string[] | ResumeStackTagItem[];
 }
+
+export type ResumeStackData = ResumeStack | string[] | string;
 
 export interface CertificationItem extends BaseEntity {
   title?: string;
@@ -53,27 +78,6 @@ export interface CertificationItem extends BaseEntity {
   location?: string;
 }
 
-export type ResumeStackData =
-  | ResumeStack
-  | {
-      tag?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      Tag?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      tags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      Tags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      stack_tags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      stackTags?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      items?: string | string[] | Array<{ text?: string; title?: string; name?: string }>;
-      stack_label?: string;
-      stackLabel?: string;
-      stack_title?: string;
-      stackTitle?: string;
-      label?: string;
-      title?: string;
-      $?: CSLPContainer;
-    }
-  | string[]
-  | string;
-
 export interface ResumeSectionBlock extends BaseSectionBlock {
   left_col_span?: number | string;
   left_col?: number | string;
@@ -81,7 +85,16 @@ export interface ResumeSectionBlock extends BaseSectionBlock {
   right_col_span?: number | string;
   right_col?: number | string;
   rightCol?: number | string;
-  timeline_position?: "right" | "left" | "full" | "Right" | "Left" | "Full" | "rechts" | "links" | string;
+  timeline_position?:
+    | "right"
+    | "left"
+    | "full"
+    | "Right"
+    | "Left"
+    | "Full"
+    | "rechts"
+    | "links"
+    | string;
   timeline_placement?: string;
   section_title_main?: string;
   description?: string;
@@ -153,9 +166,6 @@ export interface ServiceCardBlock extends BaseEntity {
 
 export interface FeaturedProjectsBlock extends BaseSectionBlock {
   label_projects?: string;
-  label?: string;
-  title?: string;
-  intro?: string;
   projects?: PortfolioItem[];
 }
 
@@ -175,6 +185,7 @@ export interface SectionItem extends BaseEntity {
   button?: Link;
   card_variant?: "Default" | "Image Tag" | string;
 }
+
 export type CardSectionItem = SectionItem;
 export type NumberedItem = SectionItem;
 export type GridCard = SectionItem;
@@ -209,7 +220,6 @@ export interface NumberedSectionBlock extends BaseSectionBlock {
  * Grid Section Models
  */
 
-/** Nested column group for Grid Section (content_left / content_right) */
 export interface GridSectionColumn extends BaseEntity {
   label_left?: string;
   label_right?: string;
@@ -226,15 +236,20 @@ export interface GridSectionColumn extends BaseEntity {
   button_left?: Link;
   button_right?: Link;
   cards?: GridCard[];
-  resume_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
-  timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
-  career_timeline?: ExperienceCompany[] | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+  resume_timeline?:
+    | ExperienceCompany[]
+    | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+  timeline?:
+    | ExperienceCompany[]
+    | { companies?: ExperienceCompany[]; $?: CSLPContainer };
+  career_timeline?:
+    | ExperienceCompany[]
+    | { companies?: ExperienceCompany[]; $?: CSLPContainer };
   socials?: GridSocials | SocialLink[];
   social_links?: GridSocials | SocialLink[];
   connect?: GridSocials | SocialLink[];
 }
 
-/** Grid Section modular block */
 export interface GridSectionBlock extends BaseSectionBlock {
   left_col_span?: number | string;
   right_col_span?: number | string;
@@ -246,37 +261,16 @@ export interface GridSectionBlock extends BaseSectionBlock {
  * Hero Block Models
  */
 
-export interface HeroMicroLink extends BaseEntity {
-  title?: string;
-  label?: string;
-  to?: string;
-  href?: string;
-  link?: string | Link;
-  external?: boolean;
-  title_attr?: string;
-}
-
 export interface HeroBlock extends BaseEntity {
   label?: string;
   title?: string;
   text?: string;
   description?: string;
-  micro_links?: HeroMicroLink[];
-  stats?: HeroMicroLink[];
-  cta_button?: Link;
-  button?: Link;
-  cta_note?: string;
   is_available?: boolean;
   background_video?: File;
   video?: File;
   background_image?: File;
   fallback_image?: File;
-  image_1?: File;
-  image_ux?: File;
-  image_2?: File;
-  image_vormgeving?: File;
-  image_3?: File;
-  image_development?: File;
 }
 
 /**

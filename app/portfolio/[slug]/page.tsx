@@ -20,18 +20,17 @@ export async function generateMetadata({ params }: PortfolioDetailPageProps): Pr
   return getPortfolioRouteMetadata(slug);
 }
 
-export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
-  const { slug } = await params;
-  const path = `/portfolio/${slug}`;
-
+export default function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
   return (
-    <Suspense key={path} fallback={<PortfolioDetailSkeleton />}>
-      <PortfolioDetailContent path={path} />
+    <Suspense fallback={<PortfolioDetailSkeleton />}>
+      <PortfolioDetailContent params={params} />
     </Suspense>
   );
 }
 
-async function PortfolioDetailContent({ path }: { path: string }) {
+async function PortfolioDetailContent({ params }: PortfolioDetailPageProps) {
+  const { slug } = await params;
+  const path = `/portfolio/${slug}`;
   const portfolioItem = await getPortfolioItemByUrl(path);
 
   if (!portfolioItem) {

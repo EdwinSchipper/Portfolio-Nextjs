@@ -1,29 +1,36 @@
 import type { Metadata } from "next";
-import { getHomePage, getPage, getPortfolioItemByUrl } from "../cms";
+import { getHomePage, getPage, getPortfolioItemByUrl, resolveCmsPath } from "../cms";
 import {
+  buildHomepageMetadata,
   buildPageMetadata,
   buildPortfolioMetadata,
-  buildHomepageMetadata,
 } from "./builders";
 
 /**
  * Resolves metadata specifically for portfolio detail routes (/portfolio/[slug]).
  */
 export async function getPortfolioRouteMetadata(slug: string): Promise<Metadata> {
-  const path = `/portfolio/${slug}`;
-  const item = await getPortfolioItemByUrl(path);
+  const item = await getPortfolioItemByUrl(`/portfolio/${slug}`);
   if (item) {
     return buildPortfolioMetadata(item);
   }
+
   return {
     title: "Project niet gevonden",
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 
 /**
- * Resolves metadata dynamically for catch-all route paths (e.g. "/over-ons", "/portfolio").
+ * Resolves metadata dynamically for catch-all route paths (e.g. "/overmij", "/portfolio").
  */
-export async function getDynamicRouteMetadata(path: string): Promise<Metadata> {
+export async function getDynamicRouteMetadata(
+  slugOrPath: string | string[]
+): Promise<Metadata> {
+  const path = resolveCmsPath(slugOrPath);
   const page = await getPage(path);
   if (page) {
     return buildPageMetadata(page);
@@ -31,6 +38,10 @@ export async function getDynamicRouteMetadata(path: string): Promise<Metadata> {
 
   return {
     title: "Pagina niet gevonden",
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 

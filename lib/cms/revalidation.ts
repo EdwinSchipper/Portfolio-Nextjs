@@ -15,19 +15,26 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function normalizeString(value: unknown): string | undefined {
-  if (typeof value !== "string") return undefined;
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
 function normalizeEntryUrl(value: unknown): string | undefined {
   const raw = normalizeString(value);
-  if (!raw) return undefined;
-  const withLeadingSlash = raw.startsWith("/") ? raw : `/${raw}`;
-  if (withLeadingSlash.length > 1 && withLeadingSlash.endsWith("/")) {
-    return withLeadingSlash.slice(0, -1);
+  if (!raw) {
+    return undefined;
   }
-  return withLeadingSlash;
+
+  let normalized = raw.startsWith("/") ? raw : `/${raw}`;
+  while (normalized.length > 1 && normalized.endsWith("/")) {
+    normalized = normalized.slice(0, -1);
+  }
+
+  return normalized;
 }
 
 function extractProvidedSecret(request: Request): string | undefined {
@@ -70,7 +77,12 @@ export function isValidRevalidateRequest(request: Request, expectedSecret: strin
 export function resolveRevalidationTargets(payload: unknown): RevalidationTargets {
   const root = isRecord(payload) ? payload : {};
   const data = isRecord(root.data) ? root.data : undefined;
-  const entry = data && isRecord(data.entry) ? data.entry : isRecord(root.entry) ? root.entry : undefined;
+  const entry =
+    data && isRecord(data.entry)
+      ? data.entry
+      : isRecord(root.entry)
+        ? root.entry
+        : undefined;
   const contentType =
     data && isRecord(data.content_type)
       ? data.content_type
@@ -112,4 +124,3 @@ export function resolveRevalidationTargets(payload: unknown): RevalidationTarget
     routePatterns,
   };
 }
-

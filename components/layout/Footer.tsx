@@ -63,6 +63,7 @@ export default function Footer() {
                 <div>
                   <Button
                     href="/contact"
+                    size="md"
                     variant="primary"
                     aria-label="Contact opnemen"
                     className="w-full sm:w-fit"
@@ -70,9 +71,6 @@ export default function Footer() {
                     Plan een kennismaking
                   </Button>
                 </div>
-
-
-
               </div>
 
               <div className="lg:col-span-5 lg:flex lg:justify-end lg:items-start">

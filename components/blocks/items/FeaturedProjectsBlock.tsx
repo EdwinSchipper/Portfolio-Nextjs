@@ -145,7 +145,7 @@ export default function FeaturedProjectsBlock({
                       <div className="case-btn w-fit">
                         <Button
                           href={postUrl}
-                          size="sm"
+                          size="md"
                           aria-label={`Lees de volledige case van ${company}`}
                           cslp={postCslp && postCslp.url}
                         >

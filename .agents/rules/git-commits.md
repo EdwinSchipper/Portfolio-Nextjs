@@ -40,3 +40,9 @@ Als **harde regel** geldt dat de voertaal van alle commit messages (onderwerp en
 | `refactor(components): reorder folders` | `refactor(analytics): centraliseer page_view payload logica in analytics-utils helper` |
 | `style(timeline): update position` | `style(timeline): centreer bolletje exact op de rasterlijn via wiskundige -left-[11px] offset` |
 | `chore: update dependencies` | `chore(deps): upgrade @headlessui/react naar v2.2.10 en migreer Description alias` |
+
+### 5. Release Branch (`release/main`) & Pull Request Link
+- Na het uitvoeren van `pnpm release:main` en het pushen van `release/main` naar `origin/release/main` (`git push -u --force-with-lease origin release/main`):
+  1. Schakel altijd terug naar `development` (`git checkout development`).
+  2. Geef in het antwoord aan de gebruiker **altijd** direct de klikbare GitHub Pull Request link mee:
+     `https://github.com/EdwinSchipper/Portfolio-Nextjs/compare/main...release/main?expand=1`

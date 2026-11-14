@@ -9,7 +9,12 @@ export {
   HEADING_VALUES,
   defaultHeading,
 } from "./tokens";
-export type { HeadingType } from "./tokens";
+export type {
+  ContainerWidthKey,
+  ColorModeKey,
+  ColSpanKey,
+  HeadingType,
+} from "./tokens";
 
 export {
   getColSpanClass,

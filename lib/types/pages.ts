@@ -22,7 +22,6 @@ export type Homepage = BasePageEntry;
 
 export interface Page extends BasePageEntry {
   url?: string;
-  description?: string;
   show_breadcrumbs?: boolean;
   breadcrumb_title?: string;
 }

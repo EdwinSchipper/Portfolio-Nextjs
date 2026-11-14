@@ -1,9 +1,60 @@
 import type { Metadata } from "next";
-import type { Page, PortfolioItem, Homepage } from "../types";
 import { resolveFirstAssetUrl } from "../cms/mappers";
+import { SITE_LOCALE, SITE_NAME } from "../env";
+import type { Homepage, Page, PortfolioItem } from "../types";
 
 export const DEFAULT_TITLE = "Edwin Schipper";
 export const DEFAULT_DESCRIPTION = "Portfolio Website van Edwin Schipper";
+
+interface MetadataBuildOptions {
+  title: Metadata["title"];
+  ogTitle: string;
+  description: string;
+  canonicalPath?: string;
+  imageUrl?: string;
+  openGraphType: "website" | "article";
+  noIndex?: boolean;
+}
+
+function toCanonicalPath(url?: string): string | undefined {
+  const trimmed = (url ?? "").trim();
+  if (!trimmed) {
+    return undefined;
+  }
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+}
+
+function createMetadataObject({
+  title,
+  ogTitle,
+  description,
+  canonicalPath,
+  imageUrl,
+  openGraphType,
+  noIndex,
+}: MetadataBuildOptions): Metadata {
+  return {
+    title,
+    description,
+    ...(canonicalPath ? { alternates: { canonical: canonicalPath } } : {}),
+    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
+    openGraph: {
+      title: ogTitle,
+      description,
+      ...(canonicalPath ? { url: canonicalPath } : {}),
+      siteName: SITE_NAME,
+      locale: SITE_LOCALE,
+      type: openGraphType,
+      ...(imageUrl ? { images: [{ url: imageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description,
+      ...(imageUrl ? { images: [imageUrl] } : {}),
+    },
+  };
+}
 
 /**
  * Builds metadata for a standard CMS page entry.
@@ -12,29 +63,16 @@ export function buildPageMetadata(page: Page): Metadata {
   const title = page.seo?.meta_title || page.title || DEFAULT_TITLE;
   const description =
     page.seo?.meta_description || page.description || DEFAULT_DESCRIPTION;
-  const ogImageUrl = page.seo?.og_image?.url;
-  const canonicalPath = page.url ? (page.url.startsWith("/") ? page.url : `/${page.url}`) : undefined;
 
-  return {
+  return createMetadataObject({
     title,
+    ogTitle: title,
     description,
-    ...(canonicalPath ? { alternates: { canonical: canonicalPath } } : {}),
-    openGraph: {
-      title,
-      description,
-      ...(canonicalPath ? { url: canonicalPath } : {}),
-      siteName: "Edwin Schipper",
-      locale: "nl_NL",
-      type: "website",
-      ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
-    },
-  };
+    canonicalPath: toCanonicalPath(page.url),
+    imageUrl: page.seo?.og_image?.url,
+    openGraphType: "website",
+    noIndex: page.seo?.no_index,
+  });
 }
 
 /**
@@ -57,28 +95,15 @@ export function buildPortfolioMetadata(item: PortfolioItem): Metadata {
       item.banner_visual_1
     ) ?? undefined;
 
-  const canonicalPath = item.url ? (item.url.startsWith("/") ? item.url : `/${item.url}`) : undefined;
-
-  return {
+  return createMetadataObject({
     title,
+    ogTitle: title,
     description,
-    ...(canonicalPath ? { alternates: { canonical: canonicalPath } } : {}),
-    openGraph: {
-      title,
-      description,
-      ...(canonicalPath ? { url: canonicalPath } : {}),
-      siteName: "Edwin Schipper",
-      locale: "nl_NL",
-      type: "article",
-      ...(imageUrl ? { images: [{ url: imageUrl }] } : {}),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      ...(imageUrl ? { images: [imageUrl] } : {}),
-    },
-  };
+    canonicalPath: toCanonicalPath(item.url),
+    imageUrl,
+    openGraphType: "article",
+    noIndex: item.seo?.no_index,
+  });
 }
 
 /**
@@ -96,9 +121,11 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
     !metaTitle &&
     (!homepage?.title || homepage.title.toLowerCase().trim() === "homepage");
 
-  const title =
+  const resolvedTitle =
     metaTitle ||
-    (isGenericTitle ? "Edwin Schipper | Ontwerpbureau Schipper" : homepage?.title || DEFAULT_TITLE);
+    (isGenericTitle
+      ? "Edwin Schipper | Ontwerpbureau Schipper"
+      : homepage?.title || DEFAULT_TITLE);
 
   const description =
     homepage?.seo?.meta_description ||
@@ -107,31 +134,17 @@ export function buildHomepageMetadata(homepage?: Homepage): Metadata {
     DEFAULT_DESCRIPTION;
 
   const ogImageUrl =
-    homepage?.seo?.og_image?.url ||
-    (typeof homepage?.og_image === "object" ? homepage?.og_image?.url : undefined);
+    resolveFirstAssetUrl(homepage?.seo?.og_image, homepage?.og_image) ?? undefined;
 
-  return {
+  return createMetadataObject({
     title: {
-      absolute: title,
+      absolute: resolvedTitle,
     },
+    ogTitle: resolvedTitle,
     description,
-    alternates: {
-      canonical: "/",
-    },
-    openGraph: {
-      title,
-      description,
-      url: "/",
-      siteName: "Edwin Schipper",
-      locale: "nl_NL",
-      type: "website",
-      ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
-    },
-  };
+    canonicalPath: "/",
+    imageUrl: ogImageUrl,
+    openGraphType: "website",
+    noIndex: homepage?.seo?.no_index,
+  });
 }

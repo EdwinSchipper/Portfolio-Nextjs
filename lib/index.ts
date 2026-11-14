@@ -1,6 +1,6 @@
 /**
  * Central barrel export for the lib library:
- * - cms: Contentstack client, Live Preview, and data queries
+ * - cms: Contentstack client, Live Preview, queries, mappers, and revalidation
  * - env: Centralized environment configuration and validation
  * - layout: Design tokens, container widths, and layout helpers
  * - metadata: SEO OpenGraph builders and route resolvers

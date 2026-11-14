@@ -80,6 +80,63 @@ type WrappedResumeSection = ResumeSectionBlock & {
   experience_timeline?: ResumeSectionBlock;
 };
 
+const STACK_LABEL_CSLP_KEYS = ["stack_label", "Stack_label", "stackLabel", "label"] as const;
+const SECTION_STACK_LABEL_CSLP_KEYS = ["stack_label", "stack.stack_label"] as const;
+const STACK_TITLE_CSLP_KEYS = ["stack_title", "Stack_title", "stackTitle", "title"] as const;
+const SECTION_STACK_TITLE_CSLP_KEYS = ["stack_title", "stack.stack_title"] as const;
+const FULL_POSITION_VALUES = new Set(["full", "center", "full width", "volledig"]);
+const LEFT_POSITION_VALUES = new Set(["left", "links"]);
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function toArray<T>(value?: T | T[] | null): T[] {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  return value ? [value] : [];
+}
+
+function pickFirstString(...candidates: unknown[]): string | undefined {
+  for (const candidate of candidates) {
+    if (typeof candidate === "string" && candidate.trim().length > 0) {
+      return candidate;
+    }
+  }
+  return undefined;
+}
+
+function pickFirstGridSpan(...candidates: Array<number | string | undefined>): number | string | undefined {
+  for (const candidate of candidates) {
+    if (typeof candidate === "number" && !Number.isNaN(candidate)) {
+      return candidate;
+    }
+    if (typeof candidate === "string" && candidate.trim().length > 0) {
+      return candidate;
+    }
+  }
+  return undefined;
+}
+
+function pickFirstCslp(
+  container: CSLPContainer | undefined,
+  keys: readonly string[]
+): CSLPAttribute | undefined {
+  if (!container) {
+    return undefined;
+  }
+
+  for (const key of keys) {
+    const mapping = container[key];
+    if (mapping) {
+      return mapping;
+    }
+  }
+
+  return undefined;
+}
+
 /**
  * Safely extracts an image URL from either a Contentstack File object or string URL.
  */
@@ -126,9 +183,7 @@ export function normalizeFeaturedProject(
 ): NormalizedFeaturedProject {
   const url = post.url || `/portfolio/${post.uid || post.id || index}`;
   const thumbnailAsset =
-    post.case_thumbnail ||
-    post.featured_image ||
-    post.portfolioimagedetail;
+    post.case_thumbnail || post.featured_image || post.portfolioimagedetail;
 
   const imageUrl = resolveFirstAssetUrl(
     post.case_thumbnail,
@@ -138,21 +193,16 @@ export function normalizeFeaturedProject(
 
   const imageCslp =
     resolveAssetCslp(thumbnailAsset) ||
-    post?.$?.case_thumbnail ||
-    post?.$?.featured_image;
+    post.$?.case_thumbnail ||
+    post.$?.featured_image;
 
+  const categoryValue = Array.isArray(post.category) ? post.category[0] : post.category;
   const tag =
-    post.project_tag ||
-    (Array.isArray(post.category) ? post.category[0] : post.category) ||
-    "Recent werk";
-
+    pickFirstString(post.project_tag, categoryValue) || "Recent werk";
   const title =
-    post.project_title ||
-    post.title ||
-    "Consistente Merktaal & Platform";
-
-  const description = post.project_desc || post.description || "";
-  const company = post.company || post.title || "Project";
+    pickFirstString(post.project_title, post.title) || "Consistente Merktaal & Platform";
+  const description = pickFirstString(post.project_desc, post.description) || "";
+  const company = pickFirstString(post.company, post.title) || "Project";
 
   return {
     key: post.uid || `project-${index}`,
@@ -180,17 +230,19 @@ export function normalizeCtaBlock(data: CtaBlock): NormalizedCtaBlock {
   return {
     label: data.label,
     title: data.title,
-    description: data.description || data.text_cta || data.text,
-    buttonHref: data.button_cta?.href || data.button_to || data.to,
-    buttonText: data.button_cta?.title || data.button_text || "Bekijk CV",
+    description: pickFirstString(data.description, data.text_cta, data.text),
+    buttonHref: pickFirstString(data.button_cta?.href, data.button_to, data.to),
+    buttonText:
+      pickFirstString(data.button_cta?.title, data.button_text) || "Bekijk CV",
     imageLight,
     imageDark,
     imageAlt:
-      data.image_alt ||
-      imageLight?.title ||
-      imageDark?.title ||
-      data.title ||
-      "CTA image",
+      pickFirstString(
+        data.image_alt,
+        imageLight?.title,
+        imageDark?.title,
+        data.title
+      ) || "CTA image",
     meta: data.$,
   };
 }
@@ -202,38 +254,48 @@ export function extractStackTags(stackData: unknown): string[] {
   if (!stackData) return [];
   const results: string[] = [];
 
-  const addTag = (val: unknown) => {
-    if (val === null || val === undefined) return;
-    if (typeof val === "string") {
-      const trimmed = val.trim();
+  const addTag = (value: unknown) => {
+    if (value === null || value === undefined) return;
+
+    if (typeof value === "string") {
+      const trimmed = value.trim();
       if (trimmed) results.push(trimmed);
-    } else if (Array.isArray(val)) {
-      val.forEach(addTag);
-    } else if (typeof val === "object") {
-      const record = val as Record<string, unknown>;
-      const tagVal =
-        record.tag ?? record.Tag ?? record.name ?? record.value ?? record.title;
-      if (tagVal !== undefined) {
-        addTag(tagVal);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach(addTag);
+      return;
+    }
+
+    if (isRecord(value)) {
+      const nestedTag =
+        value.tag ?? value.Tag ?? value.name ?? value.value ?? value.text ?? value.title;
+      if (nestedTag !== undefined) {
+        addTag(nestedTag);
       }
     }
   };
 
-  if (Array.isArray(stackData)) {
-    stackData.forEach(addTag);
-  } else if (typeof stackData === "object") {
-    const record = stackData as Record<string, unknown>;
+  if (Array.isArray(stackData) || typeof stackData === "string") {
+    addTag(stackData);
+    return results;
+  }
+
+  if (isRecord(stackData)) {
     const rawTags =
-      record.tag ??
-      record.Tag ??
-      record.tags ??
-      record.Tags ??
-      record.items;
+      stackData.tag ??
+      stackData.Tag ??
+      stackData.tags ??
+      stackData.Tags ??
+      stackData.stack_tags ??
+      stackData.stackTags ??
+      stackData.items;
 
     if (rawTags !== undefined) {
       addTag(rawTags);
     } else {
-      Object.entries(record).forEach(([key, val]) => {
+      Object.entries(stackData).forEach(([key, value]) => {
         const lowerKey = key.toLowerCase();
         if (
           !lowerKey.includes("label") &&
@@ -241,12 +303,10 @@ export function extractStackTags(stackData: unknown): string[] {
           !key.startsWith("_") &&
           key !== "$"
         ) {
-          addTag(val);
+          addTag(value);
         }
       });
     }
-  } else if (typeof stackData === "string") {
-    addTag(stackData);
   }
 
   return results;
@@ -288,120 +348,97 @@ export function normalizeResumeSection(
     wrapped.experience_timeline ||
     data;
 
-  const rawWidth =
-    options.width || sectionData.container_width || sectionData.width;
-  const colorModeKey = options.colorMode || sectionData.color_mode;
+  const rawWidth = pickFirstString(
+    options.width,
+    sectionData.container_width,
+    sectionData.width
+  );
+  const colorModeKey = pickFirstString(options.colorMode, sectionData.color_mode);
 
-  const rawPosition = (
-    options.timelinePosition ||
-    sectionData.timeline_position ||
-    sectionData.timeline_placement ||
-    ""
+  const normalizedPosition = (
+    pickFirstString(
+      options.timelinePosition,
+      sectionData.timeline_position,
+      sectionData.timeline_placement
+    ) ?? ""
   )
     .trim()
     .toLowerCase();
 
-  const isPositionFull =
-    rawPosition === "full" ||
-    rawPosition === "center" ||
-    rawPosition === "full width" ||
-    rawPosition === "volledig";
+  const isPositionFull = FULL_POSITION_VALUES.has(normalizedPosition);
+  const isTimelineLeft = LEFT_POSITION_VALUES.has(normalizedPosition);
 
-  const isTimelineLeft = rawPosition === "left" || rawPosition === "links";
+  const companies = toArray<ExperienceCompany>(
+    sectionData.companies ?? sectionData.Companies
+  );
+  const certifications = toArray<CertificationItem>(
+    sectionData.certifications ??
+      sectionData.Certifications ??
+      sectionData.education ??
+      sectionData.Education
+  );
 
-  const rawCompanies = sectionData.companies || sectionData.Companies;
-  const companies: ExperienceCompany[] = Array.isArray(rawCompanies)
-    ? rawCompanies
-    : rawCompanies
-      ? [rawCompanies]
-      : [];
-
-  const rawStack = sectionData.stack || sectionData.Stack;
-  const rawStackObj =
-    typeof rawStack === "object" && rawStack !== null && !Array.isArray(rawStack)
-      ? (rawStack as Record<string, unknown> & { $?: CSLPContainer })
-      : undefined;
+  const rawStack = sectionData.stack ?? sectionData.Stack;
+  const rawStackRecord = isRecord(rawStack)
+    ? (rawStack as Record<string, unknown> & { $?: CSLPContainer })
+    : undefined;
   const tags = extractStackTags(rawStack);
 
-  const stackLabel =
-    (typeof rawStackObj?.stack_label === "string"
-      ? rawStackObj.stack_label
-      : typeof rawStackObj?.Stack_label === "string"
-        ? rawStackObj.Stack_label
-        : typeof rawStackObj?.stackLabel === "string"
-          ? rawStackObj.stackLabel
-          : typeof rawStackObj?.label === "string"
-            ? rawStackObj.label
-            : undefined) ||
-    sectionData.stack_label ||
-    sectionData.Stack_label ||
-    sectionData.stackLabel;
+  const stackLabel = pickFirstString(
+    rawStackRecord?.stack_label,
+    rawStackRecord?.Stack_label,
+    rawStackRecord?.stackLabel,
+    rawStackRecord?.label,
+    sectionData.stack_label,
+    sectionData.Stack_label,
+    sectionData.stackLabel
+  );
 
   const stackLabelCslp =
-    (rawStackObj?.$ &&
-      (rawStackObj.$.stack_label ||
-        rawStackObj.$.Stack_label ||
-        rawStackObj.$.stackLabel ||
-        rawStackObj.$.label)) ||
-    sectionData.$?.stack_label ||
-    sectionData.$?.["stack.stack_label"];
+    pickFirstCslp(rawStackRecord?.$, STACK_LABEL_CSLP_KEYS) ??
+    pickFirstCslp(sectionData.$, SECTION_STACK_LABEL_CSLP_KEYS);
 
-  const stackTitle =
-    (typeof rawStackObj?.stack_title === "string"
-      ? rawStackObj.stack_title
-      : typeof rawStackObj?.Stack_title === "string"
-        ? rawStackObj.Stack_title
-        : typeof rawStackObj?.stackTitle === "string"
-          ? rawStackObj.stackTitle
-          : typeof rawStackObj?.title === "string"
-            ? rawStackObj.title
-            : undefined) ||
-    sectionData.stack_title ||
-    sectionData.Stack_title ||
-    sectionData.stackTitle;
+  const stackTitle = pickFirstString(
+    rawStackRecord?.stack_title,
+    rawStackRecord?.Stack_title,
+    rawStackRecord?.stackTitle,
+    rawStackRecord?.title,
+    sectionData.stack_title,
+    sectionData.Stack_title,
+    sectionData.stackTitle
+  );
 
   const stackTitleCslp =
-    (rawStackObj?.$ &&
-      (rawStackObj.$.stack_title ||
-        rawStackObj.$.Stack_title ||
-        rawStackObj.$.stackTitle ||
-        rawStackObj.$.title)) ||
-    sectionData.$?.stack_title ||
-    sectionData.$?.["stack.stack_title"];
+    pickFirstCslp(rawStackRecord?.$, STACK_TITLE_CSLP_KEYS) ??
+    pickFirstCslp(sectionData.$, SECTION_STACK_TITLE_CSLP_KEYS);
 
-  const label = sectionData.label || sectionData.section_label;
-  const title = sectionData.title || sectionData.section_title_main;
-  const description =
-    sectionData.description || sectionData.text || sectionData.intro;
-  const button = sectionData.button || sectionData.button_cta;
-  const buttonHref = button?.href || button?.url;
-  const buttonTitle = button?.title || button?.text;
+  const label = pickFirstString(sectionData.label, sectionData.section_label);
+  const title = pickFirstString(sectionData.title, sectionData.section_title_main);
+  const description = pickFirstString(
+    sectionData.description,
+    sectionData.text,
+    sectionData.intro
+  );
 
-  const rawCertifications =
-    sectionData.certifications ||
-    sectionData.Certifications ||
-    sectionData.education ||
-    sectionData.Education;
-
-  const certifications: CertificationItem[] = Array.isArray(rawCertifications)
-    ? rawCertifications
-    : rawCertifications
-      ? [rawCertifications]
-      : [];
+  const button = sectionData.button ?? sectionData.button_cta;
+  const buttonHref = pickFirstString(button?.href, button?.url);
+  const buttonTitle = pickFirstString(button?.title, button?.text);
 
   const educationLabel =
-    sectionData.education_label ||
-    sectionData.Education_label ||
-    sectionData.certifications_label ||
-    sectionData.Certifications_label ||
-    "02 — Opleiding";
+    pickFirstString(
+      sectionData.education_label,
+      sectionData.Education_label,
+      sectionData.certifications_label,
+      sectionData.Certifications_label
+    ) || "02 — Opleiding";
 
   const educationTitle =
-    sectionData.education_title ||
-    sectionData.Education_title ||
-    sectionData.certifications_title ||
-    sectionData.Certifications_title ||
-    "Opleiding & Certificeringen";
+    pickFirstString(
+      sectionData.education_title,
+      sectionData.Education_title,
+      sectionData.certifications_title,
+      sectionData.Certifications_title
+    ) || "Opleiding & Certificeringen";
 
   const hasIntroContent = Boolean(
     label || title || description || (buttonHref && buttonTitle)
@@ -409,7 +446,7 @@ export function normalizeResumeSection(
 
   const isFullWidth =
     isPositionFull ||
-    (!rawPosition &&
+    (!normalizedPosition &&
       companies.length === 0 &&
       !sectionData.left_col_span &&
       !sectionData.right_col_span) ||
@@ -420,16 +457,18 @@ export function normalizeResumeSection(
     colorModeKey,
     isTimelineLeft,
     isFullWidth,
-    leftColSpan:
-      options.leftColSpan ||
-      sectionData.left_col_span ||
-      sectionData.left_col ||
-      sectionData.leftCol,
-    rightColSpan:
-      options.rightColSpan ||
-      sectionData.right_col_span ||
-      sectionData.right_col ||
-      sectionData.rightCol,
+    leftColSpan: pickFirstGridSpan(
+      options.leftColSpan,
+      sectionData.left_col_span,
+      sectionData.left_col,
+      sectionData.leftCol
+    ),
+    rightColSpan: pickFirstGridSpan(
+      options.rightColSpan,
+      sectionData.right_col_span,
+      sectionData.right_col,
+      sectionData.rightCol
+    ),
     label,
     title,
     description,
@@ -450,4 +489,3 @@ export function normalizeResumeSection(
     meta: sectionData.$,
   };
 }
-

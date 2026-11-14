@@ -1,5 +1,5 @@
 /**
- * Metadata Module: SEO Builders and dynamic route metadata resolvers.
+ * Metadata Module: SEO OpenGraph builders and dynamic route metadata resolvers.
  */
 
 export {

@@ -1,12 +1,31 @@
 /**
- * Layout Tokens & Standards for Contentstack Blocks
- * 
- * Provides a Single Source of Truth for:
- * 1. Container Widths (small, default, large, wide)
- * 2. Section Color Modes (default, alt)
- * 3. Grid Column Utilities
- * 4. Semantic Headings (h1, h2, h3, h4, h5, h6)
+ * Layout tokens and grid standards shared across modular Contentstack blocks.
  */
+
+export type ContainerWidthKey =
+  | "small"
+  | "default"
+  | "medium"
+  | "large"
+  | "wide"
+  | "container"
+  | "full";
+
+export type ColorModeKey = "default" | "alt";
+
+export type ColSpanKey =
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "10"
+  | "11"
+  | "12";
 
 export const containerWidths: Record<string, string> = {
   small: "w-full lg:max-w-4xl",
@@ -38,6 +57,6 @@ export const colSpans: Record<string, string> = {
   "12": "col-span-12",
 };
 
-export const HEADING_VALUES = ["h1", "h2", "h3", "h4", "h5"] as const;
-export type HeadingType = (typeof HEADING_VALUES)[number] | "h6";
+export const HEADING_VALUES = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+export type HeadingType = (typeof HEADING_VALUES)[number];
 export const defaultHeading: HeadingType = "h2";

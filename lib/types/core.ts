@@ -1,5 +1,5 @@
 /**
- * Core Contentstack & Live Preview Types
+ * Core Contentstack & Live Preview Domain Types
  */
 
 export interface PublishDetails {
@@ -13,6 +13,7 @@ export interface CSLPAttribute {
   "data-cslp"?: string;
   "data-cslp-parent-field"?: string;
 }
+
 export type CSLPFieldMapping = CSLPAttribute;
 
 /**
@@ -28,6 +29,7 @@ export interface Link {
   href?: string;
   url?: string;
   text?: string;
+  $?: CSLPContainer;
 }
 
 export interface Taxonomy {
@@ -35,6 +37,15 @@ export interface Taxonomy {
   max_terms?: number;
   mandatory: boolean;
   non_localizable: boolean;
+}
+
+export interface AssetDimension {
+  width: number;
+  height: number;
+}
+
+export interface EntityMetadata {
+  uid: string;
 }
 
 export interface File {
@@ -53,12 +64,9 @@ export interface File {
   parent_uid?: string;
   _version?: number;
   title?: string;
-  _metadata?: object;
+  _metadata?: EntityMetadata;
   description?: string;
-  dimension?: {
-    height: number;
-    width: number;
-  };
+  dimension?: AssetDimension;
   publish_details?: PublishDetails;
   $?: CSLPContainer;
 }
@@ -91,7 +99,7 @@ export interface SystemFields {
  */
 export interface BaseEntity {
   _version?: number;
-  _metadata?: { uid: string };
+  _metadata?: EntityMetadata;
   $?: CSLPContainer;
 }
 
@@ -100,7 +108,7 @@ export interface BaseEntity {
  */
 export interface BaseSectionBlock extends BaseEntity {
   width?: string;
-  container_width?: string; /** "small" | "Default" | "Large" | "Wide" */
+  container_width?: string;
   color_mode?: "Default" | "Alt" | "default" | "alt" | string;
   label?: string;
   section_label?: string;

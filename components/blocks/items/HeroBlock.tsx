@@ -96,7 +96,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
 
             <p
               id="hero-middle"
-              className="text-heroM sm:text-hero text-balance sm:text-pretty font-content font-normal text-title-200 max-w-3xl"
+              className="text-heroM sm:text-hero text-pretty sm:text-pretty font-content font-normal text-title-200 max-w-3xl"
               {...(cslp && (cslp.text || cslp.description))}
             >
               {text}
@@ -105,7 +105,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
         </div>
 
         <div className="col-span-12 xl:col-span-4 self-end">
-          <div className="text-content-200 flex flex-col items-end text-right text-smallM sm:text-medium w-full">
+          <div className="text-content-200 flex flex-col items-end text-right text-noteM sm:text-medium w-full">
             <HeroLocalClock />
             <span className="inline-flex items-center gap-2">
               <span>

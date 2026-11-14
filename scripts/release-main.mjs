@@ -14,6 +14,95 @@ function runGit(args, cwd = process.cwd()) {
   }).trim();
 }
 
+/**
+ * Finds the previous development commit hash referenced on origin/main, if any.
+ */
+function findPreviousDevelopmentCommit() {
+  const recentMessages = runGit(["log", "origin/main", "-n", "10", "--format=%B"]);
+  const match = recentMessages.match(/development \(([0-9a-f]{7,40})\)/);
+  if (!match) return null;
+
+  try {
+    runGit(["cat-file", "-e", `${match[1]}^{commit}`]);
+    return match[1];
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Builds an informative release commit message from the non-agent commits since origin/main.
+ */
+function buildReleaseCommitMessage(sourceCommit, tempWorktree) {
+  const prevDevCommit = findPreviousDevelopmentCommit();
+  const commits = prevDevCommit
+    ? runGit([
+        "log",
+        `${prevDevCommit}..development`,
+        "--no-merges",
+        "--reverse",
+        "--format=%H%x09%s",
+        "--",
+        ".",
+        ":!.agents",
+        ":!AGENTS.md",
+      ])
+        .split(/\r?\n/)
+        .filter(Boolean)
+        .map((line) => {
+          const [hash, ...subjectParts] = line.split("\t");
+          return { hash, subject: subjectParts.join("\t") };
+        })
+    : [];
+
+  if (commits.length === 1) {
+    const fullMessage = runGit(["log", "-1", "--format=%B", commits[0].hash]);
+    const [rawTitle, ...bodyLines] = fullMessage.split(/\r?\n/);
+    const existingBody = bodyLines.join("\n").trim();
+    const releaseFooter = `- Release-bron: development (${sourceCommit})`;
+    const commitBody = existingBody ? `${existingBody}\n${releaseFooter}` : releaseFooter;
+    return { commitTitle: rawTitle, commitBody };
+  }
+
+  if (commits.length > 1) {
+    const cleanSummaries = commits.map(({ subject }) =>
+      subject.replace(/^[a-z]+(?:\([^)]+\))?:\s*/i, "")
+    );
+    const shortList =
+      cleanSummaries.length <= 2
+        ? cleanSummaries.join(" en ")
+        : `${cleanSummaries.slice(0, 2).join(", ")} (+${cleanSummaries.length - 2})`;
+    const truncated =
+      shortList.length > 90 ? `${shortList.slice(0, 87).trimEnd()}...` : shortList;
+    const commitTitle = `chore(release): ${truncated}`;
+    const commitLines = commits.map(
+      ({ hash, subject }) => `  - ${subject} (${hash.slice(0, 7)})`
+    );
+    const commitBody = [
+      "- Waarom: live release van gevalideerde wijzigingen vanaf development naar main",
+      "- Wat:",
+      ...commitLines,
+      `- Impact: bundelt ${commits.length} gevalideerde wijzigingen klaar voor productie-deployment`,
+      `- Release-bron: development (${sourceCommit})`,
+    ].join("\n");
+    return { commitTitle, commitBody };
+  }
+
+  const changedFiles = runGit(["diff", "--cached", "--name-only"], tempWorktree)
+    .split(/\r?\n/)
+    .filter(Boolean);
+  const fileSummary =
+    changedFiles.length > 0 ? changedFiles.slice(0, 4).join(", ") : "productiebestanden";
+  return {
+    commitTitle: `chore(release): werk ${fileSummary} bij vanuit development`,
+    commitBody: [
+      "- Waarom: live release van gevalideerde wijzigingen vanaf development naar main",
+      `- Wat: gewijzigde bestanden: ${changedFiles.join(", ") || "geen"}`,
+      `- Release-bron: development (${sourceCommit})`,
+    ].join("\n"),
+  };
+}
+
 const currentBranch = runGit(["branch", "--show-current"]);
 if (currentBranch !== "development") {
   console.error(
@@ -57,12 +146,7 @@ try {
     process.exit(0);
   }
 
-  const commitTitle = `chore(release): synchroniseer productie-branch main met development (${sourceCommit})`;
-  const commitBody = [
-    "- Waarom: live release van gevalideerde wijzigingen vanaf development naar main",
-    `- Wat: productiesynchronisatie vanaf development (${sourceCommit}) op basis van origin/main`,
-    "- Impact: release/main is gereed voor een schone Pull Request en productie-deployment via main",
-  ].join("\n");
+  const { commitTitle, commitBody } = buildReleaseCommitMessage(sourceCommit, tempWorktree);
 
   runGit(["commit", "-m", commitTitle, "-m", commitBody], tempWorktree);
   console.log(

@@ -1,5 +1,5 @@
 import contentstack from "@contentstack/delivery-sdk";
-import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-utils";
+import ContentstackLivePreview, { type IStackSdk } from "@contentstack/live-preview-utils";
 import { getContentstackEndpoint, type ContentstackEndpoints } from "@contentstack/utils";
 import { env } from "../env";
 
@@ -13,6 +13,8 @@ export const {
   region,
 } = env.contentstack;
 
+const STACK_REQUEST_TIMEOUT_MS = 10_000;
+
 export const endpoints = getContentstackEndpoint(region, "", true) as ContentstackEndpoints;
 
 export const stack = contentstack.stack({
@@ -20,6 +22,7 @@ export const stack = contentstack.stack({
   deliveryToken: deliveryToken || "missing-delivery-token",
   environment: environment || "missing-environment",
   region,
+  timeout: STACK_REQUEST_TIMEOUT_MS,
   host: env.contentstack.contentDeliveryHost || (endpoints.contentDelivery as string),
   live_preview: {
     enable: isPreview,

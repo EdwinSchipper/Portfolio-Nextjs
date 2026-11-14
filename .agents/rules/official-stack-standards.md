@@ -78,9 +78,10 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
   - Voer meervoudige, onderling onafhankelijke data-queries op de server **ALTIJD** parallel uit via `Promise.all([queryA(), queryB()])`.
   - Sequentiële cascades (`const a = await queryA(); const b = await queryB();`) zijn ten strengste verboden tenzij query B expliciet de output van query A vereist.
 - **Request Deduplicatie & Server Caching (`React.cache()` + `withServerCache`)**:
-  - Alle server data-fetchers in `lib/cms/queries.ts` (`getPage`, `getHomePage`, `getPortfolioItemByUrl`, `getAllPageUrls`, `getAllPortfolioUrls`) MOETEN gewrapt zijn in zowel `cache()` van React als `withServerCache` (60s TTL + in-flight Promise deduplicatie; wordt overgeslagen bij `isPreview` en geleegd via `clearServerQueryCache()` bij revalidatie).
+  - Alle server data-fetchers in `lib/cms/queries.ts` (`getPage`, `getHomePage`, `getPortfolioItemByUrl`, `getAllPageUrls`, `getAllPortfolioUrls`) MOETEN gewrapt zijn in zowel `cache()` van React als `withServerCache` (60s TTL + directe evictie van verlopen records via `serverQueryCache.delete(cacheKey)` + in-flight Promise deduplicatie; wordt overgeslagen bij `isPreview` en geleegd via `clearServerQueryCache()` bij revalidatie). URL-paden worden vóór cache-key opbouw genormaliseerd via `normalizeCmsUrl()` / `resolveCmsPath()`.
   - Hierdoor delen `generateMetadata()` en de pagina-component dezelfde Promise én worden herhaalde Contentstack SDK (Axios) requests over vervolgnavigaties vanuit het geheugen geserveerd.
-- **Next.js 15/16 Async Route Parameters**:
-  - `params` en `searchParams` zijn in Next.js 15+ altijd Promises. Unwrap ze altijd asynchroon via `const { slug } = await params;`.
+- **Next.js 16 Async Route Parameters (`Maximizing the Static Shell`)**:
+  - `params` en `searchParams` zijn in Next.js 15+ altijd Promises. Houd route-componenten (`export default function ...Page`) in `app/**/page.tsx` **synchroon** (nooit `async`) en geef de `params`-Promise door aan de async content-component **binnen** `<Suspense fallback={<*Skeleton />}>`.
+  - Unwrap `const { slug } = await params;` uitsluitend **binnen** die `<Suspense>`-child component (en in `generateMetadata()`), en gebruik `resolveCmsPath()` uit `@/lib/cms` i.p.v. inline `.join("/")`, zodat de statische shell en het skeleton altijd zonder blokkade kunnen renderen.
 - **Verbod op `setTimeout` / Wait Hacks**:
   - Gebruik **NOOIT** arbitraire `setTimeout(..., 100)` hacks in `useEffect` om te wachten op de DOM of document title. React 19 commit en hoist titles en metadata synchroon vóór effect-executie.

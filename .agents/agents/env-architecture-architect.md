@@ -32,10 +32,10 @@ Jouw kerndoel is het bewaken van een 100% schone, centrale en toekomstbestendige
 
 4. Asynchrone Architectuur, RSC Streaming & Waterfall Preventie:
 - **Verbod op `async function` bij Client Components**: Client components (`'use client'`) mogen nooit async zijn. React 19 Actions (`useTransition`, `useActionState`) of event handlers gebruiken.
-- **Verplichte Segment-specifieke `loading.tsx` + `<Suspense key={path}>` Streaming**: Elke route-map (`app/(home)/`, `app/[...slug]/`, `app/portfolio/[slug]/`) heeft een eigen `loading.tsx` met een CLS-vrij skeleton component (`HomePageSkeleton`, `PageSkeleton`, `PortfolioDetailSkeleton`); daarnaast wrappen de `page.tsx` shells de async content component in `<Suspense key={path} fallback={<*Skeleton />}>` zodat interne navigaties direct streamen. Plaats nooit een `app/loading.tsx` in de root die over subroutes lekt.
+- **Synchrone Route-Shells, `loading.tsx` & `<Suspense>` Streaming (`Maximizing the Static Shell`)**: Route-componenten (`export default function ...Page`) in `app/**/page.tsx` zijn **altijd synchroon** (nooit `async`) en pakken `params` of `searchParams` nooit buiten `<Suspense>` uit. Geef de `params`-Promise door aan het async content-component **binnen** `<Suspense fallback={<*Skeleton />}>`, en gebruik `resolveCmsPath` uit `@/lib/cms` i.p.v. inline `.join("/")`. Elke route-map (`app/(home)/`, `app/[...slug]/`, `app/portfolio/[slug]/`) behoudt daarnaast een eigen `loading.tsx` met een CLS-vrij skeleton (`HomePageSkeleton`, `PageSkeleton`, `PortfolioDetailSkeleton`) zonder globale `app/loading.tsx` in de root.
 - **Zero-Waterfall Policy (`Promise.all`)**: Meervoudige, onderling onafhankelijke CMS- of data-queries altijd parallel uitvoeren via `Promise.all`.
 - **Request Deduplicatie via `React.cache()`**: Server data-fetchers (`getPage`, `getHomePage`) moeten gewrapt zijn in `cache()` zodat `generateMetadata()` en pagina dezelfde Promise delen.
-- **Next.js 15/16 Async Parameters**: Unwrap `params` en `searchParams` altijd via `const { slug } = await params;`.
+- **Next.js 16 Async Parameters**: `params` en `searchParams` zijn Promises. Pak `const { slug } = await params;` uitsluitend uit **binnen** de async `<Suspense>`-child component (of in `generateMetadata()`), zodat de statische shell en het skeleton altijd direct renderen zonder op runtime-parameters te wachten.
 
 5. Master Production Quality Gate (Pre-Flight):
 - Valideer proactief dat de codebase voldoet aan:

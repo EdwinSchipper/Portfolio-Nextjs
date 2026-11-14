@@ -14,8 +14,9 @@ description: Next.js 16 App Router structuur, pure route-shells, RSC Suspense st
 
 ### Pure Route- en Layout-Shells (Shell Purity Policy)
 
-- [`app/layout.tsx`](../../../app/layout.tsx), [`app/(home)/page.tsx`](../../../app/%28home%29/page.tsx), [`app/[...slug]/page.tsx`](../../../app/%5B...slug%5D/page.tsx) en [`app/portfolio/[slug]/page.tsx`](../../../app/portfolio/%5Bslug%5D/page.tsx) zijn 100% zuivere presentatie-shells.
-- Route-level functies zoals `generateMetadata()` en `generateStaticParams()` in `page.tsx` zijn altijd **1-regel delegaties** naar centrale resolvers in [`lib/metadata/`](../../../lib/metadata/) en [`lib/cms/`](../../../lib/cms/) — plaats nooit inline `.split()`, `.filter()` of `.map()` logica in `page.tsx`.
+- [`app/layout.tsx`](../../../app/layout.tsx), [`app/(home)/page.tsx`](../../../app/%28home%29/page.tsx), [`app/[...slug]/page.tsx`](../../../app/%5B...slug%5D/page.tsx) en [`app/portfolio/[slug]/page.tsx`](../../../app/portfolio/%5Bslug%5D/page.tsx) zijn 100% zuivere, **synchrone** presentatie-shells (geen `async` op de default page-component).
+- Geef de `params`-Promise door aan de async content-component **binnen** `<Suspense fallback={<*Skeleton />}>` en unwrap `await params` pas dáárbinnen (`Maximizing the Static Shell`), met [`resolveCmsPath`](../../../lib/cms/queries.ts) uit `@/lib/cms` i.p.v. inline `.join("/")`.
+- Route-level functies zoals `generateMetadata()` en `generateStaticParams()` in `page.tsx` zijn altijd **1-regel delegaties** naar centrale resolvers in [`lib/metadata/`](../../../lib/metadata/) en [`lib/cms/`](../../../lib/cms/) — plaats nooit inline `.split()`, `.filter()`, `.join()` of `.map()` logica in `page.tsx`.
 - Alle CMS-pagina-routes gebruiken ISR (`export const revalidate = 3600;` + on-demand webhook `POST /api/revalidate`) en hebben per route-segment een eigen `loading.tsx` (`HomePageSkeleton`, `PageSkeleton`, `PortfolioDetailSkeleton`) zonder root-level `app/loading.tsx` overlap.
 
 ### Server vs. Client Components

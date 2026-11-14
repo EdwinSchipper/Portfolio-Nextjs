@@ -15,11 +15,12 @@ description: Contentstack Delivery SDK v5, DRY queries, server TTL-caching (with
 
 ### Centrale CMS-module (`lib/cms/`)
 
-- **[`lib/cms/client.ts`](../../../lib/cms/client.ts)**: Initialiseert `stack` via `@contentstack/delivery-sdk` en `getContentstackEndpoint` uit `@contentstack/utils` op basis van [`lib/env.ts`](../../../lib/env.ts). `initLivePreview()` bevat een module-level `isLivePreviewInitialized` guard zodat `ContentstackLivePreview.init()` maximaal één keer per browsersessie draait.
+- **[`lib/cms/client.ts`](../../../lib/cms/client.ts)**: Initialiseert `stack` via `@contentstack/delivery-sdk` (begrensd met `STACK_REQUEST_TIMEOUT_MS = 10_000`) en `getContentstackEndpoint` uit `@contentstack/utils` op basis van [`lib/env.ts`](../../../lib/env.ts). `initLivePreview()` bevat een module-level `isLivePreviewInitialized` guard zodat `ContentstackLivePreview.init()` maximaal één keer per browsersessie draait.
 - **[`lib/cms/queries.ts`](../../../lib/cms/queries.ts)**:
-  - **DRY Query Consolidation**: Gebruik altijd de gedeelde interne helpers `fetchSingleEntry`, `fetchEntryUrls` en `withServerCache` (60s server TTL-cache + in-flight Promise deduplicatie) in combinatie met `React.cache()`, plus `clearServerQueryCache()` voor on-demand revalidatie via [`lib/cms/revalidation.ts`](../../../lib/cms/revalidation.ts).
+  - **DRY Query Consolidation**: Gebruik altijd de gedeelde interne helpers `fetchSingleEntry`, `fetchEntryUrls` en `withServerCache` (60s server TTL-cache met directe `serverQueryCache.delete(cacheKey)` bij verlopen entries + in-flight Promise deduplicatie op `normalizeCmsUrl` cache-keys) in combinatie met `React.cache()`, plus `clearServerQueryCache()` voor on-demand revalidatie via [`lib/cms/revalidation.ts`](../../../lib/cms/revalidation.ts).
   - **Error-Semantiek (`404` vs. API-fout)**: `fetchSingleEntry` retourneert alleen `undefined` bij `!isConfigured` of een lege CMS-respons (`entries: []`); API-/netwerkfouten worden op de server doorgegooid (`throw error`) voor ISR-behoud/`error.tsx` en in client-preview wrappers (`Preview.tsx`, `PortfolioPreview.tsx`) veilig afgevangen.
-  - **Centrale Static Params Resolvers**: `getDynamicRouteStaticParams()` en `getPortfolioRouteStaticParams()` bouwen de statische route-parameters centraal op via `splitUrlSegments()`.
+  - **Centrale URL-Normalisatie & Static Params Resolvers**: `resolveCmsPath()`, `normalizeCmsUrl()`, `getDynamicRouteStaticParams()` en `getPortfolioRouteStaticParams()` bouwen paden en statische route-parameters centraal op.
+  - **DRY Payload Mappers ([`lib/cms/mappers.ts`](../../../lib/cms/mappers.ts))**: Gebruik gedeelde type-veilige helpers (`pickFirstString`, `pickFirstGridSpan`, `pickFirstCslp`) voor het normaliseren van Contentstack blokken.
   - Browser-aanroepen (`typeof window !== "undefined"`) en Live Preview (`isPreview`) slaan `withServerCache` automatisch over zodat Visual Builder wijzigingen real-time zichtbaar zijn.
 
 ### Veiligheid & Live Preview Bindings

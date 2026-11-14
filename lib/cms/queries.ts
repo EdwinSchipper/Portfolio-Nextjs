@@ -1,7 +1,7 @@
 import { cache } from "react";
 import contentstack, { QueryOperation } from "@contentstack/delivery-sdk";
-import type { Page, Homepage, PortfolioItem } from "../types";
-import { stack, isPreview, isConfigured } from "./client";
+import type { Homepage, Page, PortfolioItem } from "../types";
+import { isConfigured, isPreview, stack } from "./client";
 
 const SERVER_CACHE_TTL_MS = 60_000;
 const PAGE_REFERENCES = ["blocks.featured_projects.projects"];
@@ -26,6 +26,32 @@ export interface EntryUrlRecord {
 const serverQueryCache = new Map<string, CacheRecord<unknown>>();
 const inFlightRequests = new Map<string, Promise<unknown>>();
 
+function normalizeCmsUrl(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed || trimmed === "/") {
+    return "/";
+  }
+
+  let normalized = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  while (normalized.length > 1 && normalized.endsWith("/")) {
+    normalized = normalized.slice(0, -1);
+  }
+
+  return normalized;
+}
+
+/**
+ * Normalizes a route slug string or segment array into a canonical CMS URL path.
+ */
+export function resolveCmsPath(slugOrPath: string | string[]): string {
+  const rawPath = Array.isArray(slugOrPath) ? slugOrPath.join("/") : slugOrPath;
+  return normalizeCmsUrl(rawPath);
+}
+
+function splitUrlSegments(url: string): string[] {
+  return url.split("/").filter(Boolean);
+}
+
 /**
  * Clears the in-memory Contentstack query cache on the active server instance.
  * Called during on-demand webhook revalidation so subsequent renders fetch fresh entries.
@@ -49,8 +75,11 @@ async function withServerCache<T>(
 
   const now = Date.now();
   const cached = serverQueryCache.get(cacheKey) as CacheRecord<T> | undefined;
-  if (cached && cached.expiresAt > now) {
-    return cached.data;
+  if (cached) {
+    if (cached.expiresAt > now) {
+      return cached.data;
+    }
+    serverQueryCache.delete(cacheKey);
   }
 
   const activeRequest = inFlightRequests.get(cacheKey) as Promise<T> | undefined;
@@ -77,7 +106,7 @@ async function withServerCache<T>(
 }
 
 /**
- * Shared generic entry fetcher that consolidates configuration checks, server caching,
+ * Shared generic entry fetcher consolidating configuration checks, server caching,
  * optional reference inclusion, URL filtering, and Live Preview editable tags.
  */
 async function fetchSingleEntry<T extends { uid: string }>(
@@ -89,18 +118,18 @@ async function fetchSingleEntry<T extends { uid: string }>(
     return undefined;
   }
 
-  const { url, references } = options;
-  const cacheKey = `entry:${contentType}:${url ?? "singleton"}:${isPreview ? "preview" : "live"}`;
+  const normalizedUrl = options.url !== undefined ? normalizeCmsUrl(options.url) : undefined;
+  const cacheKey = `entry:${contentType}:${normalizedUrl ?? "singleton"}:${isPreview ? "preview" : "live"}`;
 
   return withServerCache(cacheKey, async () => {
     try {
       const entryCall = stack.contentType(contentType).entry();
-      if (references && references.length > 0) {
-        entryCall.includeReference(references);
+      if (options.references && options.references.length > 0) {
+        entryCall.includeReference(options.references);
       }
 
-      const result = url
-        ? await entryCall.query().where("url", QueryOperation.EQUALS, url).limit(1).find<T>()
+      const result = normalizedUrl
+        ? await entryCall.query().where("url", QueryOperation.EQUALS, normalizedUrl).limit(1).find<T>()
         : await entryCall.limit(1).find<T>();
 
       const entry = result.entries?.[0];
@@ -110,7 +139,7 @@ async function fetchSingleEntry<T extends { uid: string }>(
       return entry;
     } catch (error) {
       console.error(
-        `[Contentstack] Failed to fetch "${contentType}"${url ? ` for url "${url}"` : ""}:`,
+        `[Contentstack] Failed to fetch "${contentType}"${normalizedUrl ? ` for url "${normalizedUrl}"` : ""}:`,
         error
       );
       throw error;
@@ -137,8 +166,8 @@ async function fetchEntryUrls(
         .limit(100)
         .find<{ url?: string; updated_at?: string }>();
 
-      return (result.entries || []).map((entry) => ({
-        url: entry.url || "",
+      return (result.entries ?? []).map((entry) => ({
+        url: entry.url ?? "",
         updatedAt: entry.updated_at,
       }));
     } catch (error) {
@@ -146,13 +175,6 @@ async function fetchEntryUrls(
       return [];
     }
   });
-}
-
-/**
- * Splits a CMS URL path into non-empty route segments.
- */
-function splitUrlSegments(url: string): string[] {
-  return url.split("/").filter(Boolean);
 }
 
 /**

@@ -1,3 +1,7 @@
+export const DEFAULT_SITE_URL = "https://www.edwinschipper.nl";
+export const SITE_NAME = "Edwin Schipper";
+export const SITE_LOCALE = "nl_NL";
+
 export interface ContentstackEnvConfig {
   readonly apiKey: string;
   readonly deliveryToken: string;
@@ -21,17 +25,21 @@ export interface EnvConfig {
   readonly isDevelopment: boolean;
 }
 
-const DEFAULT_SITE_URL = "https://www.edwinschipper.nl";
-
 function normalizeOptionalString(value: string | undefined): string | undefined {
-  const trimmed = (value || "").trim();
+  const trimmed = (value ?? "").trim();
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
 function normalizeBaseUrl(rawUrl: string): string {
-  const hasProtocol = rawUrl.startsWith("https://") || rawUrl.startsWith("http://");
-  const withProtocol = hasProtocol ? rawUrl : `https://${rawUrl}`;
-  return withProtocol.endsWith("/") ? withProtocol.slice(0, -1) : withProtocol;
+  const trimmed = rawUrl.trim();
+  const hasProtocol = trimmed.startsWith("https://") || trimmed.startsWith("http://");
+  let normalized = hasProtocol ? trimmed : `https://${trimmed}`;
+
+  while (normalized.endsWith("/")) {
+    normalized = normalized.slice(0, -1);
+  }
+
+  return normalized;
 }
 
 /**
@@ -54,17 +62,17 @@ function getContentstackEnv(): ContentstackEnvConfig {
     return cachedContentstackEnv;
   }
 
-  const apiKey = (process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY || "").trim();
+  const apiKey = (process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY ?? "").trim();
   const deliveryToken = (
-    process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN || ""
+    process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN ?? ""
   ).trim();
   const previewToken = (
-    process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN || ""
+    process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN ?? ""
   ).trim();
   const environment = (
-    process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || ""
+    process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT ?? ""
   ).trim();
-  const region = (process.env.NEXT_PUBLIC_CONTENTSTACK_REGION || "EU").trim();
+  const region = (process.env.NEXT_PUBLIC_CONTENTSTACK_REGION ?? "EU").trim();
   const isPreview = process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === "true";
 
   cachedContentstackEnv = {
@@ -116,4 +124,3 @@ export const env: EnvConfig = {
     return process.env.NODE_ENV === "development";
   },
 };
-

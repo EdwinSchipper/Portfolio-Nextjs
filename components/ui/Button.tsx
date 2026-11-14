@@ -1,4 +1,4 @@
-import React from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 import Link from "next/link";
 import type { CSLPAttribute } from "@/lib/types";
 
@@ -16,12 +16,12 @@ export type ButtonVariant =
 export type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
   arrow?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   cslp?: CSLPAttribute;
   target?: string;
@@ -29,13 +29,13 @@ export interface ButtonProps
 }
 
 const ctaBaseStyles =
-  "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md duration-200 font-content tracking-tight whitespace-nowrap text-mediumM sm:text-small px-5 py-2.5 lg:px-7 lg:py-3";
+  "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md duration-200 font-content tracking-tight whitespace-nowrap";
 
 const iconBaseStyles =
-  "inline-flex items-center justify-center rounded-full border transition-all duration-200";
+  "inline-flex items-center justify-center rounded-full border transition-all duration-200 [&_svg]:size-4";
 
 const linkBaseStyles =
-  "p-0 bg-transparent font-semibold shadow-none transition-colors duration-200";
+  "inline-flex items-center gap-1.5 p-0 bg-transparent font-semibold shadow-none transition-colors duration-200";
 
 export const iconButtonSizeClass = "w-11 h-11 lg:w-9 lg:h-9";
 
@@ -53,7 +53,7 @@ const variantStyles: Record<ButtonVariant, string> = {
 
 const sizeStyles: Record<ButtonSize, string> = {
   sm: "px-4 py-2 text-smallM sm:text-small",
-  md: "px-6 py-3.5 text-smallM sm:text-small",
+  md: "px-6 py-3 lg:px-7 text-smallM sm:text-small",
   lg: "px-8 py-4 text-baseM sm:text-base",
   icon: `${iconButtonSizeClass} p-0 shrink-0`,
 };
@@ -89,12 +89,9 @@ export default function Button({
       ? sizeStyles.icon
       : sizeStyles[size];
   const variantClass = variantStyles[variant];
-  const interactionClass = isIconVariant
-    ? "group cursor-pointer"
-    : "group inline-flex items-center gap-1.5 cursor-pointer";
 
   const baseClasses =
-    `${interactionClass} ${sizeClass} ${variantClass} ${className}`.trim();
+    `group cursor-pointer ${sizeClass} ${variantClass} ${className}`.trim();
 
   const content = (
     <>

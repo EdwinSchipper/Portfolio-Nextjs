@@ -9,6 +9,7 @@ import {
   GridSection,
   HeroBlock,
   NumberedSection,
+  ProjectShowcaseBlock,
   ResumeSection,
   ServiceCardBlock,
 } from "./items";
@@ -39,6 +40,17 @@ function renderModularBlock(
           return (
             <FeaturedProjectsBlock
               data={block.featured_projects}
+              previewAttr={previewAttr}
+            />
+          );
+        }
+        break;
+      }
+      case "project_showcase": {
+        if (block.project_showcase) {
+          return (
+            <ProjectShowcaseBlock
+              data={block.project_showcase}
               previewAttr={previewAttr}
             />
           );

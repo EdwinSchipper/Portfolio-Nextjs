@@ -6,11 +6,46 @@ import type {
   ExperienceCompany,
   ExperienceTimelineBlock,
   File,
-  Homepage,
+  Link,
   PortfolioItem,
-  ProjectShowcaseItem,
+  ProjectShowcaseBlock,
+  ProjectShowcaseTabItem,
+  ProjectShowcaseVariant,
   ResumeSectionBlock,
 } from "../types";
+
+export interface NormalizedProjectShowcaseItem {
+  id: string;
+  tabTitle: string;
+  tabDescription: string;
+  imageUrl: string | null;
+  imageAlt: string;
+  badgeLabel?: string;
+  href?: string;
+  linkLabel?: string;
+  imageCslp?: CSLPAttribute;
+  titleCslp?: CSLPAttribute;
+  descriptionCslp?: CSLPAttribute;
+  badgeCslp?: CSLPAttribute;
+  linkCslp?: CSLPAttribute;
+}
+
+export interface NormalizedProjectShowcaseBlock {
+  rawWidth?: string;
+  colorModeKey?: string;
+  variant: ProjectShowcaseVariant;
+  label?: string;
+  title?: string;
+  intro?: string;
+  linkHref?: string;
+  linkLabel?: string;
+  labelCslp?: CSLPAttribute;
+  titleCslp?: CSLPAttribute;
+  introCslp?: CSLPAttribute;
+  linkCslp?: CSLPAttribute;
+  items: NormalizedProjectShowcaseItem[];
+  itemsCslp?: CSLPAttribute;
+}
 
 export interface NormalizedFeaturedProject {
   key: string;
@@ -107,6 +142,23 @@ function pickFirstString(...candidates: unknown[]): string | undefined {
     }
   }
   return undefined;
+}
+
+function normalizeCmsHref(href?: string): string | undefined {
+  if (!href) return undefined;
+  const trimmed = href.trim();
+  if (!trimmed) return undefined;
+  if (
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("#") ||
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("mailto:") ||
+    trimmed.startsWith("tel:")
+  ) {
+    return trimmed;
+  }
+  return `/${trimmed}`;
 }
 
 function pickFirstGridSpan(...candidates: Array<number | string | undefined>): number | string | undefined {
@@ -222,35 +274,83 @@ export function normalizeFeaturedProject(
   };
 }
 
-/**
- * Extracts up to three featured portfolio projects from the homepage blocks for ProjectShowcase.
- */
-export function extractHomepageShowcaseItems(
-  page?: Homepage
-): ProjectShowcaseItem[] {
-  const blocks = page?.blocks ?? [];
-  const featuredBlock = blocks.find((block) => Boolean(block.featured_projects));
-  const projects = featuredBlock?.featured_projects?.projects ?? [];
+function resolveShowcaseLink(
+  link: Link | undefined,
+  fallbackLabel: string,
+  containerCslp?: CSLPAttribute
+): { href?: string; label?: string; cslp?: CSLPAttribute } {
+  const href = normalizeCmsHref(pickFirstString(link?.href, link?.url));
+  const label =
+    pickFirstString(link?.title, link?.text) ||
+    (href ? fallbackLabel : undefined);
+  const cslp = link?.$?.title ?? link?.$?.href ?? containerCslp;
 
-  return projects.slice(0, 3).map((post, index) => {
-    const project = normalizeFeaturedProject(post, index);
-    return {
-      id: project.key,
-      tabTitle: project.company,
-      tabDescription: project.title,
-      imageUrl: project.imageUrl,
-      imageAlt: project.imageAlt,
-      badgeLabel: project.tag,
-      href: project.url,
-      linkLabel: "Bekijk project",
-      imageCslp: project.imageCslp,
-      titleCslp: project.cslp && (project.cslp.company || project.cslp.title),
-      descriptionCslp:
-        project.cslp && (project.cslp.project_title || project.cslp.title),
-      badgeCslp:
-        project.cslp && (project.cslp.project_tag || project.cslp.category),
-    };
-  });
+  return { href, label, cslp };
+}
+
+function mapShowcaseTab(
+  tab: ProjectShowcaseTabItem,
+  index: number
+): NormalizedProjectShowcaseItem {
+  const tabTitle = pickFirstString(tab.tab_title) || `Onderdeel ${index + 1}`;
+  const { href, label: linkLabel, cslp: linkCslp } = resolveShowcaseLink(
+    tab.link,
+    "Lees verder",
+    tab.$?.link
+  );
+
+  return {
+    id: tab._metadata?.uid || `showcase-tab-${index}`,
+    tabTitle,
+    tabDescription: pickFirstString(tab.tab_description) || "",
+    imageUrl: resolveAssetUrl(tab.image),
+    imageAlt:
+      pickFirstString(tab.image_alt, tab.image?.title, tabTitle) ||
+      "Showcase afbeelding",
+    badgeLabel: pickFirstString(tab.badge_label),
+    href,
+    linkLabel,
+    imageCslp: resolveAssetCslp(tab.image, tab.$?.image),
+    titleCslp: tab.$?.tab_title,
+    descriptionCslp: tab.$?.tab_description,
+    badgeCslp: tab.$?.badge_label,
+    linkCslp,
+  };
+}
+
+/**
+ * Normalizes a Contentstack `project_showcase` modular block into strict presentation contracts.
+ */
+export function normalizeProjectShowcaseBlock(
+  data?: ProjectShowcaseBlock,
+  options: { width?: string; colorMode?: string } = {}
+): NormalizedProjectShowcaseBlock | null {
+  if (!data) return null;
+
+  const tabs = toArray<ProjectShowcaseTabItem>(data.tabs);
+  const variantKey = (data.variant ?? "").trim().toLowerCase();
+  const {
+    href: linkHref,
+    label: linkLabel,
+    cslp: linkCslp,
+  } = resolveShowcaseLink(data.link, "Lees meer", data.$?.link);
+
+  return {
+    rawWidth: pickFirstString(options.width, data.width, data.container_width),
+    colorModeKey: pickFirstString(options.colorMode, data.color_mode),
+    variant: variantKey === "plain" ? "plain" : "surface",
+    label: pickFirstString(data.label, data.section_label),
+    title: pickFirstString(data.section_title, data.title),
+    intro: pickFirstString(data.section_intro, data.intro),
+    linkHref,
+    linkLabel,
+    labelCslp: data.$ && (data.$.label || data.$.section_label),
+    titleCslp: data.$ && (data.$.section_title || data.$.title),
+    introCslp: data.$ && (data.$.section_intro || data.$.intro),
+    linkCslp,
+    items: tabs.map(mapShowcaseTab),
+    itemsCslp: data.$?.tabs,
+  };
 }
 
 /**

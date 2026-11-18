@@ -1,10 +1,4 @@
-import type {
-  CSLPAttribute,
-  CSLPContainer,
-  File,
-  SeoFields,
-  SystemFields,
-} from "./core";
+import type { CSLPContainer, File, SeoFields, SystemFields } from "./core";
 import type { Blocks } from "./blocks";
 
 /**
@@ -37,21 +31,6 @@ export interface TechStackItem {
   label: string;
   value: string;
   $?: CSLPContainer;
-}
-
-export interface ProjectShowcaseItem {
-  id: string;
-  tabTitle: string;
-  tabDescription: string;
-  imageUrl: string | null;
-  imageAlt: string;
-  badgeLabel?: string;
-  href?: string;
-  linkLabel?: string;
-  imageCslp?: CSLPAttribute;
-  titleCslp?: CSLPAttribute;
-  descriptionCslp?: CSLPAttribute;
-  badgeCslp?: CSLPAttribute;
 }
 
 export interface PortfolioItem extends SystemFields {

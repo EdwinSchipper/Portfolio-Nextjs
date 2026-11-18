@@ -169,6 +169,23 @@ export interface FeaturedProjectsBlock extends BaseSectionBlock {
   projects?: PortfolioItem[];
 }
 
+export type ProjectShowcaseVariant = "surface" | "plain";
+
+export interface ProjectShowcaseTabItem extends BaseEntity {
+  tab_title?: string;
+  tab_description?: string;
+  image?: File | null;
+  image_alt?: string;
+  link?: Link;
+  badge_label?: string;
+}
+
+export interface ProjectShowcaseBlock extends BaseSectionBlock {
+  link?: Link;
+  variant?: "Surface" | "Plain" | ProjectShowcaseVariant | string;
+  tabs?: ProjectShowcaseTabItem[];
+}
+
 /**
  * Shared Item Models (Cards, Numbered Items, Links, Socials)
  */
@@ -286,6 +303,7 @@ export interface Blocks extends SystemFields {
   block?: Block;
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
+  project_showcase?: ProjectShowcaseBlock;
   experience_timeline?: ExperienceTimelineBlock;
   resume_section?: ResumeSectionBlock;
   Resume_Section?: ResumeSectionBlock;

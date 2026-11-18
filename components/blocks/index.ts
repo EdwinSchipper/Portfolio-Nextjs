@@ -7,6 +7,7 @@ export {
   FeaturedProjectsBlock,
   GridSection,
   NumberedSection,
+  ProjectShowcaseBlock,
   ResumeSection,
   ServiceCardBlock,
   HeroBlock,

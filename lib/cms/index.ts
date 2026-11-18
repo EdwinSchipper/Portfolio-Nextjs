@@ -37,7 +37,7 @@ export {
   resolveFirstAssetUrl,
   resolveAssetCslp,
   normalizeFeaturedProject,
-  extractHomepageShowcaseItems,
+  normalizeProjectShowcaseBlock,
   normalizeCtaBlock,
   extractStackTags,
   normalizeExperienceTimeline,
@@ -48,6 +48,8 @@ export type { EntryUrlRecord } from "./queries";
 export type { RevalidationPattern, RevalidationTargets } from "./revalidation";
 export type {
   NormalizedFeaturedProject,
+  NormalizedProjectShowcaseBlock,
+  NormalizedProjectShowcaseItem,
   NormalizedCtaBlock,
   ResumeNormalizationOptions,
   NormalizedResumeSection,

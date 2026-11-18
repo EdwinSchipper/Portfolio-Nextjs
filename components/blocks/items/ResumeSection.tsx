@@ -8,7 +8,7 @@ import {
 } from "@/lib/types";
 import { normalizeResumeSection } from "@/lib/cms";
 import { Label, Button, RichText } from "@/components/ui";
-import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
+import { getColSpanClass, getColorModeClass, getContainerClass } from "@/lib/layout";
 
 /**
  * Returns the first letter of a company name to render as an avatar monogram.
@@ -556,14 +556,14 @@ export default function ResumeSection({
   const defaultLeft = isTimelineLeft ? "8" : "4";
   const defaultRight = isTimelineLeft ? "4" : "8";
 
-  const leftSpanClass =
-    colSpans[String(resolvedLeftCol || defaultLeft)] ||
-    colSpans[defaultLeft] ||
-    "col-span-12 lg:col-span-4";
-  const rightSpanClass =
-    colSpans[String(resolvedRightCol || defaultRight)] ||
-    colSpans[defaultRight] ||
-    "col-span-12 lg:col-span-8";
+  const leftSpanClass = getColSpanClass(
+    resolvedLeftCol || defaultLeft,
+    getColSpanClass(defaultLeft, "col-span-12 lg:col-span-4")
+  );
+  const rightSpanClass = getColSpanClass(
+    resolvedRightCol || defaultRight,
+    getColSpanClass(defaultRight, "col-span-12 lg:col-span-8")
+  );
 
   const introColClass = isTimelineLeft
     ? `${rightSpanClass} order-1 lg:order-2`

@@ -1,9 +1,6 @@
-import { Fragment } from "react";
-import type { Homepage } from "@/lib/types";
-import { extractHomepageShowcaseItems } from "@/lib/cms";
+import { Homepage } from "@/lib/types";
 import { VB_EmptyBlockParentClass } from "@contentstack/live-preview-utils";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import { ProjectShowcase } from "@/components/features/portfolio";
 
 interface HomePageProps {
   page: Homepage | undefined;
@@ -16,7 +13,6 @@ interface HomePageProps {
  */
 export default function HomePage({ page }: HomePageProps) {
   const blocks = page?.blocks || [];
-  const showcaseItems = extractHomepageShowcaseItems(page);
 
   return (
     <section className="homepage-content w-full">
@@ -27,29 +23,18 @@ export default function HomePage({ page }: HomePageProps) {
           }`}
         {...(page?.$ && page?.$.blocks)}
       >
+
         {blocks.map((item, index) => {
           const blockData = Object.values(item)[0] as { _metadata?: { uid: string } } | undefined;
           const blockKey = blockData?._metadata?.uid || `home-block-${index}`;
 
           return (
-            <Fragment key={blockKey}>
-              <BlockRenderer
-                block={item}
-                index={index}
-                pagePreviewAttr={page?.$}
-              />
-              {index === 0 && showcaseItems.length > 0 && (
-                <div className="w-full px-6 sm:px-14 md:px-20 xl:px-14 py-14 md:py-24">
-                  <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-7xl">
-                    <ProjectShowcase
-                      items={showcaseItems}
-                      variant="surface"
-                      ariaLabel="Uitgelichte projecten showcase"
-                    />
-                  </div>
-                </div>
-              )}
-            </Fragment>
+            <BlockRenderer
+              key={blockKey}
+              block={item}
+              index={index}
+              pagePreviewAttr={page?.$}
+            />
           );
         })}
       </div>

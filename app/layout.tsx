@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Outfit, Newsreader, Cascadia_Mono } from "next/font/google";
+import {
+  Outfit,
+  Newsreader,
+  Cascadia_Mono,
+  DM_Serif_Display,
+} from "next/font/google";
 import "./globals.css";
 import { Header, Footer, NavigationProgress } from "@/components/layout";
 import { GTMPageTracker, CookieConsent } from "@/components/features/analytics";
@@ -24,6 +29,15 @@ const cascadiaMono = Cascadia_Mono({
   display: "swap",
   fallback: ["monospace"],
   adjustFontFallback: false,
+});
+
+const dmSerifDisplay = DM_Serif_Display({
+  weight: "400",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-dm-serif-display",
+  display: "swap",
+  fallback: ["serif"],
 });
 
 export const metadata: Metadata = {
@@ -61,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="nl-NL"
-      className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable}`}
+      className={`${outfit.variable} ${newsreader.variable} ${cascadiaMono.variable} ${dmSerifDisplay.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-background-100 dark:bg-background-800">

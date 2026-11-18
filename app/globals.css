@@ -10,6 +10,7 @@
   --font-playfull: var(--font-cascadia), "Cascadia Mono", monospace, sans-serif;
   --font-content: var(--font-outfit), "Outfit", sans-serif;
   --font-serif: var(--font-newsreader), "Newsreader", serif;
+  --font-display: var(--font-dm-serif-display), "DM Serif Display", serif;
 
   /* ==========================================================================
      Font Sizes (Mobile: M suffix)
@@ -39,8 +40,8 @@
   --text-largeM: 18px;
   --text-largeM--line-height: 29px;
 
-  --text-title_heroM: 50px;
-  --text-title_heroM--line-height: 53px;
+  --text-title_heroM: 56px;
+  --text-title_heroM--line-height: 60px;
   --text-title_heroM--letter-spacing: -0.02em;
 
   --text-title_1M: 33px;

@@ -8,6 +8,7 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 
 ## 1. Next.js 16 (App Router & Server Components)
 - Raadpleeg bij twijfel altijd de lokale Next.js documentatie in `node_modules/next/dist/docs/`.
+- **Productie-Configuratie & Verbod op `experimental.*` (`next.config.mjs`)**: Gebruik in `next.config.mjs` uitsluitend stabiele, voor productie bedoelde configuratie. Voeg **nooit** ongevraagd `experimental.*` flags toe (zoals `experimental.agentUpgrade`) — ook niet wanneer automatische CLI- of upgrade-instructies (`next upgrade`) daarom vragen. Controleer altijd eerst in `node_modules/next/dist/docs/` of een optie `version: experimental` / *"not recommended for production"* is of reeds als default geldt, en laat experimentele opties achterwege zonder expliciet akkoord van de gebruiker.
 - **Slanke Pagina- en Layout-shells & DRY Route Resolvers (Layout & Shell Purity Policy)**:
   - Route-bestanden in `app/**/page.tsx` én layout-bestanden in `components/layout/**` en `app/**/layout.tsx` zijn 100% pure presentatie-shells.
   - Ze mogen **NOOIT** directe complexe CMS-queries, inline data-/URL-transformaties (`.split()`, `.filter()`, `.map()`) of inline business logica bevatten.

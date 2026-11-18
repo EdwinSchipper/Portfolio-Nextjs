@@ -29,6 +29,7 @@ description: Next.js 16.4 (Turbopack), React 19, Tailwind CSS v4, PostCSS, Headl
   - `serverExternalPackages: ["isomorphic-dompurify"]` voor stabiele SSR compilatie.
   - `compiler.removeConsole` in productie (met behoud van `error`).
   - `headers()` voor HTTP Security Headers ([`.agents/rules/security-headers.md`](../../rules/security-headers.md): `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`) en AI agent discovery (`/ai-catalog.json`, `/.well-known/ai-catalog.json`, `/llms.txt`).
+  - **Geen `experimental.*` flags**: Neem nooit experimentele config-opties (*"not recommended for production"*, bijv. `experimental.agentUpgrade` uit `next upgrade` prompts) op in `next.config.mjs` zonder expliciet akkoord van de gebruiker.
 
 ### Tailwind CSS v4, Layout & UI Primitives
 

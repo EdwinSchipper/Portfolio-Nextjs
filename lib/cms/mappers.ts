@@ -6,7 +6,9 @@ import type {
   ExperienceCompany,
   ExperienceTimelineBlock,
   File,
+  Homepage,
   PortfolioItem,
+  ProjectShowcaseItem,
   ResumeSectionBlock,
 } from "../types";
 
@@ -218,6 +220,37 @@ export function normalizeFeaturedProject(
     isOdd: index % 2 !== 0,
     cslp: post.$,
   };
+}
+
+/**
+ * Extracts up to three featured portfolio projects from the homepage blocks for ProjectShowcase.
+ */
+export function extractHomepageShowcaseItems(
+  page?: Homepage
+): ProjectShowcaseItem[] {
+  const blocks = page?.blocks ?? [];
+  const featuredBlock = blocks.find((block) => Boolean(block.featured_projects));
+  const projects = featuredBlock?.featured_projects?.projects ?? [];
+
+  return projects.slice(0, 3).map((post, index) => {
+    const project = normalizeFeaturedProject(post, index);
+    return {
+      id: project.key,
+      tabTitle: project.company,
+      tabDescription: project.title,
+      imageUrl: project.imageUrl,
+      imageAlt: project.imageAlt,
+      badgeLabel: project.tag,
+      href: project.url,
+      linkLabel: "Bekijk project",
+      imageCslp: project.imageCslp,
+      titleCslp: project.cslp && (project.cslp.company || project.cslp.title),
+      descriptionCslp:
+        project.cslp && (project.cslp.project_title || project.cslp.title),
+      badgeCslp:
+        project.cslp && (project.cslp.project_tag || project.cslp.category),
+    };
+  });
 }
 
 /**

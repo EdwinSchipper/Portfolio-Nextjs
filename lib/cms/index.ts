@@ -37,6 +37,7 @@ export {
   resolveFirstAssetUrl,
   resolveAssetCslp,
   normalizeFeaturedProject,
+  extractHomepageShowcaseItems,
   normalizeCtaBlock,
   extractStackTags,
   normalizeExperienceTimeline,

@@ -1,8 +1,8 @@
 import type { Page as PageData } from "@/lib/types";
 import { VB_EmptyBlockParentClass } from "@contentstack/live-preview-utils";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import Breadcrumbs from "@/components/layout/Breadcrumbs";
-import Label from "@/components/ui/Label";
+import { Breadcrumbs } from "@/components/layout";
+import { Label } from "@/components/ui";
 
 export interface PageProps {
   page: PageData | undefined;

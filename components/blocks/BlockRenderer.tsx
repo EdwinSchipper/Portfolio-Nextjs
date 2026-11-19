@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
+import { normalizeExperienceTimeline } from "@/lib/cms";
 import type { Blocks, CSLPAttribute, CSLPContainer } from "@/lib/types";
 import {
   CardSection,
   ContentBlock,
   CtaBlock,
-  ExperienceTimelineBlock,
   FeaturedProjectsBlock,
   GridSection,
   HeroBlock,
@@ -105,8 +105,8 @@ function renderModularBlock(
       case "experience_timeline": {
         if (block.experience_timeline) {
           return (
-            <ExperienceTimelineBlock
-              data={block.experience_timeline}
+            <ResumeSection
+              data={normalizeExperienceTimeline(block.experience_timeline)}
               previewAttr={previewAttr}
             />
           );

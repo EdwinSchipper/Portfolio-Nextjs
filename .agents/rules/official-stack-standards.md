@@ -55,8 +55,8 @@ In dit project mogen **uitsluitend officiële, gedocumenteerde werkwijzen en pat
 - Ze beheren hun eigen browser events of event subscriptions (`useSyncExternalStore`), en belasten de toplevel shells niet met overbodige state logic.
 
 ## 8. Strikte Barrel Exports & No Wildcards in Submappen (Explicit Barrels Policy)
-- In layout-, feature-, block- en cms/layout/metadata-submappen (`components/layout/index.ts`, `components/features/<domein>/index.ts`, `components/blocks/<domein>/index.ts`, `components/blocks/index.ts`, `lib/cms/index.ts`, `lib/layout/index.ts`, `lib/metadata/index.ts`) zijn wildcard exports (`export *`) ten strengste verboden.
-- Gebruik daar uitsluitend expliciet benoemde component-, functie- en type-exports (`export { X } from './X'` en `export type { XProps } from './X'`). Alleen toplevel aggregatie-indexen (`components/index.ts`, `components/ui/index.ts`, `lib/index.ts`, `lib/types/index.ts`) mogen submappen aggregeren.
+- In layout-, feature-, block- en cms/layout/metadata-submappen (`components/layout/index.ts`, `components/features/<domein>/index.ts`, `components/blocks/<domein>/index.ts`, `lib/cms/index.ts`, `lib/layout/index.ts`, `lib/metadata/index.ts`) zijn wildcard exports (`export *`) ten strengste verboden.
+- Gebruik daar uitsluitend expliciet benoemde component-, functie- en type-exports (`export { X } from './X'` en `export type { XProps } from './X'`). Alleen toplevel aggregatie-indexen (`components/ui/index.ts`, `lib/index.ts`, `lib/types/index.ts`) mogen submappen aggregeren.
 
 ## 9. No Abbreviations Policy
 - Gebruik **NOOIT** afkortingen in component- en bestandsnamen: schrijf altijd voluit `Button` (nooit `Btn`), `Card`, `Dialog`, `Navigation`, etc.

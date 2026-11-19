@@ -660,8 +660,3 @@ export default function ResumeSection({
     </section>
   );
 }
-
-ResumeSection.Timeline = ExperienceTimelineList;
-ResumeSection.Certifications = ResumeCertifications;
-ResumeSection.StackBlock = ResumeStackBlock;
-ResumeSection.StackTags = ResumeStackTags;

@@ -513,8 +513,3 @@ export default function GridSection({
     </section>
   );
 }
-
-GridSection.Column = GridColumn;
-GridSection.Cards = GridCards;
-GridSection.Card = GridCard;
-GridSection.Quote = GridQuote;

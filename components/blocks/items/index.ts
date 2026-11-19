@@ -1,7 +1,6 @@
 import CardSection from "./CardSection";
 import ContentBlock from "./ContentBlock";
 import CtaBlock from "./CtaBlock";
-import ExperienceTimelineBlock from "./ExperienceTimelineBlock";
 import FeaturedProjectsBlock from "./FeaturedProjectsBlock";
 import GridSection from "./GridSection";
 import NumberedSection from "./NumberedSection";
@@ -15,7 +14,6 @@ export {
   CardSection,
   ContentBlock,
   CtaBlock,
-  ExperienceTimelineBlock,
   FeaturedProjectsBlock,
   GridSection,
   NumberedSection,

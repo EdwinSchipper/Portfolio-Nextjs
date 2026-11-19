@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { HeroBlock as HeroBlockType, CSLPAttribute } from "@/lib/types";
-import HeroBackgroundVideo from "./HeroBackgroundVideo";
-import HeroLocalClock from "./HeroLocalClock";
-import HeroAvailabilityStatus from "./HeroAvailabilityStatus";
+import HeroBackgroundVideo from "./hero/HeroBackgroundVideo";
+import HeroLocalClock from "./hero/HeroLocalClock";
+import HeroAvailabilityStatus from "./hero/HeroAvailabilityStatus";
 
 const ACCENT_PHRASE = "Digital Creative";
 

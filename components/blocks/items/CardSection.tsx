@@ -453,9 +453,3 @@ export default function CardSection({
     </section>
   );
 }
-
-CardSection.Header = CardSectionHeader;
-CardSection.Grid = CardGrid;
-CardSection.Item = CardItem;
-CardSection.Box = CardBox;
-CardSection.ImageTag = CardImageTag;

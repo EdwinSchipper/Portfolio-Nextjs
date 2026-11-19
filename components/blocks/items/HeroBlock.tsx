@@ -98,7 +98,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
 
             <p
               id="hero-middle"
-              className="text-title_2M sm:text-hero text-pretty sm:text-pretty font-content font-normal text-title-200 max-w-3xl"
+              className="text-title_2M sm:text-hero text-pretty sm:text-pretty font-content font-light dark:font-light text-title-200 max-w-3xl"
               {...(cslp && (cslp.text || cslp.description))}
             >
               {text}

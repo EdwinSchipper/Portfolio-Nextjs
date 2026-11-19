@@ -80,11 +80,11 @@ export interface NormalizedFeaturedProject {
   imageUrl: string | null;
   imageAlt: string;
   imageCslp?: CSLPAttribute;
-  tag: string;
+  badges: string[];
+  badgesCslp?: CSLPAttribute;
   title: string;
   description: string;
   company: string;
-  numberLabel: string;
   isOdd: boolean;
   cslp?: CSLPContainer;
 }
@@ -150,6 +150,7 @@ const SECTION_LABEL_CSLP_KEYS = ["label", "section_label"] as const;
 const SECTION_HEADING_CSLP_KEYS = ["section_title", "title"] as const;
 const SECTION_INTRO_CSLP_KEYS = ["section_intro", "intro", "description", "text"] as const;
 const SECTION_STATS_CSLP_KEYS = ["stats", "items"] as const;
+const FEATURED_PROJECT_BADGES_CSLP_KEYS = ["category", "project_tag"] as const;
 const STACK_LABEL_CSLP_KEYS = ["stack_label", "Stack_label", "stackLabel", "label"] as const;
 const SECTION_STACK_LABEL_CSLP_KEYS = ["stack_label", "stack.stack_label"] as const;
 const STACK_TITLE_CSLP_KEYS = ["stack_title", "Stack_title", "stackTitle", "title"] as const;
@@ -261,6 +262,31 @@ export function resolveAssetCslp(
   return undefined;
 }
 
+function extractProjectBadges(post: PortfolioItem): string[] {
+  const seen = new Set<string>();
+  const badges: string[] = [];
+
+  const addBadge = (value?: string) => {
+    if (typeof value !== "string") return;
+    const trimmed = value.trim();
+    if (!trimmed) return;
+
+    const normalizedKey = trimmed.toLowerCase();
+    if (seen.has(normalizedKey)) return;
+
+    seen.add(normalizedKey);
+    badges.push(trimmed);
+  };
+
+  if (typeof post.project_tag === "string") {
+    post.project_tag.split(",").forEach(addBadge);
+  }
+
+  toArray(post.category).forEach(addBadge);
+
+  return badges.length > 0 ? badges : ["Recent werk"];
+}
+
 /**
  * Normalizes a Contentstack portfolio entry into render-ready view fields for FeaturedProjectsBlock.
  */
@@ -283,9 +309,6 @@ export function normalizeFeaturedProject(
     post.$?.case_thumbnail ||
     post.$?.featured_image;
 
-  const categoryValue = Array.isArray(post.category) ? post.category[0] : post.category;
-  const tag =
-    pickFirstString(post.project_tag, categoryValue) || "Recent werk";
   const title =
     pickFirstString(post.project_title, post.title) || "Consistente Merktaal & Platform";
   const description = pickFirstString(post.project_desc, post.description) || "";
@@ -297,11 +320,11 @@ export function normalizeFeaturedProject(
     imageUrl,
     imageAlt: post.alt_text || company,
     imageCslp,
-    tag,
+    badges: extractProjectBadges(post),
+    badgesCslp: pickFirstCslp(post.$, FEATURED_PROJECT_BADGES_CSLP_KEYS),
     title,
     description,
     company,
-    numberLabel: String(index + 1).padStart(2, "0"),
     isOdd: index % 2 !== 0,
     cslp: post.$,
   };

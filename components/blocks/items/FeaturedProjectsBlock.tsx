@@ -5,6 +5,7 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { normalizeFeaturedProject } from "@/lib/cms";
+import { sectionMargin } from "@/lib/layout";
 import { Button, Label } from "@/components/ui";
 import { CardSectionHeader } from "./CardSection";
 
@@ -50,7 +51,7 @@ export default function FeaturedProjectsBlock({
 
       <div
         id="home-case-list"
-        className="w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-40 px-10 sm:px-14 md:px-20 xl:px-14 border-b md:border-y border-border-100 dark:border-border-200 pb-14 md:py-24 relative font-content"
+        className={`w-full flex flex-col gap-14 md:gap-8 ${sectionMargin} px-10 sm:px-14 md:px-20 xl:px-14 border-b md:border-y border-border-100 dark:border-border-200 pb-14 md:py-24 relative font-content`}
       >
         <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 

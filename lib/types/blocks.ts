@@ -169,8 +169,6 @@ export interface FeaturedProjectsBlock extends BaseSectionBlock {
   projects?: PortfolioItem[];
 }
 
-export type ProjectShowcaseVariant = "surface" | "plain";
-
 export interface ProjectShowcaseTabItem extends BaseEntity {
   tab_title?: string;
   tab_description?: string;
@@ -182,8 +180,24 @@ export interface ProjectShowcaseTabItem extends BaseEntity {
 
 export interface ProjectShowcaseBlock extends BaseSectionBlock {
   link?: Link;
-  variant?: "Surface" | "Plain" | ProjectShowcaseVariant | string;
   tabs?: ProjectShowcaseTabItem[];
+}
+
+export interface StatItem extends BaseEntity {
+  label?: string;
+  stat_label?: string;
+  title?: string;
+  value?: string;
+  stat_value?: string;
+  number?: string;
+}
+
+export interface StatsBlock extends BaseSectionBlock {
+  description?: string;
+  text?: string;
+  heading_type?: string;
+  stats?: StatItem[];
+  items?: StatItem[];
 }
 
 /**
@@ -304,6 +318,11 @@ export interface Blocks extends SystemFields {
   service_card?: ServiceCardBlock;
   featured_projects?: FeaturedProjectsBlock;
   project_showcase?: ProjectShowcaseBlock;
+  stats?: StatsBlock;
+  stats_block?: StatsBlock;
+  stats_section?: StatsBlock;
+  Stats?: StatsBlock;
+  StatsBlock?: StatsBlock;
   experience_timeline?: ExperienceTimelineBlock;
   resume_section?: ResumeSectionBlock;
   Resume_Section?: ResumeSectionBlock;

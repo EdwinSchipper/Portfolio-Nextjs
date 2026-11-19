@@ -10,6 +10,7 @@ export {
   ProjectShowcaseBlock,
   ResumeSection,
   ServiceCardBlock,
+  StatsBlock,
   HeroBlock,
 } from "./items";
 

@@ -2,19 +2,19 @@ import {
   cardGridColumns,
   colSpans,
   colorModes,
+  colorModeSurfaces,
   containerWidths,
   defaultHeading,
   gridColumns,
   HEADING_VALUES,
   serviceCardSpans,
-  showcaseVariants,
   type ColSpanKey,
   type ColorModeKey,
+  type ColorModeSurfaceClasses,
   type ContainerWidthKey,
   type GridColumnsKey,
   type HeadingType,
   type ServiceCardSpanKey,
-  type ShowcaseVariantClasses,
 } from "./tokens";
 
 function normalizeTokenKey(value: string | undefined, fallback: string): string {
@@ -89,11 +89,11 @@ export function getColorModeClass(mode?: string): string {
 }
 
 /**
- * Resolves a showcase variant ("surface" | "plain") to its container and frame surface classes.
+ * Resolves a Contentstack color mode string ("default" | "alt") to surface overlay container and frame classes.
  */
-export function getShowcaseVariantClasses(variant?: string): ShowcaseVariantClasses {
-  const key = normalizeTokenKey(variant, "surface");
-  return key === "plain" ? showcaseVariants.plain : showcaseVariants.surface;
+export function getColorModeSurfaceClasses(mode?: string): ColorModeSurfaceClasses {
+  const key = normalizeTokenKey(mode, "default") as ColorModeKey;
+  return colorModeSurfaces[key] ?? colorModeSurfaces.default;
 }
 
 /**

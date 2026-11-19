@@ -502,7 +502,7 @@ export default function GridSection({
     <section
       {...previewAttr}
       data-color-mode={colorModeKey}
-      className={`col-span-full w-full mb-20 md:mb-40 lg:mb-40 ${colorModeClass} ${className}`}
+      className={`col-span-full w-full ${colorModeClass} ${className}`.trim()}
     >
       <div
         className={`sm:grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 gap-14 lg:gap-x-10 xl:gap-x-24`}

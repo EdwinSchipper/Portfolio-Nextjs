@@ -13,9 +13,9 @@ export type ContainerWidthKey =
 
 export type ColorModeKey = "default" | "alt";
 
-export type ShowcaseVariantKey = "surface" | "plain";
-
-export interface ShowcaseVariantClasses {
+export interface ColorModeSurfaceClasses {
+  section: string;
+  wrapper: string;
   container: string;
   frame: string;
 }
@@ -38,6 +38,10 @@ export type GridColumnsKey = "1" | "2" | "3" | "4";
 
 export type ServiceCardSpanKey = "1" | "2" | "3";
 
+export const sectionMargin = "mb-28 sm:mb-40 lg:mb-40 xl:mb-52";
+
+export const altMobileCounterMargin = "-mt-28 sm:mt-0";
+
 export const containerWidths: Record<ContainerWidthKey, string> = {
   small: "w-full lg:max-w-4xl",
   default: "w-full lg:max-w-5xl",
@@ -49,20 +53,24 @@ export const containerWidths: Record<ContainerWidthKey, string> = {
 };
 
 export const colorModes: Record<ColorModeKey, string> = {
-  default: "bg-transparent",
-  alt: "bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200 py-20 sm:py-36",
+  default: `${sectionMargin} bg-transparent`,
+  alt: `${altMobileCounterMargin} ${sectionMargin} bg-background-200 dark:bg-background-900 border-y border-border-100 dark:border-border-200 py-20 sm:py-36`,
 };
 
-export const showcaseVariants: Record<ShowcaseVariantKey, ShowcaseVariantClasses> = {
-  surface: {
-    container:
-      "md:rounded-md border-t border-b md:border border-border-100/50 dark:border-border-200 bg-background-200 dark:bg-background-900 py-14 p-10 sm:p-10 md:p-14 xl:p-24",
-    frame:
-      "border border-border-100/60 dark:border-border-200/60 bg-background-100 dark:bg-background-950",
-  },
-  plain: {
+export const colorModeSurfaces: Record<ColorModeKey, ColorModeSurfaceClasses> = {
+  default: {
+    section: sectionMargin,
+    wrapper: "px-10 sm:px-14 md:px-20 xl:px-14",
     container: "",
     frame: "",
+  },
+  alt: {
+    section: `${altMobileCounterMargin} ${sectionMargin}`,
+    wrapper: "sm:px-14 md:px-20 xl:px-14",
+    container:
+      "sm:rounded-md border-t border-b sm:border border-border-100/50 dark:border-border-200 bg-background-200 dark:bg-background-900 py-14 p-10 sm:p-10 md:p-14 xl:p-20",
+    frame:
+      "border border-border-100/60 dark:border-border-200/60 bg-background-100 dark:bg-background-950",
   },
 };
 
@@ -83,9 +91,9 @@ export const colSpans: Record<ColSpanKey, string> = {
 
 export const gridColumns: Record<GridColumnsKey, string> = {
   "1": "grid-cols-1",
-  "2": "grid-cols-1 md:grid-cols-2",
-  "3": "grid-cols-1 md:grid-cols-3",
-  "4": "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+  "2": "grid-cols-1 lg:grid-cols-2",
+  "3": "grid-cols-1 lg:grid-cols-3",
+  "4": "grid-cols-1 lg:grid-cols-4",
 };
 
 export const cardGridColumns: Record<GridColumnsKey, string> = {

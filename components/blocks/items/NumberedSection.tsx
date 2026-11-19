@@ -71,7 +71,7 @@ export default function NumberedSection({
     <section
       {...previewAttr}
       data-color-mode={colorModeKey}
-      className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
+      className={`col-span-full w-full ${colorModeClass} ${className}`.trim()}
     >
       <div className={`mx-auto px-6 sm:px-10 lg:px-12 ${containerClass}`}>
         {hasHeader && (

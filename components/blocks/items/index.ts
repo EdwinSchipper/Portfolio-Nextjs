@@ -8,6 +8,7 @@ import NumberedSection from "./NumberedSection";
 import ProjectShowcaseBlock from "./ProjectShowcaseBlock";
 import ResumeSection from "./ResumeSection";
 import ServiceCardBlock from "./ServiceCardBlock";
+import StatsBlock from "./StatsBlock";
 import HeroBlock from "./HeroBlock";
 
 export {
@@ -21,5 +22,6 @@ export {
   ProjectShowcaseBlock,
   ResumeSection,
   ServiceCardBlock,
+  StatsBlock,
   HeroBlock,
 };

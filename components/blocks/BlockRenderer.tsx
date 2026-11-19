@@ -12,6 +12,7 @@ import {
   ProjectShowcaseBlock,
   ResumeSection,
   ServiceCardBlock,
+  StatsBlock,
 } from "./items";
 
 interface BlockRendererProps {
@@ -55,6 +56,15 @@ function renderModularBlock(
             />
           );
         }
+        break;
+      }
+      case "stats":
+      case "stats_block":
+      case "stats_section":
+      case "Stats":
+      case "StatsBlock": {
+        const data = block[key];
+        if (data) return <StatsBlock data={data} previewAttr={previewAttr} />;
         break;
       }
       case "service_card": {

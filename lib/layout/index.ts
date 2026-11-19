@@ -3,9 +3,11 @@
  */
 
 export {
+  sectionMargin,
+  altMobileCounterMargin,
   containerWidths,
   colorModes,
-  showcaseVariants,
+  colorModeSurfaces,
   colSpans,
   gridColumns,
   cardGridColumns,
@@ -16,8 +18,7 @@ export {
 export type {
   ContainerWidthKey,
   ColorModeKey,
-  ShowcaseVariantKey,
-  ShowcaseVariantClasses,
+  ColorModeSurfaceClasses,
   ColSpanKey,
   GridColumnsKey,
   ServiceCardSpanKey,
@@ -31,7 +32,7 @@ export {
   getServiceCardColSpan,
   getContainerClass,
   getColorModeClass,
-  getShowcaseVariantClasses,
+  getColorModeSurfaceClasses,
   getHeadingTag,
   isExternalHref,
 } from "./helpers";

@@ -10,8 +10,9 @@ import type {
   PortfolioItem,
   ProjectShowcaseBlock,
   ProjectShowcaseTabItem,
-  ProjectShowcaseVariant,
   ResumeSectionBlock,
+  StatItem,
+  StatsBlock,
 } from "../types";
 
 export interface NormalizedProjectShowcaseItem {
@@ -33,7 +34,6 @@ export interface NormalizedProjectShowcaseItem {
 export interface NormalizedProjectShowcaseBlock {
   rawWidth?: string;
   colorModeKey?: string;
-  variant: ProjectShowcaseVariant;
   label?: string;
   title?: string;
   intro?: string;
@@ -44,6 +44,33 @@ export interface NormalizedProjectShowcaseBlock {
   introCslp?: CSLPAttribute;
   linkCslp?: CSLPAttribute;
   items: NormalizedProjectShowcaseItem[];
+  itemsCslp?: CSLPAttribute;
+}
+
+export interface NormalizedStatItem {
+  id: string;
+  label: string;
+  value: string;
+  labelCslp?: CSLPAttribute;
+  valueCslp?: CSLPAttribute;
+}
+
+export interface StatsNormalizationOptions {
+  width?: string;
+  colorMode?: string;
+}
+
+export interface NormalizedStatsBlock {
+  rawWidth?: string;
+  colorModeKey?: string;
+  label?: string;
+  heading?: string;
+  headingTag?: string;
+  intro?: string;
+  labelCslp?: CSLPAttribute;
+  headingCslp?: CSLPAttribute;
+  introCslp?: CSLPAttribute;
+  items: NormalizedStatItem[];
   itemsCslp?: CSLPAttribute;
 }
 
@@ -117,6 +144,12 @@ type WrappedResumeSection = ResumeSectionBlock & {
   experience_timeline?: ResumeSectionBlock;
 };
 
+const STAT_LABEL_CSLP_KEYS = ["label", "stat_label", "title"] as const;
+const STAT_VALUE_CSLP_KEYS = ["value", "stat_value", "number"] as const;
+const SECTION_LABEL_CSLP_KEYS = ["label", "section_label"] as const;
+const SECTION_HEADING_CSLP_KEYS = ["section_title", "title"] as const;
+const SECTION_INTRO_CSLP_KEYS = ["section_intro", "intro", "description", "text"] as const;
+const SECTION_STATS_CSLP_KEYS = ["stats", "items"] as const;
 const STACK_LABEL_CSLP_KEYS = ["stack_label", "Stack_label", "stackLabel", "label"] as const;
 const SECTION_STACK_LABEL_CSLP_KEYS = ["stack_label", "stack.stack_label"] as const;
 const STACK_TITLE_CSLP_KEYS = ["stack_title", "Stack_title", "stackTitle", "title"] as const;
@@ -328,7 +361,6 @@ export function normalizeProjectShowcaseBlock(
   if (!data) return null;
 
   const tabs = toArray<ProjectShowcaseTabItem>(data.tabs);
-  const variantKey = (data.variant ?? "").trim().toLowerCase();
   const {
     href: linkHref,
     label: linkLabel,
@@ -338,7 +370,6 @@ export function normalizeProjectShowcaseBlock(
   return {
     rawWidth: pickFirstString(options.width, data.width, data.container_width),
     colorModeKey: pickFirstString(options.colorMode, data.color_mode),
-    variant: variantKey === "plain" ? "plain" : "surface",
     label: pickFirstString(data.label, data.section_label),
     title: pickFirstString(data.section_title, data.title),
     intro: pickFirstString(data.section_intro, data.intro),
@@ -350,6 +381,45 @@ export function normalizeProjectShowcaseBlock(
     linkCslp,
     items: tabs.map(mapShowcaseTab),
     itemsCslp: data.$?.tabs,
+  };
+}
+
+function mapStatItem(stat: StatItem, index: number): NormalizedStatItem {
+  return {
+    id: stat._metadata?.uid || `stat-item-${index}`,
+    label: pickFirstString(stat.label, stat.stat_label, stat.title) || "",
+    value: pickFirstString(stat.value, stat.stat_value, stat.number) || "",
+    labelCslp: pickFirstCslp(stat.$, STAT_LABEL_CSLP_KEYS),
+    valueCslp: pickFirstCslp(stat.$, STAT_VALUE_CSLP_KEYS),
+  };
+}
+
+/**
+ * Normalizes a Contentstack `stats` modular block into strict presentation contracts.
+ */
+export function normalizeStatsBlock(
+  data?: StatsBlock,
+  options: StatsNormalizationOptions = {}
+): NormalizedStatsBlock | null {
+  if (!data) return null;
+
+  const rawStats = data.stats ?? data.items;
+  const items = toArray<StatItem>(rawStats)
+    .map(mapStatItem)
+    .filter((item) => Boolean(item.label || item.value));
+
+  return {
+    rawWidth: pickFirstString(options.width, data.width, data.container_width),
+    colorModeKey: pickFirstString(options.colorMode, data.color_mode),
+    label: pickFirstString(data.label, data.section_label),
+    heading: pickFirstString(data.section_title, data.title),
+    headingTag: pickFirstString(data.heading_type),
+    intro: pickFirstString(data.section_intro, data.intro, data.description, data.text),
+    labelCslp: pickFirstCslp(data.$, SECTION_LABEL_CSLP_KEYS),
+    headingCslp: pickFirstCslp(data.$, SECTION_HEADING_CSLP_KEYS),
+    introCslp: pickFirstCslp(data.$, SECTION_INTRO_CSLP_KEYS),
+    items,
+    itemsCslp: pickFirstCslp(data.$, SECTION_STATS_CSLP_KEYS),
   };
 }
 

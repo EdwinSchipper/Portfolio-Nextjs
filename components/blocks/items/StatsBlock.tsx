@@ -83,7 +83,7 @@ export default function StatsBlock({
                   {
                     id: headingId,
                     className:
-                      "text-title_2M md:text-title_2 font-bold text-title-100 dark:text-title-200 text-balance max-w-11/12 lg:max-w-full",
+                      "text-title_2M md:text-title_2 font-bold text-title-100 dark:text-title-200 text-pretty max-w-11/12 lg:max-w-full",
                     ...headingCslp,
                   },
                   heading

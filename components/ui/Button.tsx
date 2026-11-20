@@ -29,21 +29,24 @@ export interface ButtonProps
 }
 
 const ctaBaseStyles =
-  "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md duration-200 font-content tracking-tight whitespace-nowrap";
+  "w-full md:w-fit flex lg:w-auto lg:inline-flex justify-center items-center gap-2 font-semibold rounded-md transition-colors duration-200 motion-reduce:transition-none font-content tracking-tight whitespace-nowrap";
+
+const ctaHoverStyles =
+  "dark:hover:brightness-110 hover:bg-accent7-900 hover:border-accent7-900 hover:text-title-200 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100";
 
 const iconBaseStyles =
-  "inline-flex items-center justify-center rounded-full border transition-all duration-200 [&_svg]:size-4";
+  "inline-flex items-center justify-center rounded-full border transition-all duration-200 motion-reduce:transition-none [&_svg]:size-4";
 
 const linkBaseStyles =
-  "inline-flex items-center gap-1.5 p-0 bg-transparent font-semibold shadow-none transition-colors duration-200";
+  "inline-flex items-center gap-1.5 p-0 bg-transparent font-semibold shadow-none transition-colors duration-200 motion-reduce:transition-none";
 
 export const iconButtonSizeClass = "w-11 h-11 lg:w-9 lg:h-9";
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: `${ctaBaseStyles} bg-background-900 dark:bg-background-200 text-title-200 dark:text-title-100 dark:hover:brightness-110 border border-border-100 dark:border-border-200 hover:bg-accent7-900 hover:border-accent7-900 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100`,
-  brand: `${ctaBaseStyles} bg-accent7-900 dark:bg-accent8-900 text-title-200 dark:text-title-100 dark:hover:brightness-110 border border-border-100 dark:border-border-200 hover:bg-accent7-900 hover:border-accent7-900 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100`,
-  secondary: `${ctaBaseStyles} bg-background-200 dark:bg-background-900 text-title-100 dark:text-title-200 dark:hover:brightness-110 border border-border-100 dark:border-border-200 hover:bg-accent7-900 hover:border-accent7-900 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100`,
-  inverted: `${ctaBaseStyles} bg-background-200 text-title-100 dark:hover:brightness-110 border border-border-200 hover:bg-accent7-900 hover:border-accent7-900 hover:text-title-200 dark:hover:bg-accent8-900 dark:hover:border-accent8-900 dark:hover:text-title-100`,
+  primary: `${ctaBaseStyles} bg-background-900 dark:bg-background-200 text-title-200 dark:text-title-100 border border-border-100 dark:border-border-200 ${ctaHoverStyles}`,
+  brand: `${ctaBaseStyles} bg-accent7-900 dark:bg-accent8-900 text-title-200 dark:text-title-100 border border-border-100 dark:border-border-200 ${ctaHoverStyles}`,
+  secondary: `${ctaBaseStyles} bg-background-200 dark:bg-background-900 text-title-100 dark:text-title-200 border border-border-100 dark:border-border-200 ${ctaHoverStyles}`,
+  inverted: `${ctaBaseStyles} bg-background-200 text-title-100 border border-border-100 ${ctaHoverStyles}`,
   icon: `${iconBaseStyles} bg-background-100 dark:bg-background-800 text-content-100 dark:text-content-200 border-border-100 dark:border-border-200 hover:border-border-100 dark:hover:border-border-200/60 hover:text-title-100 dark:hover:text-title-200`,
   "icon-inverted": `${iconBaseStyles} bg-background-900/70 text-title-200 border-border-200/50 hover:border-border-200 hover:text-title-200`,
   link: `${linkBaseStyles} text-accent7-900 dark:text-accent8-900 hover:underline`,
@@ -103,7 +106,7 @@ export default function Button({
         {children}
       </span>
       {arrow && (
-        <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+        <span className="inline-block transition-transform duration-200 motion-reduce:transition-none group-hover:translate-x-1 motion-reduce:group-hover:translate-x-0">
           →
         </span>
       )}

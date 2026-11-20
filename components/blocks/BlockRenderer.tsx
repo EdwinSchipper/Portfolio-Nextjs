@@ -1,16 +1,18 @@
 import type { ReactNode } from "react";
+import { normalizeExperienceTimeline } from "@/lib/cms";
 import type { Blocks, CSLPAttribute, CSLPContainer } from "@/lib/types";
 import {
   CardSection,
   ContentBlock,
   CtaBlock,
-  ExperienceTimelineBlock,
   FeaturedProjectsBlock,
   GridSection,
   HeroBlock,
   NumberedSection,
+  ProjectShowcaseBlock,
   ResumeSection,
   ServiceCardBlock,
+  StatsBlock,
 } from "./items";
 
 interface BlockRendererProps {
@@ -43,6 +45,26 @@ function renderModularBlock(
             />
           );
         }
+        break;
+      }
+      case "project_showcase": {
+        if (block.project_showcase) {
+          return (
+            <ProjectShowcaseBlock
+              data={block.project_showcase}
+              previewAttr={previewAttr}
+            />
+          );
+        }
+        break;
+      }
+      case "stats":
+      case "stats_block":
+      case "stats_section":
+      case "Stats":
+      case "StatsBlock": {
+        const data = block[key];
+        if (data) return <StatsBlock data={data} previewAttr={previewAttr} />;
         break;
       }
       case "service_card": {
@@ -83,8 +105,8 @@ function renderModularBlock(
       case "experience_timeline": {
         if (block.experience_timeline) {
           return (
-            <ExperienceTimelineBlock
-              data={block.experience_timeline}
+            <ResumeSection
+              data={normalizeExperienceTimeline(block.experience_timeline)}
               previewAttr={previewAttr}
             />
           );

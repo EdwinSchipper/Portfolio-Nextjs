@@ -22,7 +22,7 @@ export default function HeroBackgroundVideo({
 }: HeroBackgroundVideoProps) {
   return (
     <div
-      className="pointer-events-none absolute inset-0 overflow-hidden bg-background-950"
+      className="pointer-events-none absolute inset-x-0 top-0 h-dvh md:bottom-0 md:h-auto overflow-hidden bg-background-950"
       aria-hidden="true"
     >
       <Image

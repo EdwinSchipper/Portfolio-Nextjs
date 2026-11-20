@@ -22,7 +22,7 @@ function renderNumberedContent(text: string) {
       <span className="flex gap-3 relative w-full mb-3 lg:mb-4 tracking-tight items-baseline">
         <span className="font-bold text-accent7-900 dark:text-accent8-900 font-playfull text-label">{match[1]}</span>
         <span className="font-medium text-accent7-900 dark:text-accent8-900 text-label">—</span>
-        <span className="font-medium uppercase text-title-100 dark:text-title-200 text-noteM md:text-note">{match[2]}</span>
+        <span className="font-medium uppercase text-title-100 dark:text-title-200 text-noteM md:text-label_small">{match[2]}</span>
       </span>
     );
   }

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CtaBlock as CtaBlockType, CSLPAttribute } from "@/lib/types";
 import { normalizeCtaBlock } from "@/lib/cms";
+import { getColorModeSurfaceClasses } from "@/lib/layout";
 import { Button, Label, RichText } from "@/components/ui";
 
 export interface CtaBlockProps {
@@ -32,12 +33,13 @@ export default function CtaBlock({
     imageAlt,
     meta,
   } = normalizeCtaBlock(data);
+  const surfaceClasses = getColorModeSurfaceClasses("alt");
 
   return (
     <section
       {...previewAttr}
       id="resume-cta"
-      className={`col-span-full w-full -mt-28 sm:-mt-32 lg:mt-0 lg:mb-32 font-content ${className}`}
+      className={`col-span-full w-full ${surfaceClasses.section} font-content ${className}`.trim()}
     >
       <div
         className="mx-auto w-full md:max-w-4xl lg:border border-border-100 dark:border-border-200 lg:rounded-md bg-background-200 dark:bg-background-900 py-14 p-10 sm:p-14 md:p-20 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16 group"

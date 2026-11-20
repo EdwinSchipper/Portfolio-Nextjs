@@ -5,6 +5,7 @@ import {
   CSLPAttribute,
 } from "@/lib/types";
 import { normalizeFeaturedProject } from "@/lib/cms";
+import { sectionMargin } from "@/lib/layout";
 import { Button, Label } from "@/components/ui";
 import { CardSectionHeader } from "./CardSection";
 
@@ -50,7 +51,7 @@ export default function FeaturedProjectsBlock({
 
       <div
         id="home-case-list"
-        className="w-full flex flex-col gap-14 md:gap-8 mb-28 sm:mb-40 lg:mb-40 px-10 sm:px-14 md:px-20 xl:px-14 border-y border-border-100 dark:border-border-200 py-14 md:py-24 relative font-content"
+        className={`w-full flex flex-col gap-14 md:gap-8 ${sectionMargin} px-10 sm:px-14 md:px-20 xl:px-14 border-b md:border-y border-border-100 dark:border-border-200 pb-14 md:py-24 relative font-content`}
       >
         <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-border-100 dark:bg-border-200 -translate-x-1/2 pointer-events-none" />
 
@@ -63,11 +64,11 @@ export default function FeaturedProjectsBlock({
                 imageUrl,
                 imageAlt,
                 imageCslp,
-                tag: projectTag,
+                badges,
+                badgesCslp,
                 title: projectTitle,
                 description: projectDesc,
                 company,
-                numberLabel: numStr,
                 isOdd,
                 cslp: postCslp,
               } = normalizeFeaturedProject(post, index);
@@ -75,16 +76,16 @@ export default function FeaturedProjectsBlock({
               return (
                 <article
                   key={key}
-                  className="case-card grid grid-cols-1 md:grid-cols-12 w-full gap-10 md:gap-10"
+                  className="case-card grid grid-cols-1 md:grid-cols-12 items-center w-full gap-10 md:gap-10"
                 >
                   <div
-                    className={`case-img col-span-1 md:col-span-7 lg:col-span-7 rounded-md overflow-hidden bg-background-200 dark:bg-background-900 -mx-5 sm:mx-0 relative z-10 ${isOdd ? "md:order-2 lg:order-2" : "md:order-1 lg:order-1"
+                    className={`case-img col-span-1 md:col-span-7 lg:col-span-7 h-fit md:self-start lg:self-center rounded-md overflow-hidden bg-background-200 dark:bg-background-900 -mx-5 sm:mx-0 relative z-10 ${isOdd ? "md:order-2 lg:order-2" : "md:order-1 lg:order-1"
                       }`}
                   >
                     <Link
                       href={postUrl}
                       aria-label={`Bekijk project: ${projectTitle}`}
-                      className="block h-full w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent7-800 dark:focus-visible:ring-accent8-800"
+                      className="block w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent7-800 dark:focus-visible:ring-accent8-800"
                     >
                       {imageUrl && (
                         <Image
@@ -108,38 +109,36 @@ export default function FeaturedProjectsBlock({
                       }`}
                   >
                     <div className="flex flex-col gap-y-5 md:gap-y-6">
-                      <div className="case-label">
-                        <Label
-                          id={`case-label-${index}`}
-                          cslp={postCslp && (postCslp.project_tag || postCslp.category)}
-                        >
-                          {`${numStr} — ${projectTag}`}
-                        </Label>
+                      <div
+                        className="flex flex-wrap items-center gap-2"
+                        {...badgesCslp}
+                      >
+                        {badges.map((badge) => (
+                          <Label key={badge} variant="pill">
+                            {badge}
+                          </Label>
+                        ))}
                       </div>
 
-                      <div className="-mt-2">
-                        <h3
-                          className="case-title text-title_5M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
-                          {...(postCslp && (postCslp.project_title || postCslp.title))}
+                      <h3
+                        className="case-title text-title_5M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
+                        {...(postCslp && (postCslp.project_title || postCslp.title))}
+                      >
+                        <Link
+                          href={postUrl}
+                          className="hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors"
                         >
-                          <Link
-                            href={postUrl}
-                            className="hover:text-accent7-900 dark:hover:text-accent8-900 transition-colors"
-                          >
-                            {projectTitle}
-                          </Link>
-                        </h3>
-                      </div>
+                          {projectTitle}
+                        </Link>
+                      </h3>
 
                       {projectDesc && (
-                        <div>
-                          <p
-                            className="case-desc text-smallM sm:text-medium text-content-300 dark:text-content-200 font-medium text-pretty md:text-balance line-clamp-3"
-                            {...(postCslp && (postCslp.project_desc || postCslp.description))}
-                          >
-                            {projectDesc}
-                          </p>
-                        </div>
+                        <p
+                          className="case-desc text-smallM sm:text-medium text-content-300 dark:text-content-200 font-medium text-pretty md:text-balance line-clamp-3"
+                          {...(postCslp && (postCslp.project_desc || postCslp.description))}
+                        >
+                          {projectDesc}
+                        </p>
                       )}
 
                       <div className="case-btn w-fit">

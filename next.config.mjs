@@ -25,12 +25,12 @@ const nextConfig = {
       },
       ...(process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME
         ? [
-            {
-              protocol: "https",
-              hostname: process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME,
-              pathname: contentstackAssetPathname,
-            },
-          ]
+          {
+            protocol: "https",
+            hostname: process.env.NEXT_PUBLIC_CONTENTSTACK_IMAGE_HOSTNAME,
+            pathname: contentstackAssetPathname,
+          },
+        ]
         : []),
     ],
   },

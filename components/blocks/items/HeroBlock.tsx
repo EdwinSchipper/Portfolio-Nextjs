@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { HeroBlock as HeroBlockType, CSLPAttribute } from "@/lib/types";
-import HeroBackgroundVideo from "./HeroBackgroundVideo";
-import HeroLocalClock from "./HeroLocalClock";
-import HeroAvailabilityStatus from "./HeroAvailabilityStatus";
+import HeroBackgroundVideo from "./hero/HeroBackgroundVideo";
+import HeroLocalClock from "./hero/HeroLocalClock";
+import HeroAvailabilityStatus from "./hero/HeroAvailabilityStatus";
 
 const ACCENT_PHRASE = "Digital Creative";
 
@@ -73,7 +73,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
     <section
       {...previewAttr}
       aria-labelledby="hero-top"
-      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-8 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-8 sm:pb-24 lg:pb-30 xl:pb-20 font-content min-h-dvh"
+      className="relative overflow-hidden bg-background-950 w-full flex flex-col -mt-23 md:-mt-27 lg:-mt-29.25 px-8 sm:px-14 md:px-20 lg:px-20 xl:px-28 pt-32 md:pt-36 lg:pt-40 pb-20 sm:pb-24 lg:pb-30 xl:pb-20 font-content min-h-dvh"
       id="hero-section"
     >
       <HeroBackgroundVideo
@@ -86,17 +86,19 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
       <div className="relative z-10 mt-auto mx-auto w-full max-w-[1980px] lg:justify-center items-end grid grid-cols-12 gap-y-20 sm:gap-y-28 lg:gap-y-40 xl:gap-y-8">
         <div className="col-span-12 lg:col-span-8 self-end flex">
           <div className="flex flex-col gap-y-10 md:gap-y-20 xl:gap-y-20">
-            <h1
-              id="hero-top"
-              className="text-title_heroM sm:text-title_2 md:text-title_hero lg:text-title_hero xl:text-title_hero_xl font-semibold lg:font-medium text-title-200 text-balance"
-              {...(cslp && cslp.title)}
-            >
-              {renderHeroHeadline(title)}
-            </h1>
+            <div className="min-h-[calc(100dvh-8rem)] md:min-h-0 flex items-end pb-10 md:block md:pb-0">
+              <h1
+                id="hero-top"
+                className="text-title_heroM sm:text-title_2 md:text-title_hero lg:text-title_hero xl:text-title_hero_xl font-semibold lg:font-medium text-title-200 text-balance font-display"
+                {...(cslp && cslp.title)}
+              >
+                {renderHeroHeadline(title)}
+              </h1>
+            </div>
 
             <p
               id="hero-middle"
-              className="text-heroM sm:text-hero text-pretty sm:text-pretty font-content font-normal text-title-200 max-w-3xl"
+              className="text-title_2M sm:text-hero text-pretty sm:text-pretty font-content font-light dark:font-light text-title-200 max-w-3xl"
               {...(cslp && (cslp.text || cslp.description))}
             >
               {text}
@@ -104,7 +106,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
           </div>
         </div>
 
-        <div className="col-span-12 xl:col-span-4 self-end">
+        <div className="col-span-12 xl:col-span-4 self-end hidden md:block">
           <div className="text-content-200 flex flex-col items-end text-right text-noteM sm:text-medium w-full">
             <HeroLocalClock />
             <span className="inline-flex items-center gap-2">

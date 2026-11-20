@@ -8,7 +8,7 @@ import {
 } from "@/lib/types";
 import { normalizeResumeSection } from "@/lib/cms";
 import { Label, Button, RichText } from "@/components/ui";
-import { getContainerClass, getColorModeClass, colSpans } from "@/lib/layout";
+import { getColSpanClass, getColorModeClass, getContainerClass } from "@/lib/layout";
 
 /**
  * Returns the first letter of a company name to render as an avatar monogram.
@@ -483,7 +483,7 @@ export default function ResumeSection({
       <section
         {...previewAttr}
         data-color-mode={colorModeKey}
-        className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
+        className={`col-span-full w-full ${colorModeClass} ${className}`.trim()}
       >
         <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
           <div className="w-full">
@@ -556,14 +556,14 @@ export default function ResumeSection({
   const defaultLeft = isTimelineLeft ? "8" : "4";
   const defaultRight = isTimelineLeft ? "4" : "8";
 
-  const leftSpanClass =
-    colSpans[String(resolvedLeftCol || defaultLeft)] ||
-    colSpans[defaultLeft] ||
-    "col-span-12 lg:col-span-4";
-  const rightSpanClass =
-    colSpans[String(resolvedRightCol || defaultRight)] ||
-    colSpans[defaultRight] ||
-    "col-span-12 lg:col-span-8";
+  const leftSpanClass = getColSpanClass(
+    resolvedLeftCol || defaultLeft,
+    getColSpanClass(defaultLeft, "col-span-12 lg:col-span-4")
+  );
+  const rightSpanClass = getColSpanClass(
+    resolvedRightCol || defaultRight,
+    getColSpanClass(defaultRight, "col-span-12 lg:col-span-8")
+  );
 
   const introColClass = isTimelineLeft
     ? `${rightSpanClass} order-1 lg:order-2`
@@ -577,7 +577,7 @@ export default function ResumeSection({
     <section
       {...previewAttr}
       data-color-mode={colorModeKey}
-      className={`col-span-full w-full mb-20 md:mb-32 ${colorModeClass} ${className}`}
+      className={`col-span-full w-full ${colorModeClass} ${className}`.trim()}
     >
       <div className={`mx-auto px-10 sm:px-14 lg:px-12 md:px-20 ${containerClass}`}>
         <div className="sm:grid grid-cols-1 lg:grid-cols-12 gap-12 items-start sm:space-x-24 space-y-24 sm:space-y-0">
@@ -660,8 +660,3 @@ export default function ResumeSection({
     </section>
   );
 }
-
-ResumeSection.Timeline = ExperienceTimelineList;
-ResumeSection.Certifications = ResumeCertifications;
-ResumeSection.StackBlock = ResumeStackBlock;
-ResumeSection.StackTags = ResumeStackTags;

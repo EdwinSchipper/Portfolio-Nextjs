@@ -179,7 +179,7 @@ export default function ProjectShowcaseBlock({
                               aria-hidden="true"
                               className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-background-950/55 via-background-950/20 to-transparent pointer-events-none"
                             />
-                            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-4 md:p-6">
+                            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-4 md:p-9">
                               {item.badgeLabel && (
                                 <Label variant="pill" cslp={item.badgeCslp}>
                                   {item.badgeLabel}
@@ -239,7 +239,7 @@ export default function ProjectShowcaseBlock({
                     </span>
 
                     <span
-                      className="block text-smallM sm:text-small text-content-100/75 dark:text-content-200/75 max-w-xs transition-colors group-data-selected:text-content-100 dark:group-data-selected:text-content-200 motion-reduce:transition-none"
+                      className="block text-smallM sm:text-small text-content-100/75 dark:text-content-200/75 transition-colors group-data-selected:text-content-100 dark:group-data-selected:text-content-200 motion-reduce:transition-none"
                       {...item.descriptionCslp}
                     >
                       {item.tabDescription}

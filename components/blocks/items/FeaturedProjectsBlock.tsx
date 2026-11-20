@@ -79,7 +79,7 @@ export default function FeaturedProjectsBlock({
                   className="case-card grid grid-cols-1 md:grid-cols-12 items-center w-full gap-10 md:gap-10"
                 >
                   <div
-                    className={`case-img col-span-1 md:col-span-7 lg:col-span-7 h-fit rounded-md overflow-hidden bg-background-200 dark:bg-background-900 -mx-5 sm:mx-0 relative z-10 ${isOdd ? "md:order-2 lg:order-2" : "md:order-1 lg:order-1"
+                    className={`case-img col-span-1 md:col-span-7 lg:col-span-7 h-fit md:self-start lg:self-center rounded-md overflow-hidden bg-background-200 dark:bg-background-900 -mx-5 sm:mx-0 relative z-10 ${isOdd ? "md:order-2 lg:order-2" : "md:order-1 lg:order-1"
                       }`}
                   >
                     <Link

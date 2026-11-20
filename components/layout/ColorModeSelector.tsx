@@ -2,7 +2,7 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
-import Button, { iconButtonSizeClass } from "@/components/ui/Button";
+import { Button, iconButtonSizeClass } from "@/components/ui";
 
 export interface ColorModeSelectorProps {
   className?: string;

@@ -7,7 +7,12 @@ import {
   CSLPContainer,
 } from "@/lib/types";
 import { Button, Label, Icon } from "@/components/ui";
-import { getContainerClass, getColorModeClass } from "@/lib/layout";
+import {
+  getCardGridColumnsClass,
+  getColorModeClass,
+  getContainerClass,
+  isExternalHref,
+} from "@/lib/layout";
 
 export interface CardBoxProps {
   icon?: string;
@@ -31,11 +36,7 @@ export function CardBox({
   cslp,
 }: CardBoxProps) {
   const href = button?.href || button?.url;
-  const isExternal =
-    typeof href === "string" &&
-    (href.startsWith("http://") ||
-      href.startsWith("https://") ||
-      href.startsWith("/" + "/"));
+  const isExternal = isExternalHref(href);
 
   const rawTag = tag;
   const tagList =
@@ -148,11 +149,7 @@ export function CardImageTag({
   cslp,
 }: CardImageTagProps) {
   const href = button?.href || button?.url;
-  const isExternal =
-    typeof href === "string" &&
-    (href.startsWith("http://") ||
-      href.startsWith("https://") ||
-      href.startsWith("/" + "/"));
+  const isExternal = isExternalHref(href);
 
   return (
     <div
@@ -345,13 +342,6 @@ export function CardSectionHeader({
   );
 }
 
-const colGrids: Record<string, string> = {
-  "1": "grid-cols-1",
-  "2": "grid-cols-1 lg:grid-cols-2",
-  "3": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-  "4": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-};
-
 export interface CardGridProps {
   children: React.ReactNode;
   columns?: number | string;
@@ -368,7 +358,7 @@ export function CardGrid({
   cslp,
 }: CardGridProps) {
   const colVal = String(columns || "3").match(/[1-4]/)?.[0] || "3";
-  const colGridClass = colGrids[colVal] ?? colGrids["3"];
+  const colGridClass = getCardGridColumnsClass(colVal);
 
   return (
     <div
@@ -432,7 +422,7 @@ export default function CardSection({
       {...previewAttr}
       data-color-mode={colorModeKey}
       data-container-width={rawWidth}
-      className={`col-span-full w-full mb-28 md:mb-32 ${colorModeClass} ${className}`}
+      className={`col-span-full w-full ${colorModeClass} ${className}`.trim()}
     >
       {hasHeader && (
         <CardSectionHeader
@@ -463,9 +453,3 @@ export default function CardSection({
     </section>
   );
 }
-
-CardSection.Header = CardSectionHeader;
-CardSection.Grid = CardGrid;
-CardSection.Item = CardItem;
-CardSection.Box = CardBox;
-CardSection.ImageTag = CardImageTag;

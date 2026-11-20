@@ -1,23 +1,7 @@
 import Image from "next/image";
 import { ServiceCardBlock as ServiceCardBlockType, CSLPAttribute } from "@/lib/types";
+import { getServiceCardColSpan } from "@/lib/layout";
 import { Label } from "@/components/ui";
-
-/**
- * Maps Contentstack `grid_size` ('1', '2', '3') to Tailwind column span classes.
- */
-export function getGridColSpan(gridSize?: string): string {
-  const size = String(gridSize || "").trim();
-  switch (size) {
-    case "1":
-      return "col-span-full";
-    case "2":
-      return "col-span-full md:col-span-6";
-    case "3":
-      return "col-span-full md:col-span-4";
-    default:
-      return "col-span-full md:col-span-4";
-  }
-}
 
 export interface ServiceCardBlockProps {
   data?: ServiceCardBlockType;
@@ -37,7 +21,7 @@ export default function ServiceCardBlock({
 }: ServiceCardBlockProps) {
   if (!data) return null;
 
-  const colSpanClass = getGridColSpan(gridSize || data?.grid_size);
+  const colSpanClass = getServiceCardColSpan(gridSize || data?.grid_size);
   const cardTitle = data.card_title;
   const cardText = data.card_text;
   const cardImage = data.image;

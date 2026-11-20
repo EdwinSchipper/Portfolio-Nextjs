@@ -6,9 +6,73 @@ import type {
   ExperienceCompany,
   ExperienceTimelineBlock,
   File,
+  Link,
   PortfolioItem,
+  ProjectShowcaseBlock,
+  ProjectShowcaseTabItem,
   ResumeSectionBlock,
+  StatItem,
+  StatsBlock,
 } from "../types";
+
+export interface NormalizedProjectShowcaseItem {
+  id: string;
+  tabTitle: string;
+  tabDescription: string;
+  imageUrl: string | null;
+  imageAlt: string;
+  badgeLabel?: string;
+  href?: string;
+  linkLabel?: string;
+  imageCslp?: CSLPAttribute;
+  titleCslp?: CSLPAttribute;
+  descriptionCslp?: CSLPAttribute;
+  badgeCslp?: CSLPAttribute;
+  linkCslp?: CSLPAttribute;
+}
+
+export interface NormalizedProjectShowcaseBlock {
+  rawWidth?: string;
+  colorModeKey?: string;
+  label?: string;
+  title?: string;
+  intro?: string;
+  linkHref?: string;
+  linkLabel?: string;
+  labelCslp?: CSLPAttribute;
+  titleCslp?: CSLPAttribute;
+  introCslp?: CSLPAttribute;
+  linkCslp?: CSLPAttribute;
+  items: NormalizedProjectShowcaseItem[];
+  itemsCslp?: CSLPAttribute;
+}
+
+export interface NormalizedStatItem {
+  id: string;
+  label: string;
+  value: string;
+  labelCslp?: CSLPAttribute;
+  valueCslp?: CSLPAttribute;
+}
+
+export interface StatsNormalizationOptions {
+  width?: string;
+  colorMode?: string;
+}
+
+export interface NormalizedStatsBlock {
+  rawWidth?: string;
+  colorModeKey?: string;
+  label?: string;
+  heading?: string;
+  headingTag?: string;
+  intro?: string;
+  labelCslp?: CSLPAttribute;
+  headingCslp?: CSLPAttribute;
+  introCslp?: CSLPAttribute;
+  items: NormalizedStatItem[];
+  itemsCslp?: CSLPAttribute;
+}
 
 export interface NormalizedFeaturedProject {
   key: string;
@@ -16,11 +80,11 @@ export interface NormalizedFeaturedProject {
   imageUrl: string | null;
   imageAlt: string;
   imageCslp?: CSLPAttribute;
-  tag: string;
+  badges: string[];
+  badgesCslp?: CSLPAttribute;
   title: string;
   description: string;
   company: string;
-  numberLabel: string;
   isOdd: boolean;
   cslp?: CSLPContainer;
 }
@@ -80,6 +144,13 @@ type WrappedResumeSection = ResumeSectionBlock & {
   experience_timeline?: ResumeSectionBlock;
 };
 
+const STAT_LABEL_CSLP_KEYS = ["label", "stat_label", "title"] as const;
+const STAT_VALUE_CSLP_KEYS = ["value", "stat_value", "number"] as const;
+const SECTION_LABEL_CSLP_KEYS = ["label", "section_label"] as const;
+const SECTION_HEADING_CSLP_KEYS = ["section_title", "title"] as const;
+const SECTION_INTRO_CSLP_KEYS = ["section_intro", "intro", "description", "text"] as const;
+const SECTION_STATS_CSLP_KEYS = ["stats", "items"] as const;
+const FEATURED_PROJECT_BADGES_CSLP_KEYS = ["category", "project_tag"] as const;
 const STACK_LABEL_CSLP_KEYS = ["stack_label", "Stack_label", "stackLabel", "label"] as const;
 const SECTION_STACK_LABEL_CSLP_KEYS = ["stack_label", "stack.stack_label"] as const;
 const STACK_TITLE_CSLP_KEYS = ["stack_title", "Stack_title", "stackTitle", "title"] as const;
@@ -105,6 +176,23 @@ function pickFirstString(...candidates: unknown[]): string | undefined {
     }
   }
   return undefined;
+}
+
+function normalizeCmsHref(href?: string): string | undefined {
+  if (!href) return undefined;
+  const trimmed = href.trim();
+  if (!trimmed) return undefined;
+  if (
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("#") ||
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("mailto:") ||
+    trimmed.startsWith("tel:")
+  ) {
+    return trimmed;
+  }
+  return `/${trimmed}`;
 }
 
 function pickFirstGridSpan(...candidates: Array<number | string | undefined>): number | string | undefined {
@@ -174,6 +262,31 @@ export function resolveAssetCslp(
   return undefined;
 }
 
+function extractProjectBadges(post: PortfolioItem): string[] {
+  const seen = new Set<string>();
+  const badges: string[] = [];
+
+  const addBadge = (value?: string) => {
+    if (typeof value !== "string") return;
+    const trimmed = value.trim();
+    if (!trimmed) return;
+
+    const normalizedKey = trimmed.toLowerCase();
+    if (seen.has(normalizedKey)) return;
+
+    seen.add(normalizedKey);
+    badges.push(trimmed);
+  };
+
+  if (typeof post.project_tag === "string") {
+    post.project_tag.split(",").forEach(addBadge);
+  }
+
+  toArray(post.category).forEach(addBadge);
+
+  return badges.length > 0 ? badges : ["Recent werk"];
+}
+
 /**
  * Normalizes a Contentstack portfolio entry into render-ready view fields for FeaturedProjectsBlock.
  */
@@ -196,9 +309,6 @@ export function normalizeFeaturedProject(
     post.$?.case_thumbnail ||
     post.$?.featured_image;
 
-  const categoryValue = Array.isArray(post.category) ? post.category[0] : post.category;
-  const tag =
-    pickFirstString(post.project_tag, categoryValue) || "Recent werk";
   const title =
     pickFirstString(post.project_title, post.title) || "Consistente Merktaal & Platform";
   const description = pickFirstString(post.project_desc, post.description) || "";
@@ -210,13 +320,129 @@ export function normalizeFeaturedProject(
     imageUrl,
     imageAlt: post.alt_text || company,
     imageCslp,
-    tag,
+    badges: extractProjectBadges(post),
+    badgesCslp: pickFirstCslp(post.$, FEATURED_PROJECT_BADGES_CSLP_KEYS),
     title,
     description,
     company,
-    numberLabel: String(index + 1).padStart(2, "0"),
     isOdd: index % 2 !== 0,
     cslp: post.$,
+  };
+}
+
+function resolveShowcaseLink(
+  link: Link | undefined,
+  fallbackLabel: string,
+  containerCslp?: CSLPAttribute
+): { href?: string; label?: string; cslp?: CSLPAttribute } {
+  const href = normalizeCmsHref(pickFirstString(link?.href, link?.url));
+  const label =
+    pickFirstString(link?.title, link?.text) ||
+    (href ? fallbackLabel : undefined);
+  const cslp = link?.$?.title ?? link?.$?.href ?? containerCslp;
+
+  return { href, label, cslp };
+}
+
+function mapShowcaseTab(
+  tab: ProjectShowcaseTabItem,
+  index: number
+): NormalizedProjectShowcaseItem {
+  const tabTitle = pickFirstString(tab.tab_title) || `Onderdeel ${index + 1}`;
+  const { href, label: linkLabel, cslp: linkCslp } = resolveShowcaseLink(
+    tab.link,
+    "Lees verder",
+    tab.$?.link
+  );
+
+  return {
+    id: tab._metadata?.uid || `showcase-tab-${index}`,
+    tabTitle,
+    tabDescription: pickFirstString(tab.tab_description) || "",
+    imageUrl: resolveAssetUrl(tab.image),
+    imageAlt:
+      pickFirstString(tab.image_alt, tab.image?.title, tabTitle) ||
+      "Showcase afbeelding",
+    badgeLabel: pickFirstString(tab.badge_label),
+    href,
+    linkLabel,
+    imageCslp: resolveAssetCslp(tab.image, tab.$?.image),
+    titleCslp: tab.$?.tab_title,
+    descriptionCslp: tab.$?.tab_description,
+    badgeCslp: tab.$?.badge_label,
+    linkCslp,
+  };
+}
+
+/**
+ * Normalizes a Contentstack `project_showcase` modular block into strict presentation contracts.
+ */
+export function normalizeProjectShowcaseBlock(
+  data?: ProjectShowcaseBlock,
+  options: { width?: string; colorMode?: string } = {}
+): NormalizedProjectShowcaseBlock | null {
+  if (!data) return null;
+
+  const tabs = toArray<ProjectShowcaseTabItem>(data.tabs);
+  const {
+    href: linkHref,
+    label: linkLabel,
+    cslp: linkCslp,
+  } = resolveShowcaseLink(data.link, "Lees meer", data.$?.link);
+
+  return {
+    rawWidth: pickFirstString(options.width, data.width, data.container_width),
+    colorModeKey: pickFirstString(options.colorMode, data.color_mode),
+    label: pickFirstString(data.label, data.section_label),
+    title: pickFirstString(data.section_title, data.title),
+    intro: pickFirstString(data.section_intro, data.intro),
+    linkHref,
+    linkLabel,
+    labelCslp: data.$ && (data.$.label || data.$.section_label),
+    titleCslp: data.$ && (data.$.section_title || data.$.title),
+    introCslp: data.$ && (data.$.section_intro || data.$.intro),
+    linkCslp,
+    items: tabs.map(mapShowcaseTab),
+    itemsCslp: data.$?.tabs,
+  };
+}
+
+function mapStatItem(stat: StatItem, index: number): NormalizedStatItem {
+  return {
+    id: stat._metadata?.uid || `stat-item-${index}`,
+    label: pickFirstString(stat.label, stat.stat_label, stat.title) || "",
+    value: pickFirstString(stat.value, stat.stat_value, stat.number) || "",
+    labelCslp: pickFirstCslp(stat.$, STAT_LABEL_CSLP_KEYS),
+    valueCslp: pickFirstCslp(stat.$, STAT_VALUE_CSLP_KEYS),
+  };
+}
+
+/**
+ * Normalizes a Contentstack `stats` modular block into strict presentation contracts.
+ */
+export function normalizeStatsBlock(
+  data?: StatsBlock,
+  options: StatsNormalizationOptions = {}
+): NormalizedStatsBlock | null {
+  if (!data) return null;
+
+  const rawStats = data.stats ?? data.items;
+  const items = toArray<StatItem>(rawStats)
+    .map(mapStatItem)
+    .filter((item) => Boolean(item.label || item.value));
+
+  return {
+    rawWidth: pickFirstString(options.width, data.width, data.container_width),
+    colorModeKey: pickFirstString(options.colorMode, data.color_mode),
+    label: pickFirstString(data.label, data.section_label),
+    heading: pickFirstString(data.section_title, data.title),
+    headingTag: pickFirstString(data.heading_type),
+    intro: pickFirstString(data.section_intro, data.intro, data.description, data.text),
+    labelCslp: pickFirstCslp(data.$, SECTION_LABEL_CSLP_KEYS),
+    headingCslp: pickFirstCslp(data.$, SECTION_HEADING_CSLP_KEYS),
+    introCslp: pickFirstCslp(data.$, SECTION_INTRO_CSLP_KEYS),
+    items,
+    itemsCslp: pickFirstCslp(data.$, SECTION_STATS_CSLP_KEYS),
   };
 }
 

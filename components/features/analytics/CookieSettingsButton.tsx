@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/ui/Button';
+import { Button } from "@/components/ui";
 
 /**
  * Client button allowing users to re-open the Cookie Consent banner

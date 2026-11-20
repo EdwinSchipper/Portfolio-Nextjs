@@ -73,15 +73,13 @@ components/
 │                           # (Header, Footer, Breadcrumbs, ColorModeSelector, NavigationProgress)
 ├── blocks/                 # Contentstack Modular Blocks & automatische BlockRenderer registry
 │   ├── BlockRenderer.tsx
-│   ├── items/              # HeroBlock, CtaBlock, ResumeSection, GridSection, CardSection,
-│   │                       # FeaturedProjectsBlock, ExperienceTimelineBlock, NumberedSection,
-│   │                       # ServiceCardBlock, ContentBlock
-│   └── index.ts
-├── features/               # Zelfvoorzienende domeinmodules
-│   ├── analytics/          # Google Consent Mode v2 & GTM (GTMPageTracker, CookieConsent, CookieSettingsButton)
-│   ├── pages/              # Pagina-containers, Live Preview wrapper & skeletons (HomePage, Page, Preview)
-│   └── portfolio/          # Case-study detailweergave, techstack & skeletons (PortfolioDetail, PortfolioPreview)
-└── index.ts                # Centrale barrel export (@/components)
+│   └── items/              # HeroBlock (+ hero/), ProjectShowcaseBlock, StatsBlock, CtaBlock,
+│                           # ResumeSection, GridSection, CardSection, FeaturedProjectsBlock,
+│                           # NumberedSection, ServiceCardBlock, ContentBlock
+└── features/               # Zelfvoorzienende domeinmodules
+    ├── analytics/          # Google Consent Mode v2 & GTM (GTMPageTracker, CookieConsent, CookieSettingsButton)
+    ├── pages/              # Pagina-containers, Live Preview wrapper & skeletons (HomePage, Page, Preview)
+    └── portfolio/          # Case-study detailweergave, techstack & skeletons (PortfolioDetail, PortfolioPreview)
 ```
 
 ---

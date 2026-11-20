@@ -11,7 +11,13 @@ import {
   CSLPContainer,
 } from "@/lib/types";
 import { Button, Label, Icon, RichText } from "@/components/ui";
-import { getContainerClass, getColorModeClass, colSpans, getHeadingTag } from "@/lib/layout";
+import {
+  getColSpanClass,
+  getColorModeClass,
+  getContainerClass,
+  getHeadingTag,
+  isExternalHref,
+} from "@/lib/layout";
 
 export interface GridQuoteProps {
   quote?: string;
@@ -311,9 +317,7 @@ export function GridSocials({
                   : rawIcon;
 
           const title = item.title || item.label;
-          const isExternal =
-            typeof href === "string" &&
-            (href.startsWith("http://") || href.startsWith("https://"));
+          const isExternal = isExternalHref(href);
 
           return (
             <a
@@ -351,7 +355,7 @@ export function GridColumn({
 }: GridColumnProps) {
   if (!data) return null;
 
-  const colClass = colSpans[String(span)] ?? colSpans["6"];
+  const colClass = getColSpanClass(span, "col-span-12 lg:col-span-6");
   const label = data.label_left || data.label_right;
   const title = data.title_h1 || data.title_h1r;
   const headingTag = getHeadingTag(data.heading_type, "h2");
@@ -498,7 +502,7 @@ export default function GridSection({
     <section
       {...previewAttr}
       data-color-mode={colorModeKey}
-      className={`col-span-full w-full mb-20 md:mb-40 lg:mb-40 ${colorModeClass} ${className}`}
+      className={`col-span-full w-full ${colorModeClass} ${className}`.trim()}
     >
       <div
         className={`sm:grid grid-cols-1 md:grid-cols-12 mx-auto z-20 ${containerClass} px-10 sm:px-14 lg:px-12 md:px-20 gap-14 lg:gap-x-10 xl:gap-x-24`}
@@ -509,8 +513,3 @@ export default function GridSection({
     </section>
   );
 }
-
-GridSection.Column = GridColumn;
-GridSection.Cards = GridCards;
-GridSection.Card = GridCard;
-GridSection.Quote = GridQuote;

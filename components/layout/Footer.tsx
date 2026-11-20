@@ -49,12 +49,12 @@ export default function Footer() {
             <div className="grid grid-cols-1 lg:grid-cols-12 lg:items-start gap-y-24 md:gap-y-14 lg:gap-y-0 lg:gap-x-8 pb-14 md:pb-20">
 
 
-              <div className="lg:col-span-7 flex flex-col space-y-10 md:space-y-12">
+              <div className="lg:col-span-7 flex flex-col space-y-12 md:space-y-12">
 
                 <div className="md:pr-20 pt-20 md:pt-0">
-                  <h2 className="text-[calc(var(--text-title_heroM)*0.7)] max-lg:leading-[1.2] max-lg:tracking-[-0.02em] lg:text-title_hero font-content text-title-100 dark:text-title-200 font-light max-w-3xl text-pretty">
+                  <h2 className="text-footerM lg:text-footer font-display text-title-100 dark:text-title-200 font-semibold max-w-3xl text-pretty ">
                     Benieuwd wat ik{" "}
-                    <span className="italic font-semibold">
+                    <span className="italic title-100 text-accent7-900 dark:text-accent8-900">
                       voor jouw
                     </span>{" "}
                     project kan betekenen?

@@ -116,7 +116,7 @@ export default function StatsBlock({
                         className="flex items-center justify-between gap-6 py-4 md:py-4"
                       >
                         <dt
-                          className="text-smallM sm:text-small text-content-100 dark:text-content-200"
+                          className="text-mediumM sm:text-small text-content-100 dark:text-content-200"
                           {...item.labelCslp}
                         >
                           {item.label}

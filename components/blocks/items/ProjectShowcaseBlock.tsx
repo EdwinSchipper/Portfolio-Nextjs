@@ -179,7 +179,7 @@ export default function ProjectShowcaseBlock({
                               aria-hidden="true"
                               className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-background-950/55 via-background-950/20 to-transparent pointer-events-none"
                             />
-                            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-4 md:p-9">
+                            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-5 md:p-9">
                               {item.badgeLabel && (
                                 <Label variant="pill" cslp={item.badgeCslp}>
                                   {item.badgeLabel}
@@ -187,7 +187,7 @@ export default function ProjectShowcaseBlock({
                               )}
 
                               {item.href && item.linkLabel && (
-                                <div className="ml-auto shrink-0 w-fit">
+                                <div className="ml-auto shrink-0 w-full md:w-fit">
                                   <Button
                                     href={item.href}
                                     variant="inverted"

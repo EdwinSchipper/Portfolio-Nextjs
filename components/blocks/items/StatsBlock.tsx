@@ -122,7 +122,7 @@ export default function StatsBlock({
                           {item.label}
                         </dt>
                         <dd
-                          className="text-title_4M md:text-title_4 lg:text-title_3 font-bold text-title-100 dark:text-title-200 tabular-nums shrink-0"
+                          className="text-title_4M md:text-title_4 lg:text-title_4 font-bold text-title-100 dark:text-title-200 tabular-nums shrink-0"
                           {...item.valueCslp}
                         >
                           {item.value}

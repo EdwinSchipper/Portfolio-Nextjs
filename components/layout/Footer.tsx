@@ -25,9 +25,11 @@ export const footerSections: FooterSection[] = [
   {
     title: "Pagina's",
     links: [
+      { label: "Cases", href: "/portfolio" },
       { label: "Curriculum Vitae", href: "/resume" },
+
       { label: "Over mij", href: "/overmij" },
-      { label: "Portfolio", href: "/portfolio" },
+
     ],
   },
 ];

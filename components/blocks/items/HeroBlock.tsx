@@ -85,7 +85,7 @@ export default function HeroBlock({ data, previewAttr }: HeroBlockProps) {
 
       <div className="relative z-10 mt-auto mx-auto w-full max-w-[1980px] lg:justify-center items-end grid grid-cols-12 gap-y-20 sm:gap-y-28 lg:gap-y-40 xl:gap-y-8">
         <div className="col-span-12 lg:col-span-8 self-end flex">
-          <div className="flex flex-col gap-y-10 md:gap-y-20 xl:gap-y-20">
+          <div className="flex flex-col gap-y-10 md:gap-y-20 xl:gap-y-10">
             <div className="min-h-[calc(100dvh-8rem)] md:min-h-0 flex items-end pb-10 md:block md:pb-0">
               <h1
                 id="hero-top"

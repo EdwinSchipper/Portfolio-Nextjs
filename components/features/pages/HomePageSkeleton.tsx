@@ -13,7 +13,7 @@ export default function HomePageSkeleton() {
     >
       <div className="mt-auto mx-auto w-full max-w-[1980px] lg:justify-center items-end grid grid-cols-12 gap-y-20 sm:gap-y-28 lg:gap-y-40 xl:gap-y-8">
         <div className="col-span-12 lg:col-span-8 self-end flex">
-          <div className="flex flex-col gap-y-10 md:gap-y-20 xl:gap-y-20 w-full">
+          <div className="flex flex-col gap-y-10 md:gap-y-20 xl:gap-y-10 w-full">
             <div className="space-y-4 max-w-4xl">
               <div className="h-12 sm:h-16 md:h-20 xl:h-24 w-11/12 rounded-lg bg-title-200/15" />
               <div className="h-12 sm:h-16 md:h-20 xl:h-24 w-3/4 rounded-lg bg-title-200/15" />

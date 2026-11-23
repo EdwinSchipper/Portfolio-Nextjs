@@ -121,7 +121,7 @@ export default function FeaturedProjectsBlock({
                       </div>
 
                       <h3
-                        className="case-title text-title_5M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
+                        className="case-title text-title_4M sm:text-title_5 text-title-100 dark:text-title-200 font-medium text-balance md:text-balance"
                         {...(postCslp && (postCslp.project_title || postCslp.title))}
                       >
                         <Link

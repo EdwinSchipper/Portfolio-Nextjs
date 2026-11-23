@@ -34,7 +34,7 @@ export default function PortfolioTechStack({
       className={`mx-auto max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl px-6 md:px-12 lg:px-16 mb-20 lg:mb-24 ${className}`}
     >
       <div className="border-y border-border-100 dark:border-border-200 py-10 md:py-14 bg-background-200/30 dark:bg-background-900/30 sm:bg-transparent dark:sm:bg-transparent font-content">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-row justify-around items-center gap-y-8 gap-x-6 md:gap-x-4">
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:flex md:flex-row justify-around items-center gap-y-8 gap-x-6 md:gap-x-4 items-start">
           {items.map((stackItem, idx) => {
             const meta = stackItem.$;
 

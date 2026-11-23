@@ -169,7 +169,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Portfolio", href: "/portfolio" },
+            { label: "Cases", href: "/portfolio" },
             { label: companyOrTitle, active: true },
           ]}
           currentTitleAttr={item?.$ && (item?.$.company || item?.$.title)}

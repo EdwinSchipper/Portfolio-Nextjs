@@ -24,8 +24,10 @@ export const expertiseItems: NavItem[] = [
 ];
 
 export const mainNavItems: NavItem[] = [
+
+  { name: "Cases", href: "/portfolio" },
   { name: "Over mij", href: "/overmij" },
-  { name: "Portfolio", href: "/portfolio" },
+
 ];
 
 const baseNavClass =
